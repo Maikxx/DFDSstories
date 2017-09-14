@@ -14,16 +14,21 @@
     <header>
         <nav>
             <ul>
+                <li><a href="../index.html"><img src="https://dfdsstyleguide.azurewebsites.net/downloads/images/logo.svg" alt="page-logo"></a></li>
                 <li>
-                    <a href="index.html"><img src="#" alt="page-logo"></a>
-                </li>
-                <li>
-                    <a href="#">Account</a>
-                </li>
-                <li>
-                    <a href="#"><img src="#" alt="page-language"></a>
+                    <ul>
+                        <li>
+                            <ul>
+                                <li><a href="../index.html">Nederlands</a></li>
+                                <li><a href="#">English</a></li>
+                                <li><a href="#">French</a></li>
+                                <li><a href="#">German</a></li>
+                            </ul>
+                        </li>
+                    </ul>
                 </li>
             </ul>
+        </nav>
         </nav>
     </header>
     <main>
@@ -33,11 +38,11 @@
                 <label for="sign-up-name">Naam:</label>
                 <input type="text" id="sign-up-name" placeholder="Voor- en achternaam" pattern="[^'\x22]+">
                 <label for="sign-up-e-mail">E-mail:</label>
-                <input type="email" id="sign-up-e-mail" placeholder="E-mail" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$">
+                <input type="email" id="sign-up-e-mail" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$">
                 <label for="sign-up-password">Wachtwoord:</label>
-                <input type="password" id="sign-up-password" placeholder="Wachtwoord" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Wachtwoord minstens één nummer, één hoofd- en kleine letter bevatten en 8 of meer tekens lang zijn.">
+                <input type="password" id="sign-up-password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Wachtwoord minstens één nummer, één hoofd- en kleine letter bevatten en 8 of meer tekens lang zijn.">
                 <label for="sign-up-age">Leeftijd:</label>
-                <input type="number" id="sign-up-age" placeholder="Leeftijd">
+                <input type="number" id="sign-up-age">
                 <label for="sign-up-nationality">Nationaliteit:</label>
                 <select id="sign-up-nationality">
                         <option value="AF">Afghanistan</option>
@@ -299,23 +304,38 @@
     <footer>
         <ul>
             <li>
-                <h4>Relevant Links DFDStories</h4>
+                <h4>Over DFDS</h4>
             </li>
-            <li><a href="#">Link</a></li>
-            <li><a href="#">Link</a></li>
-            <li><a href="#">Link</a></li>
-            <li><a href="#">Link</a></li>
+            <li><a href="https://blog.dfds.nl/">DFDS Blog</a></li>
+            <li><a href="https://www.dfds.com/group">DFDS Group</a></li>
+            <li><a href="https://www.dfdsseaways.nl/nieuws">Nieuws</a></li>
+            <li><a href="https://www.dfdsseaways.nl/over-ons">Over Ons</a></li>
         </ul>
         <ul>
             <li>
-                <h4>Relevant Links DFDStories</h4>
+                <h4>Klantenservice</h4>
             </li>
-            <li><a href="#">Link</a></li>
-            <li><a href="#">Link</a></li>
-            <li><a href="#">Link</a></li>
-            <li><a href="#">Link</a></li>
+            <li><a href="https://www.dfdsseaways.nl/reisvoorbereiding/vaarschema/actueel">Actueel</a></li>
+            <li><a href="https://www.dfdsseaways.nl/contact">Contact</a></li>
+            <li><a href="https://www.dfdsseaways.nl/contact/veelgestelde-vragen">FAQ</a></li>
+            <li><a href="https://www.dfdsseaways.nl/contact/nieuwsbrief">Nieuwsbrief</a></li>
         </ul>
-        <small>Alle inhoud van deze website is &copy; 2017, door DFDStories en Maikel van Veen</small>
+        <ul>
+            <li>
+                <h4>Contact Ons</h4>
+            </li>
+            <li>
+                <ul>
+                    <li><a href="https://www.facebook.com/dfdsnederland"></a></li>
+                    <li><a href="https://twitter.com/dfdsnederland"></a></li>
+                    <li><a href="https://www.instagram.com/dfdsnederland/"></a></li>
+                    <li><a href="https://nl.pinterest.com/dfdsnederland/"></a></li>
+                    <li><a href="https://plus.google.com/u/0/+DfdsseawaysNl"></a></li>
+                    <li><a href="https://www.youtube.com/c/DFDSNederland"></a></li>
+                </ul>
+            </li>
+        </ul>
+        <small>&copy; 2017, DFDS en Maikel van Veen</small>
     </footer>
 </body>
 

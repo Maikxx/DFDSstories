@@ -222,8 +222,7 @@ main>article>header h2::after {
     display: block;
     position: absolute;
     right: -1.5em;
-    -webkit-transform: rotateZ(180deg);
-            transform: rotateZ(180deg);
+    transform: rotateZ(180deg);
     top: -1.6em;
 }
 
@@ -273,8 +272,6 @@ body>footer ul li a {
 /* Social Media Container */
 
 body>footer ul:last-of-type li ul {
-    display: -webkit-box;
-    display: -ms-flexbox;
     display: flex;
     margin-left: 0;
 }

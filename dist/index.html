@@ -6,117 +6,117 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" type="text/css" href="css/main.min.css">
-    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Open+Sans:600|Roboto">
     <title>DFDStories || Overzichtspagina</title>
 </head>
 
 <body>
     <header>
+        <!-- Main nav -->
         <nav>
+            <!-- Outer ul -->
             <ul>
+                <!-- Logo -->
+                <li><a href="index.html"><img src="https://dfdsstyleguide.azurewebsites.net/downloads/images/logo.svg" alt="page-logo"></a></li>
+                <!-- Menu icon -->
+                <li id='toggle-main-menu'>Toggle</li>
+                <!-- Inner ul - menu -->
                 <li>
-                    <a href="index.html"><img src="#" alt="page-logo"></a>
-                </li>
-                <li>
-                    <a href="#" id="activate-login-form-button">Inloggen</a>
-                    <form action="#" id="login-form" hidden>
-                        <fieldset>
-                            <legend>Inloggen</legend>
-                            <label for="log-in-e-mail">E-mail</label>
-                            <input type="email" id="log-in-e-mail" placeholder="E-mail" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$">
-                            <label for="log-in-password">Wachtwoord</label>
-                            <input type="password" id="log-in-password" placeholder="Wachtwoord" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}">
-                            <button type="submit">Inloggen</button>
-                        </fieldset>
-                        <fieldset>
-                            <legend>Aanmelden / Vergeten</legend>
-                            <span>Geen lid? <a href="html/signup.html">Meld je aan!</a></span>
-                            <span>Wachtwoord vergeten? <a href="html/forgot.html">Herstel wachtwoord!</a></span>
-                        </fieldset>
-                    </form>
-                </li>
-                <li>
-                    <a href="#"><img src="#" alt="page-language"></a>
+                    <ul id='main-menu'>
+                        <li id="toggle-login-form">Inloggen</li>
+                        <li>
+                            <form action="#" id="login-form">
+                                <fieldset>
+                                    <legend>Inloggen</legend>
+                                    <label for="log-in-e-mail">E-mail
+                                        <input type="email" id="log-in-e-mail" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$">                                            
+                                    </label>
+                                    <label for="log-in-password">Wachtwoord
+                                        <input type="password" id="log-in-password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}">
+                                    </label>
+                                    <button type="submit">Inloggen</button>
+                                </fieldset>
+                                <a href="html/forgot.html">Wachtwoord vergeten?</a>
+                            </form>
+                        </li>
+                        <li><a href="html/signup.html">Aanmelden</a></li>
+                        <li><a href="html/reading-list.html">Mijn leeslijst</a></li>
+                        <li><a href="html/reading-history.html">Lees- en interactiegeschiedenis</a></li>
+                        <li>
+                            <ul>
+                                <li><a href="index.html">Nederlands</a></li>
+                                <li><a href="#">English</a></li>
+                                <li><a href="#">French</a></li>
+                                <li><a href="#">German</a></li>
+                            </ul>
+                        </li>
+                    </ul>
                 </li>
             </ul>
         </nav>
     </header>
     <main>
-        <section class="main-section search">
-            <h2>Zoeken</h2>
+        <header>
+            <h1>DFDStories</h1>
+        </header>
+        <section>
+            <header>
+                <h2>Zoeken</h2>
+            </header>
             <form action="#">
                 <fieldset>
-                    <legend>Zoek op categorieën!</legend>
-                    <label for="select-genre">Genre</label>
-                    <select id="select-genre" class="select age">
-                        <option value="Biografie">Biografie</option>
-                        <option value="Haiku">Haiku</option>
-                        <option value="Humor">Humor</option>
-                        <option value="Short Story">Short Story</option>
-                    </select>
-                    <label for="select-genre">Leeftijd</label>
-                    <select id="select-age" class="select age">
-                        <option value="3+">3+</option>
-                        <option value="6+">6+</option>
-                        <option value="12+">12+</option>
-                        <option value="18+">18+</option>
-                    </select>
-                    <label for="select-read-time">Leestijd (minuten)</label>
-                    <select id="select-read-time" class="select read-time">
-                        <option value="1-5">1-5</option>
-                        <option value="5-15">5-15</option>
-                        <option value="15-30">15-30</option>
-                        <option value="30+">30+</option>
-                    </select>
-                    <label for="select-story-length">Verhaallengte</label>
-                    <select id="select-story-length" class="select story-length">
-                        <option value="Kort">Kort</option>
-                        <option value="Middelmatig">Middellang</option>
-                        <option value="Long">Lang</option>
-                        <option value="Erg Lang">Erg Lang</option>
-                    </select>
+                    <legend>Zoeken op categorie:</legend>
+                    <label for="select-age">Leeftijd
+                         <select id="select-age">
+                            <option value="3+">3+</option>
+                            <option value="6+">6+</option>
+                            <option value="12+">12+</option>
+                            <option value="18+">18+</option>
+                        </select>
+                    </label>
+                    <label for="select-read-time">Leestijd (minuten)
+                        <select id="select-read-time">
+                            <option value="1-5">1-5</option>
+                            <option value="5-15">5-15</option>
+                            <option value="15-30">15-30</option>
+                            <option value="30+">30+</option>
+                        </select>
+                    </label>
+                    <label for="select-story-length">Verhaallengte
+                        <select id="select-story-length">
+                            <option value="Kort">Kort</option>
+                            <option value="Middelmatig">Middellang</option>
+                            <option value="Long">Lang</option>
+                            <option value="Erg Lang">Erg Lang</option>
+                        </select>
+                    </label>
+                    <button type="reset">Resetten</button>
+                    <button type="submit">Zoeken</button>
                 </fieldset>
                 <fieldset>
-                    <legend>Zoek op titel!</legend>
-                    <label for="search-for-title" hidden>Titel</label>
-                    <input type="text" id="search-for-title" placeholder="Titel" pattern="[^'\x22]+">
-                </fieldset>
-                <fieldset>
-                    <legend hidden>Reset / Submit</legend>
-                    <button type="reset">Reset</button>
-                    <button type="submit">Submit</button>
+                    <legend>Zoeken op titel:</legend>
+                    <label for="search-for-title">Titel<input type="text" id="search-for-title" pattern="[^'\x22]+"></label>
+                    <button type="submit">Zoeken</button>
                 </fieldset>
             </form>
         </section>
-        <section class="main-section search-result">
+        <section>
             <header>
-                <h2>Zoek Resultaten</h2>
-                <nav class="nav sorting">
-                    <ul>
-                        <li>
-                            <a href="#"></a>
-                        </li>
-                        <li>
-                            <a href="#"></a>
-                        </li>
-                        <li>
-                            <a href="#"></a>
-                        </li>
-                        <li>
-                            <a href="#"></a>
-                        </li>
-                    </ul>
-                </nav>
+                <h2>Zoekresultaten</h2>
+                <ul>
+                    <li>A-Z</li>
+                    <li>Numeriek</li>
+                    <li>Populariteit</li>
+                    <li>Relevantie</li>
+                </ul>
             </header>
-            <section class="container scrollable">
-                <h2 hidden>Resultaten sectie</h2>
+            <section>
+                <h2 hidden>Resultaten</h2>
                 <article>
                     <header>
-                        <a href="#">
-                            <img src="https://placekitten.com/200/300" alt="">
+                        <a href="html/story.html">
+                            <img src="http://www.omroepalmere.nl/cwm/fm/userfiles/content/eyecatcher/normal/66129_fri0308d_1.jpg" alt="">
                         </a>
                         <h3>Buschauffeur</h3>
-                        <time datetime="2011-01-01">2011-01-01</time>
                     </header>
                     <p>
                         Vlak voordat ik de bus uitstap bedank ik de buschauffeur via de spiegel voor zijn diensten. Hij zwaait joviaal terug. ‘Mijn
@@ -124,252 +124,110 @@
                         Ik duw mijn zoon voort. Hij slaapt. Zich onbewust van de last die er op zijn schouders rust. Zoon
                         zijn van de grote Max J. Molovich. Je geeft het hem te doen. Het miezert een beetje en het waait.
                         Ik stop mijn hoofd diep in mijn kraag. De mensen kijken om, ik zie ze smoezelen, ik hoor ze fluisteren.
-                        ‘Is dat niet..? Volgens mij is dat… Ja hoor, zeker weten, het is ‘m.’ Alsof het uitspreken van mijn
-                        naam in mijn nabijheid een doodzonde is. Anderen negeren zo achteloos mogelijk mijn aanwezigheid
-                        in het hier en nu. Als ik ergens kom, verandert alles. Die verandering, dat voel je. Het is een soort
-                        rusteloosheid die rond de mensen zoemt. Als een zwerm opgewonden bijen. Het vreemde is: ik weet niet
-                        meer hoe het voelt zonder die verandering. Ik ben op weg naar de Openbare Bibliotheek om Stijloefeningen
-                        van Raymond Queneau te lenen. Ik loop nu over een plank met aan weerszijden diepe bouwputten. ‘Molo!’,
-                        hoor ik iemand boven het gehei van de heipalen en het gedril van de drilboren uitschreeuwen. Ik kijk
-                        naar beneden en zie een groepje bouwvakkers naar me zwaaien. Ik zwaai terug. Ze lachen en geven elkaar
-                        high-fives.
+                        ‘Is dat niet..?
                     </p>
-                    <ul>
-                        <li><a href="#"><img src="#" alt="#">Open</a></li>
-                        <li><a href="#"><img src="#" alt="#">Leeslijst</a></li>
-                    </ul>
+                    <footer>
+                        <a href="html/story.html"></a>
+                        <a href="html/reading-list.html"></a>
+                    </footer>
                 </article>
                 <article>
                     <header>
-                        <a href="#">
-                            <img src="https://placekitten.com/200/300" alt="">
+                        <a href="html/story.html">
+                            <img src="http://www.omroepalmere.nl/cwm/fm/userfiles/content/eyecatcher/normal/66129_fri0308d_1.jpg" alt="">
                         </a>
-                        <h3>Bibliotheek</h3>
-                        <time datetime="2011-01-01">2011-01-01</time>
+                        <h3>Buschauffeur</h3>
                     </header>
                     <p>
-                        Vlak voordat ik de bibliotheek wil binnengaan tikt er iemand op mijn rug. Er staat een kleine vrouw met dikke, inktzwarte
-                        krullen voor me. Ik reik naar mijn binnenzak om een foto met handtekening te pakken, maar de vrouw
-                        blijkt niet van hier en vraagt in het Engels met een Frans accent of dit het postkantoor is. ‘Nee’,
-                        zeg ik, ‘dit is de bibliotheek.’ De vrouw glimlacht en kijkt achter zich. Daar rijdt een grijze Renault
-                        21 achteruit rijdend van ons weg. Ze draait zich weer om en glimlacht naar me. ‘Are you..?’ Ze durft
-                        haar zin niet af te maken. ‘Yes’, zeg ik, ‘I am.’ Ze haalt een briefje uit haar binnenzak en een
-                        pen. ‘Would you..?’, zegt ze, ‘…my husband is a big fan.’ ‘Of course’, zeg ik. En doe de dop van
-                        de pen. Raadhuisstraat, lees ik op het briefje. ‘That’s where you should go’, zeg ik terwijl ik mijn
-                        handtekening zet. Maar ze grist het papiertje uit mijn handen, bedankt me met een schaapachtig lachje
-                        en rent achter de Renault aan.
+                        Vlak voordat ik de bus uitstap bedank ik de buschauffeur via de spiegel voor zijn diensten. Hij zwaait joviaal terug. ‘Mijn
+                        vrouw is een groot fan van u’, roept hij. ‘Doe haar de groeten’, zeg ik en stap uit. Centraal Station.
+                        Ik duw mijn zoon voort. Hij slaapt. Zich onbewust van de last die er op zijn schouders rust. Zoon
+                        zijn van de grote Max J. Molovich. Je geeft het hem te doen. Het miezert een beetje en het waait.
+                        Ik stop mijn hoofd diep in mijn kraag. De mensen kijken om, ik zie ze smoezelen, ik hoor ze fluisteren.
+                        ‘Is dat niet..?
                     </p>
-                    <ul>
-                        <li><a href="#"><img src="#" alt="#">Open</a></li>
-                        <li><a href="#"><img src="#" alt="#">Leeslijst</a></li>
-                    </ul>
+                    <footer>
+                        <a href="html/story.html"></a>
+                        <a href="html/reading-list.html"></a>
+                    </footer>
                 </article>
                 <article>
                     <header>
-                        <a href="#">
-                            <img src="https://placekitten.com/200/300" alt="">
+                        <a href="html/story.html">
+                            <img src="http://www.omroepalmere.nl/cwm/fm/userfiles/content/eyecatcher/normal/66129_fri0308d_1.jpg" alt="">
                         </a>
-                        <h3>Binnen</h3>
-                        <time datetime="2011-01-01">2011-01-01</time>
+                        <h3>Buschauffeur</h3>
                     </header>
                     <p>
-                        Binnen, op de tweede verdieping. De rust in de bibliotheek is duidelijk verstoord. Ik sta bij de Q van Queneau te zoeken
-                        naar Stijloefeningen. Mensen lopen nadrukkelijk nonchalant langs. Er staan ineens aardig wat mensen
-                        bij de R en de S te zoeken naar boeken die ze vijf minuten geleden nog niet zochten. Ik vind niks,
-                        loop naar de computers en deel hier en daar wat glimlachjes en knikjes uit. Ik tik ‘Stijloefeningen’
-                        in op de online catalogus. Twee schoolmeisjes van een jaar of veertien komen giechelend naar me toe.
-                        Volgens de online catalogus ligt Stijloefeningen gewoon op de plank. ‘Meneer’, zegt de ene. Ik glimlach.
-                        Ze houdt een boek voor zich. ‘Zou ik uw handtekening mogen’, vraagt ze. ‘Maar dat is een boek van
-                        de bibliotheek’, zeg ik. ‘Doe dan maar hier’, zegt ze. Ze geeft me een dikke viltstift en trekt haar
-                        truitje omhoog.
+                        Vlak voordat ik de bus uitstap bedank ik de buschauffeur via de spiegel voor zijn diensten. Hij zwaait joviaal terug. ‘Mijn
+                        vrouw is een groot fan van u’, roept hij. ‘Doe haar de groeten’, zeg ik en stap uit. Centraal Station.
+                        Ik duw mijn zoon voort. Hij slaapt. Zich onbewust van de last die er op zijn schouders rust. Zoon
+                        zijn van de grote Max J. Molovich. Je geeft het hem te doen. Het miezert een beetje en het waait.
+                        Ik stop mijn hoofd diep in mijn kraag. De mensen kijken om, ik zie ze smoezelen, ik hoor ze fluisteren.
+                        ‘Is dat niet..?
                     </p>
-                    <ul>
-                        <li><a href="#"><img src="#" alt="#">Open</a></li>
-                        <li><a href="#"><img src="#" alt="#">Leeslijst</a></li>
-                    </ul>
-                </article>
-                <article>
-                    <header>
-                        <a href="#">
-                            <img src="https://placekitten.com/200/300" alt="">
-                        </a>
-                        <h3>Trolleys</h3>
-                        <time datetime="2011-01-01">2011-01-01</time>
-                    </header>
-                    <p>
-                        Kijkt op de trolleys met net teruggebrachte boeken. Zoekt bij de K van Kousbroek. Zelfs nog even bij de C van Cousbroek.
-                        Ik zeg dat ik het wel een andere keer probeer, maar hij wil er niets van weten. Volgens hem moet
-                        het magazijn er nog een hebben. Of ik hier even wil wachten. Hij rent naar beneden. Is een kwartier
-                        weg. Ik deel wat handtekeningen uit. Een vrouw vertelt dat ik haar leven heb veranderd. De medewerker
-                        komt hijgend boven met de mededeling dat Stijloefeningen, volgens het magazijn, gewoon op de daartoe
-                        bestemde plek ligt. Bij de Q van Queneau dus. Waar we de hele tijd hadden gekeken. Ik glimlach. De
-                        medewerker zegt dat hij net een vriend heeft gebeld die bij een antiquariaat werkt. Daar hebben ze
-                        het boek niet op voorraad liggen, sterker nog, er waren veel meer mensen naar op zoek, maar de vriend
-                        van de medewerker had beloofd dat meneer Molovich voorrang zou krijgen. Ik glimlach vriendelijk en
-                        bedank hem voor de moeite. Vlak voordat ik ga, vraagt de medewerker, inmiddels diep paars aangelopen,
-                        of hij een handtekening kan krijgen. Zijn moeder is een groot fan van mij.
-                    </p>
-                    <ul>
-                        <li><a href="#"><img src="#" alt="#">Open</a></li>
-                        <li><a href="#"><img src="#" alt="#">Leeslijst</a></li>
-                    </ul>
-                </article>
-                <article>
-                    <header>
-                        <a href="#">
-                            <img src="https://placekitten.com/200/300" alt="">
-                        </a>
-                        <h3>Lommerplein</h3>
-                        <time datetime="2011-01-01">2011-01-01</time>
-                    </header>
-                    <p>
-                        Op het Bos en Lommerplein, vlak bij mijn huis, vind ik in een babywinkel de perfecte babyschoentjes voor mijn zoon. Ik wil
-                        een foto met handtekening pakken, maar aan de neutrale toon te oordelen waarop de verkoper vraagt
-                        of ik contant of met pinpas wil betalen, heeft hij nog nooit van de grote Max J. Molovich gehoord.
-                    </p>
-                    <ul>
-                        <li><a href="#"><img src="#" alt="#">Open</a></li>
-                        <li><a href="#"><img src="#" alt="#">Leeslijst</a></li>
-                    </ul>
+                    <footer>
+                        <a href="html/story.html"></a>
+                        <a href="html/reading-list.html"></a>
+                    </footer>
                 </article>
             </section>
-        </section>
-        <article>
-            <header>
-                <h2>Buschauffeur</h2>
-                <time datetime="2011-01-01">2011-01-01</time>
-            </header>
-            <p>Vlak voordat ik de bus uitstap bedank ik de buschauffeur via de spiegel voor zijn diensten. Hij zwaait joviaal
-                terug. ‘Mijn vrouw is een groot fan van u’, roept hij. ‘Doe haar de groeten’, zeg ik en stap uit. Centraal
-                Station. Ik duw mijn zoon voort. Hij slaapt. Zich onbewust van de last die er op zijn schouders rust. Zoon
-                zijn van de grote Max J. Molovich. Je geeft het hem te doen. Het miezert een beetje en het waait. Ik stop
-                mijn hoofd diep in mijn kraag. De mensen kijken om, ik zie ze smoezelen, ik hoor ze fluisteren. ‘Is dat niet..?
-                Volgens mij is dat… Ja hoor, zeker weten, het is ‘m.’ Alsof het uitspreken van mijn naam in mijn nabijheid
-                een doodzonde is. Anderen negeren zo achteloos mogelijk mijn aanwezigheid in het hier en nu. Als ik ergens
-                kom, verandert alles. Die verandering, dat voel je. Het is een soort rusteloosheid die rond de mensen zoemt.
-                Als een zwerm opgewonden bijen. Het vreemde is: ik weet niet meer hoe het voelt zonder die verandering. Ik
-                ben op weg naar de Openbare Bibliotheek om Stijloefeningen van Raymond Queneau te lenen. Ik loop nu over
-                een plank met aan weerszijden diepe bouwputten. ‘Molo!’, hoor ik iemand boven het gehei van de heipalen en
-                het gedril van de drilboren uitschreeuwen. Ik kijk naar beneden en zie een groepje bouwvakkers naar me zwaaien.
-                Ik zwaai terug. Ze lachen en geven elkaar high-fives. Vlak voordat ik de bibliotheek wil binnengaan tikt
-                er iemand op mijn rug. Er staat een kleine vrouw met dikke, inktzwarte krullen voor me. Ik reik naar mijn
-                binnenzak om een foto met handtekening te pakken, maar de vrouw blijkt niet van hier en vraagt in het Engels
-                met een Frans accent of dit het postkantoor is. ‘Nee’, zeg ik, ‘dit is de bibliotheek.’ De vrouw glimlacht
-                en kijkt achter zich. Daar rijdt een grijze Renault 21 achteruit rijdend van ons weg. Ze draait zich weer
-                om en glimlacht naar me. ‘Are you..?’ Ze durft haar zin niet af te maken. ‘Yes’, zeg ik, ‘I am.’ Ze haalt
-                een briefje uit haar binnenzak en een pen. ‘Would you..?’, zegt ze, ‘…my husband is a big fan.’ ‘Of course’,
-                zeg ik. En doe de dop van de pen. Raadhuisstraat, lees ik op het briefje. ‘That’s where you should go’, zeg
-                ik terwijl ik mijn handtekening zet. Maar ze grist het papiertje uit mijn handen, bedankt me met een schaapachtig
-                lachje en rent achter de Renault aan. Binnen, op de tweede verdieping. De rust in de bibliotheek is duidelijk
-                verstoord. Ik sta bij de Q van Queneau te zoeken naar Stijloefeningen. Mensen lopen nadrukkelijk nonchalant
-                langs. Er staan ineens aardig wat mensen bij de R en de S te zoeken naar boeken die ze vijf minuten geleden
-                nog niet zochten. Ik vind niks, loop naar de computers en deel hier en daar wat glimlachjes en knikjes uit.
-                Ik tik ‘Stijloefeningen’ in op de online catalogus. Twee schoolmeisjes van een jaar of veertien komen giechelend
-                naar me toe. Volgens de online catalogus ligt Stijloefeningen gewoon op de plank. ‘Meneer’, zegt de ene.
-                Ik glimlach. Ze houdt een boek voor zich. ‘Zou ik uw handtekening mogen’, vraagt ze. ‘Maar dat is een boek
-                van de bibliotheek’, zeg ik. ‘Doe dan maar hier’, zegt ze. Ze geeft me een dikke viltstift en trekt haar
-                truitje omhoog. Ik zet m’n handtekening op haar buik en geef haar navel wat bloemblaadjes. Ze bedankt me
-                en loopt snel weg samen met haar vriendin om ergens ter hoogte van de K in lachen uit te barsten. Ik loop
-                naar een medewerker die met z’n rug naar me toe zit te tikken op zijn computer. ‘Meneer’, zeg ik. ‘Ogenblik’,
-                zegt hij. Hij blijft nog even doortikken, draait zich om en zegt zonder mij aan te kijken: ‘Zeg het ‘ns.’
-            </p>
-            <ul>
-                <li><a href="#"><img src="#" alt="#">Leuk vinden</a></li>
-                <li><a href="#"><img src="#" alt="#">Reageren</a></li>
-            </ul>
-        </article>
-        <section class="main-section read-suggestions">
-            <h2>Aanbevolen</h2>
-            <article>
-                <header>
-                    <a href="#">
-                        <img src="https://placekitten.com/200/300" alt="">
-                    </a>
-                    <h3>Buschauffeur</h3>
-                    <time datetime="2011-01-01">2011-01-01</time>
-                </header>
-                <p>
-                    Vlak voordat ik de bus uitstap bedank ik de buschauffeur via de spiegel voor zijn diensten. Hij zwaait joviaal terug. ‘Mijn
-                    vrouw is een groot fan van u’, roept hij. ‘Doe haar de groeten’, zeg ik en stap uit. Centraal Station.
-                    Ik duw mijn zoon voort. Hij slaapt. Zich onbewust van de last die er op zijn schouders rust. Zoon zijn
-                    van de grote Max J. Molovich. Je geeft het hem te doen. Het miezert een beetje en het waait. Ik stop
-                    mijn hoofd diep in mijn kraag. De mensen kijken om, ik zie ze smoezelen, ik hoor ze fluisteren. ‘Is dat
-                    niet..? Volgens mij is dat… Ja hoor, zeker weten, het is ‘m.’ Alsof het uitspreken van mijn naam in mijn
-                    nabijheid een doodzonde is. Anderen negeren zo achteloos mogelijk mijn aanwezigheid in het hier en nu.
-                    Als ik ergens kom, verandert alles. Die verandering, dat voel je. Het is een soort rusteloosheid die
-                    rond de mensen zoemt. Als een zwerm opgewonden bijen. Het vreemde is: ik weet niet meer hoe het voelt
-                    zonder die verandering. Ik ben op weg naar de Openbare Bibliotheek om Stijloefeningen van Raymond Queneau
-                    te lenen. Ik loop nu over een plank met aan weerszijden diepe bouwputten. ‘Molo!’, hoor ik iemand boven
-                    het gehei van de heipalen en het gedril van de drilboren uitschreeuwen. Ik kijk naar beneden en zie een
-                    groepje bouwvakkers naar me zwaaien. Ik zwaai terug. Ze lachen en geven elkaar high-fives.
-                </p>
-                <ul>
-                    <li><a href="#"><img src="#" alt="#">Open</a></li>
-                    <li><a href="#"><img src="#" alt="#">Leeslijst</a></li>
-                </ul>
-            </article>
-        </section>
-        <section class="main-section read-list">
-            <h2>Leeslijst</h2>
-            <article>
-                <header>
-                    <a href="#">
-                        <img src="https://placekitten.com/200/300" alt="">
-                    </a>
-                    <h3>Buschauffeur</h3>
-                    <time datetime="2011-01-01">2011-01-01</time>
-                </header>
-                <p>
-                    Vlak voordat ik de bus uitstap bedank ik de buschauffeur via de spiegel voor zijn diensten. Hij zwaait joviaal terug. ‘Mijn
-                    vrouw is een groot fan van u’, roept hij. ‘Doe haar de groeten’, zeg ik en stap uit. Centraal Station.
-                    Ik duw mijn zoon voort. Hij slaapt. Zich onbewust van de last die er op zijn schouders rust. Zoon zijn
-                    van de grote Max J. Molovich. Je geeft het hem te doen. Het miezert een beetje en het waait. Ik stop
-                    mijn hoofd diep in mijn kraag. De mensen kijken om, ik zie ze smoezelen, ik hoor ze fluisteren. ‘Is dat
-                    niet..? Volgens mij is dat… Ja hoor, zeker weten, het is ‘m.’ Alsof het uitspreken van mijn naam in mijn
-                    nabijheid een doodzonde is. Anderen negeren zo achteloos mogelijk mijn aanwezigheid in het hier en nu.
-                    Als ik ergens kom, verandert alles. Die verandering, dat voel je. Het is een soort rusteloosheid die
-                    rond de mensen zoemt. Als een zwerm opgewonden bijen. Het vreemde is: ik weet niet meer hoe het voelt
-                    zonder die verandering. Ik ben op weg naar de Openbare Bibliotheek om Stijloefeningen van Raymond Queneau
-                    te lenen. Ik loop nu over een plank met aan weerszijden diepe bouwputten. ‘Molo!’, hoor ik iemand boven
-                    het gehei van de heipalen en het gedril van de drilboren uitschreeuwen. Ik kijk naar beneden en zie een
-                    groepje bouwvakkers naar me zwaaien. Ik zwaai terug. Ze lachen en geven elkaar high-fives.
-                </p>
-                <ul>
-                    <li><a href="#"><img src="#" alt="#">Open</a></li>
-                    <li><a href="#"><img src="#" alt="#">Verwijderen</a></li>
-                </ul>
-            </article>
         </section>
     </main>
     <footer>
         <ul>
             <li>
-                <h4>Relevant Links DFDStories</h4>
+                <h4>Over DFDS</h4>
             </li>
-            <li><a href="#">Link</a></li>
-            <li><a href="#">Link</a></li>
-            <li><a href="#">Link</a></li>
-            <li><a href="#">Link</a></li>
+            <li><a href="https://blog.dfds.nl/">DFDS Blog</a></li>
+            <li><a href="https://www.dfds.com/group">DFDS Group</a></li>
+            <li><a href="https://www.dfdsseaways.nl/nieuws">Nieuws</a></li>
+            <li><a href="https://www.dfdsseaways.nl/over-ons">Over Ons</a></li>
         </ul>
         <ul>
             <li>
-                <h4>Relevant Links DFDStories</h4>
+                <h4>Klantenservice</h4>
             </li>
-            <li><a href="#">Link</a></li>
-            <li><a href="#">Link</a></li>
-            <li><a href="#">Link</a></li>
-            <li><a href="#">Link</a></li>
+            <li><a href="https://www.dfdsseaways.nl/reisvoorbereiding/vaarschema/actueel">Actueel</a></li>
+            <li><a href="https://www.dfdsseaways.nl/contact">Contact</a></li>
+            <li><a href="https://www.dfdsseaways.nl/contact/veelgestelde-vragen">FAQ</a></li>
+            <li><a href="https://www.dfdsseaways.nl/contact/nieuwsbrief">Nieuwsbrief</a></li>
         </ul>
-        <small>Alle inhoud van deze website is &copy; 2017, door DFDStories en Maikel van Veen</small>
+        <ul>
+            <li>
+                <h4>Contact Ons</h4>
+            </li>
+            <li>
+                <ul>
+                    <li><a href="https://www.facebook.com/dfdsnederland"></a></li>
+                    <li><a href="https://twitter.com/dfdsnederland"></a></li>
+                    <li><a href="https://www.instagram.com/dfdsnederland/"></a></li>
+                    <li><a href="https://nl.pinterest.com/dfdsnederland/"></a></li>
+                    <li><a href="https://plus.google.com/u/0/+DfdsseawaysNl"></a></li>
+                    <li><a href="https://www.youtube.com/c/DFDSNederland"></a></li>
+                </ul>
+            </li>
+        </ul>
+        <small>&copy; 2017, DFDS en Maikel van Veen</small>
     </footer>
     <script>
-        let button = document.getElementById('activate-login-form-button');
-        let form = document.getElementById('login-form');
+        let menuToggle = document.getElementById('toggle-main-menu');
+        let menu = document.getElementById('main-menu');
 
-        function toggleHiddenValue(form) {
-            !form.hidden ? form.hidden = true : form.hidden = false;
+        let loginToggle = document.getElementById('toggle-login-form');
+        let login = document.getElementById('login-form');
+
+        function toggleHiddenValue(el) {
+            el.style.display !== 'block' ? el.style.display = 'block' : el.style.display = 'none';
         }
-        button.addEventListener('click', toggleHiddenValue(form));
+
+        menuToggle.addEventListener('click', function () {
+            toggleHiddenValue(menu);
+        });
+
+        loginToggle.addEventListener('click', function () {
+            toggleHiddenValue(login);
+        });
     </script>
 </body>
 
