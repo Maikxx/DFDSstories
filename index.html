@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="nl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" type="text/css" href="dist/css/style.min.css">
+    <title>DFDStories || Overzichtspagina</title>
+</head>
+
+<body>
+    <header>
+        <!-- Main nav -->
+        <nav>
+            <!-- Outer ul -->
+            <ul role="menubar">
+                <!-- Logo -->
+                <li>
+                    <a href="index.html" role="menuitem">
+                        <img src="https://dfdsstyleguide.azurewebsites.net/downloads/images/logo.svg" alt="page-logo">
+                    </a>
+                </li>
+                <li data-target="main-menu" role="menuitem" aria-label="Open menu" id="toggle-main-menu">&#9776;</li>
+            </ul>
+            <noscript>
+                <ul role="menubar">
+                    <li>
+                        <a href="index.html" role="menuitem">
+                            <img src="https://dfdsstyleguide.azurewebsites.net/downloads/images/logo.svg" alt="page-logo">
+                        </a>
+                    </li>
+                    <li>
+                        <a href="html/settings.html" role="menuitem">Accountinstellingen</a>
+                    </li>
+                    <li>
+                        <a href="html/reading-history.html" role="menuitem">Leesgeschiedenis</a>
+                    </li>
+                    <li>
+                        <a href="html/notifications.html" role="menuitem">Notificaties</a>
+                    </li>
+                    <li>
+                        <a href="html/signup.html" role="menuitem">Inloggen / Aanmelden</a>
+                    </li>
+                </ul>
+            </noscript>
+        </nav>
+    </header>
+    <nav id="main-menu">
+        <ul role="menu">
+            <li>
+                <a href="html/signup.html" role="menuitem">Inloggen / Aanmelden</a>
+            </li>
+            <li>
+                <a href="html/settings.html" role="menuitem">Accountinstellingen</a>
+            </li>
+            <li>
+                <a href="html/reading-history.html" role="menuitem">Leesgeschiedenis</a>
+            </li>
+            <li>
+                <a href="html/notifications.html" role="menuitem">Notificaties</a>
+            </li>
+        </ul>
+    </nav>
+    <main>
+        <section class="stories-form-wrapper">
+            <header>
+                <img src="https://www.bedrock.nl/wp-content/uploads/2016/04/QTrNn7DETWGsjyS5L2n5__MG_8345.jpg" alt="landing-image">
+                <h1>DFDStories</h1>
+            </header>
+            <form action="#" class="find-stories-form search" id="search-form">
+                <fieldset>
+                    <legend>Verhalen doorzoeken</legend>
+                    <label class="hidden" for="search-for-title"></label>
+                    <input type="text" id="search-for-title" pattern="[^'\x22]+">
+                    <button class="btn btn-main" type="submit" aria-label="Zoeken">Zoek</button>
+                </fieldset>
+                <a href="#" aria-label="Laat alle verhalen zien" id="show-all-stories">of toon alle verhalen</a>
+            </form>
+            <form action="#" class="find-stories-form filter" id="filter-form">
+                <span>Filter verhalen</span>
+                <fieldset class="button-group filter" role="listbox" id="select-age">
+                    <legend>Leeftijd</legend>
+
+                    <input type="checkbox" name="filter-age-all" class="btn hidden" id="filter-age-all" aria-label="Alle leeftijden">
+                    <label for="filter-age-all">Elke</label>
+
+                    <input type="checkbox" name="filter-age-six-plus" class="btn hidden" id="filter-age-six-plus" aria-label="Zes of ouder">
+                    <label for="filter-age-six-plus">6+</label>
+
+                    <input type="checkbox" name="filter-age-twelve-plus" class="btn hidden" id="filter-age-twelve-plus" aria-label="Zes of ouder">
+                    <label for="filter-age-twelve-plus">12+</label>
+
+                    <input type="checkbox" name="filter-age-eightteen-plus" class="btn hidden" id="filter-age-eightteen-plus" aria-label="Achtien of ouder">
+                    <label for="filter-age-eightteen-plus">18+</label>
+                </fieldset>
+                <fieldset class="button-group filter" role="listbox" id="select-read-time">
+                    <legend>Leestijd in minuten</legend>
+
+                    <input type="checkbox" name="filter-readtime-one-five" class="btn hidden" id="filter-readtime-one-five" aria-label="Een tot vijf">
+                    <label for="filter-readtime-one-five">1-5</label>
+
+                    <input type="checkbox" name="filter-readtime-five-fifteen" class="btn hidden" id="filter-readtime-five-fifteen" aria-label="Vijf tot vijftien">
+                    <label for="filter-readtime-five-fifteen">5-15</label>
+
+                    <input type="checkbox" name="filter-readtime-fifteen-thirty" class="btn hidden" id="filter-readtime-fifteen-thirty" aria-label="Vijftien tot dertig">
+                    <label for="filter-readtime-fifteen-thirty">15-30</label>
+
+                    <input type="checkbox" name="filter-readtime-thirty-plus" class="btn hidden" id="filter-readtime-thirty-plus" aria-label="Dertig of langer">
+                    <label for="filter-readtime-thirty-plus">30+</label>
+                </fieldset>
+                <fieldset class="button-group filter" role="listbox" id="select-story-length">
+                    <legend>Verhaallengte</legend>
+                    <input type="checkbox" name="filter-length-short" class="btn hidden" id="filter-length-short" aria-label="Kort">
+                    <label for="filter-length-short">Kort</label>
+                    <input type="checkbox" name="filter-length-middle" class="btn hidden" id="filter-length-middle" aria-label="Middellang">
+                    <label for="filter-length-middle">Middellang</label>
+                    <input type="checkbox" name="filter-length-long" class="btn hidden" id="filter-length-long" aria-label="Lang">
+                    <label for="filter-length-long">Lang</label>
+                    <input type="checkbox" name="filter-length-very-long" class="btn hidden" id="filter-length-very-long" aria-label="Erg lang">
+                    <label for="filter-length-very-long">Erg lang</label>
+                </fieldset>
+                <button class="btn btn-main" type="submit" aria-label="Filteren">Filter</button>
+            </form>
+        </section>
+        <article class="article-section" id="reading-list-section">
+            <header class="section-header">
+                <h2 class="section-title">Leeslijst</h2>
+                <button data-target="button-group-sort" id="toggle-button-group-sort" aria-label="Open sortatiebalk"></button>
+                <form action="#" class="button-group sort" id="button-group-sort">
+                    <input type="checkbox" name="sort-alphabetically" class="btn hidden" id="sort-alphabetically" aria-label="Sorteer alfabetisch: A-Z">
+                    <label for="sort-alphabetically">A-Z</label>
+                    <input type="checkbox" name="sort-numeric" class="btn hidden" id="sort-numeric" aria-label="Sorteer numeriek: 0-99">
+                    <label for="sort-numeric">0-99</label>
+                    <input type="checkbox" name="sort-popularity" class="btn hidden" id="sort-popularity" aria-label="Sorteer op populariteit: populairst">
+                    <label for="sort-popularity">Populariteit</label>
+                    <input type="checkbox" name="sort-relevance" class="btn hidden" id="sort-relevance" aria-label="Sorteer op relevantie: relevantst">
+                    <label for="sort-relevance">Relevantie</label>
+                </form>
+            </header>
+            <section id="reading-list" class="article-wrapper">
+                <h2 class="hidden">Leeslijst</h2>
+            </section>
+        </article>
+    </main>
+    <footer class="site-footer">
+        <section>
+            <h4>Over DFDS</h4>
+            <ul role="menu">
+                <li role="menuitem">
+                    <a href="https://www.dfdsseaways.nl/over-ons">Over ons</a>
+                </li>
+                <li role="menuitem">
+                    <a href="https://www.dfdsseaways.nl/over-ons/vacatures">Vacatures</a>
+                </li>
+                <li role="menuitem">
+                    <a href="https://blog.dfds.nl/" target="_blank">DFDS Blog</a>
+                </li>
+                <li role="menuitem">
+                    <a href="https://www.dfds.com/logistics-solutions" target="_blank">Logistics</a>
+                </li>
+                <li role="menuitem">
+                    <a href="https://www.dfds.com/freight-shipping" target="_blank">Freight</a>
+                </li>
+                <li role="menuitem">
+                    <a href="https://www.dfds.com/group" target="_blank">DFDS Group</a>
+                </li>
+                <li role="menuitem">
+                    <a href="https://www.dfdsseaways.nl/nieuws">Nieuws</a>
+                </li>
+            </ul>
+        </section>
+        <section>
+            <h4>Klantenservice</h4>
+            <ul role="menu">
+                <li role="menuitem">
+                    <a href="https://www.dfdsseaways.nl/contact">Contact</a>
+                </li>
+                <li role="menuitem">
+                    <a href="https://www.dfdsseaways.nl/contact/veelgestelde-vragen">Veelgestelde vragen</a>
+                </li>
+                <li role="menuitem">
+                    <a href="https://www.dfdsseaways.nl/reisvoorbereiding/vaarschema/actueel">Actueel</a>
+                </li>
+                <li role="menuitem">
+                    <a href="https://www.dfdsseaways.nl/reisvoorbereiding/vaarschema">Vaarschema &amp; tijden</a>
+                </li>
+                <li role="menuitem">
+                    <a href="https://www.dfdsseaways.nl/agenten-login">Agenten login</a>
+                </li>
+                <li role="menuitem">
+                    <a href="https://www.dfdsseaways.nl/contact/nieuwsbrief">Nieuwsbrief</a>
+                </li>
+            </ul>
+        </section>
+        <section>
+            <h4>Meer Info</h4>
+            <ul role="menu">
+                <li role="menuitem">
+                    <a href="https://www.dfdsseaways.nl/voorwaarden">Voorwaarden</a>
+                </li>
+                <li role="menuitem">
+                    <a href="https://www.dfdsseaways.nl/voorwaarden/privacybeleid">Privacybeleid</a>
+                </li>
+                <li role="menuitem">
+                    <a href="https://www.dfdsseaways.nl/voorwaarden/cookiebeleid">Cookiebeleid</a>
+                </li>
+                <li role="menuitem">
+                    <a href="https://www.dfdsseaways.nl/reisvoorbereiding/brexit">Brexit - meer informatie</a>
+                </li>
+            </ul>
+        </section>
+        <section>
+            <h4>Volg Ons</h4>
+            <ul role="menu">
+                <li role="menuitem">
+                    <a href="https://www.facebook.com/dfdsnederland" target="_blank"></a>
+                </li>
+                <li role="menuitem">
+                    <a href="https://twitter.com/dfdsnederland" target="_blank"></a>
+                </li>
+                <li role="menuitem">
+                    <a href="https://www.instagram.com/dfdsnederland/" target="_blank"></a>
+                </li>
+                <li role="menuitem">
+                    <a href="https://nl.pinterest.com/dfdsnederland/" target="_blank"></a>
+                </li>
+                <li role="menuitem">
+                    <a href="https://plus.google.com/u/0/+DfdsseawaysNl" target="_blank"></a>
+                </li>
+                <li role="menuitem">
+                    <a href="https://www.youtube.com/c/DFDSNederland" target="_blank"></a>
+                </li>
+            </ul>
+        </section>
+        <small>&copy; 2017, DFDS en Maikel van Veen</small>
+    </footer>
+    <script src="dist/js/compiled.js"></script>
+</body>
+
+</html>

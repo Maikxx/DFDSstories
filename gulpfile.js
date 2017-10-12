@@ -3,6 +3,8 @@ const gulp = require('gulp');
 const browserSync = require('browser-sync').create(),
     reloadBrowser = browserSync.reload;
 
+const sass = require('gulp-sass');
+
 const plumber = require('gulp-plumber'),
     clean = require('gulp-clean'),
     minifyImage = require('gulp-imagemin'),
@@ -18,15 +20,10 @@ const babel = require('gulp-babel'),
 let assetsDir = './src';
 let distDir = './dist';
 
-gulp.task('ppHTML', () => {
-    return gulp.src(`${assetsDir}/**/*.html`)
-        .pipe(plumber())
-        .pipe(gulp.dest(distDir))
-});
-
 gulp.task('ppCSS', () => {
-    return gulp.src(`${assetsDir}/css/style.css`)
+    return gulp.src(`${assetsDir}/css/style.scss`)
         .pipe(plumber())
+        .pipe(sass())
         .pipe(autoPrefixer())
         .pipe(rename('compiled.css'))
         .pipe(gulp.dest(`${distDir}/css`))
@@ -34,7 +31,8 @@ gulp.task('ppCSS', () => {
             zindex: false
         }))
         .pipe(rename('style.min.css'))
-        .pipe(gulp.dest(`${distDir}/css`));
+        .pipe(gulp.dest(`${distDir}/css`))
+        .pipe(browserSync.stream());
 });
 
 gulp.task('ppJS', () => {
@@ -47,12 +45,18 @@ gulp.task('ppJS', () => {
         .pipe(gulp.dest(`${distDir}/js`))
         .pipe(minifyJS())
         .pipe(rename('main.min.js'))
-        .pipe(gulp.dest(`${distDir}/js`));
+        .pipe(gulp.dest(`${distDir}/js`))
+        .pipe(browserSync.stream());
 });
 
-gulp.task('watch', ['ppHTML', 'ppCSS', 'ppJS'], () => {
-    gulp.watch(`${assetsDir}/**/*.html`, ['ppHTML']);
-    gulp.watch(`${assetsDir}/css/style.css`, ['ppCSS']);
+gulp.task('watch', ['ppCSS', 'ppJS'], () => {
+    browserSync.init({
+        server: "./"
+    });
+
+
+    gulp.watch(`./**/*.html`, reloadBrowser);
+    gulp.watch(`${assetsDir}/css/style.scss`, ['ppCSS']);
     gulp.watch(`${assetsDir}/js/main.js`, ['ppJS']);
 });
 
@@ -74,6 +78,6 @@ gulp.task('cleanDist', () => {
         .pipe(clean())
 });
 
-gulp.task('buildDist', ['ppHTML', 'ppCSS', 'ppJS', 'ppImages'], () => {
+gulp.task('buildDist', ['ppCSS', 'ppJS', 'ppImages'], () => {
     console.log('Done');
 });
