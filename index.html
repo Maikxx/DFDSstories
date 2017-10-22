@@ -18,62 +18,74 @@
                 <!-- Logo -->
                 <li>
                     <a href="index.html" role="menuitem">
-                        <img src="https://dfdsstyleguide.azurewebsites.net/downloads/images/logo.svg" alt="page-logo">
+                        <img src="./dist/img/logo.svg" alt="page-logo">
                     </a>
                 </li>
-                <li data-target="main-menu" role="menuitem" aria-label="Open menu" id="toggle-main-menu">&#9776;</li>
+                <li data-target="main-menu" role="menuitem" aria-label="Open menu" id="toggle-main-menu">
+                    <img src="./dist/img/account.svg" alt="Account icon">
+                </li>
             </ul>
             <noscript>
                 <ul role="menubar">
                     <li>
                         <a href="index.html" role="menuitem">
-                            <img src="https://dfdsstyleguide.azurewebsites.net/downloads/images/logo.svg" alt="page-logo">
+                            <img src="./dist/img/logo.svg" alt="page-logo">
                         </a>
                     </li>
                     <li>
-                        <a href="html/settings.html" role="menuitem">Accountinstellingen</a>
+                        <a href="html/signup.html" role="menuitem">Inloggen</a>
                     </li>
                     <li>
                         <a href="html/reading-history.html" role="menuitem">Leesgeschiedenis</a>
                     </li>
                     <li>
-                        <a href="html/notifications.html" role="menuitem">Notificaties</a>
+                        <a href="html/stories/kater.html" role="menuitem">Kater - Futloos</a>
                     </li>
                     <li>
-                        <a href="html/signup.html" role="menuitem">Inloggen / Aanmelden</a>
+                        <a href="html/stories/paranoia.html" role="menuitem">Paranoia - Gespannen</a>
+                    </li>
+                    <li>
+                        <a href="html/stories/vrijdag-de-dertiende.html" role="menuitem">Vrijdag de 13
+                            <span>e</span> - Triest</a>
                     </li>
                 </ul>
             </noscript>
         </nav>
     </header>
-    <nav id="main-menu">
-        <ul role="menu">
-            <li>
-                <a href="html/signup.html" role="menuitem">Inloggen / Aanmelden</a>
-            </li>
-            <li>
-                <a href="html/settings.html" role="menuitem">Accountinstellingen</a>
-            </li>
-            <li>
-                <a href="html/reading-history.html" role="menuitem">Leesgeschiedenis</a>
-            </li>
-            <li>
-                <a href="html/notifications.html" role="menuitem">Notificaties</a>
-            </li>
-        </ul>
-    </nav>
+    <section>
+        <nav id="main-menu">
+            <ul role="menu">
+                <li id="login-node">
+                    <a href="html/signup.html" role="menuitem">Inloggen</a>
+                </li>
+                <li>
+                    <a href="html/stories/kater.html" role="menuitem">Kater - Futloos</a>
+                </li>
+                <li>
+                    <a href="html/stories/paranoia.html" role="menuitem">Paranoia - Gespannen</a>
+                </li>
+                <li>
+                    <a href="html/stories/vrijdag-de-dertiende.html" role="menuitem">Vrijdag de 13
+                        <span>e</span> - Triest
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </section>
     <main>
         <section class="stories-form-wrapper">
             <header>
-                <img src="https://www.bedrock.nl/wp-content/uploads/2016/04/QTrNn7DETWGsjyS5L2n5__MG_8345.jpg" alt="landing-image">
+                <img src="./dist/img/landing_image.jpg" alt="landing-image">
                 <h1>DFDStories</h1>
             </header>
             <form action="#" class="find-stories-form search" id="search-form">
                 <fieldset>
                     <legend>Verhalen doorzoeken</legend>
-                    <label class="hidden" for="search-for-title"></label>
-                    <input type="text" id="search-for-title" pattern="[^'\x22]+">
-                    <button class="btn btn-main" type="submit" aria-label="Zoeken">Zoek</button>
+                    <div>
+                        <label class="hidden" for="search-for-title"></label>
+                        <input type="text" id="search-for-title" pattern="[^'\x22]+">
+                        <button class="btn btn-main" type="submit" aria-label="Zoeken">Zoek</button>
+                    </div>
                 </fieldset>
                 <a href="#" aria-label="Laat alle verhalen zien" id="show-all-stories">of toon alle verhalen</a>
             </form>
@@ -81,44 +93,48 @@
                 <span>Filter verhalen</span>
                 <fieldset class="button-group filter" role="listbox" id="select-age">
                     <legend>Leeftijd</legend>
+                    <div>
+                        <input type="checkbox" name="filter-age-all" class="btn hidden" id="filter-age-all" aria-label="Alle leeftijden">
+                        <label for="filter-age-all">Elke</label>
 
-                    <input type="checkbox" name="filter-age-all" class="btn hidden" id="filter-age-all" aria-label="Alle leeftijden">
-                    <label for="filter-age-all">Elke</label>
+                        <input type="checkbox" name="filter-age-six-plus" class="btn hidden" id="filter-age-six-plus" aria-label="Zes of ouder">
+                        <label for="filter-age-six-plus">6+</label>
 
-                    <input type="checkbox" name="filter-age-six-plus" class="btn hidden" id="filter-age-six-plus" aria-label="Zes of ouder">
-                    <label for="filter-age-six-plus">6+</label>
+                        <input type="checkbox" name="filter-age-twelve-plus" class="btn hidden" id="filter-age-twelve-plus" aria-label="Zes of ouder">
+                        <label for="filter-age-twelve-plus">12+</label>
 
-                    <input type="checkbox" name="filter-age-twelve-plus" class="btn hidden" id="filter-age-twelve-plus" aria-label="Zes of ouder">
-                    <label for="filter-age-twelve-plus">12+</label>
-
-                    <input type="checkbox" name="filter-age-eightteen-plus" class="btn hidden" id="filter-age-eightteen-plus" aria-label="Achtien of ouder">
-                    <label for="filter-age-eightteen-plus">18+</label>
+                        <input type="checkbox" name="filter-age-eightteen-plus" class="btn hidden" id="filter-age-eightteen-plus" aria-label="Achtien of ouder">
+                        <label for="filter-age-eightteen-plus">18+</label>
+                    </div>
                 </fieldset>
                 <fieldset class="button-group filter" role="listbox" id="select-read-time">
                     <legend>Leestijd in minuten</legend>
+                    <div>
+                        <input type="checkbox" name="filter-readtime-one-five" class="btn hidden" id="filter-readtime-one-five" aria-label="Een tot vijf">
+                        <label for="filter-readtime-one-five">1-5</label>
 
-                    <input type="checkbox" name="filter-readtime-one-five" class="btn hidden" id="filter-readtime-one-five" aria-label="Een tot vijf">
-                    <label for="filter-readtime-one-five">1-5</label>
+                        <input type="checkbox" name="filter-readtime-five-fifteen" class="btn hidden" id="filter-readtime-five-fifteen" aria-label="Vijf tot vijftien">
+                        <label for="filter-readtime-five-fifteen">5-15</label>
 
-                    <input type="checkbox" name="filter-readtime-five-fifteen" class="btn hidden" id="filter-readtime-five-fifteen" aria-label="Vijf tot vijftien">
-                    <label for="filter-readtime-five-fifteen">5-15</label>
+                        <input type="checkbox" name="filter-readtime-fifteen-thirty" class="btn hidden" id="filter-readtime-fifteen-thirty" aria-label="Vijftien tot dertig">
+                        <label for="filter-readtime-fifteen-thirty">15-30</label>
 
-                    <input type="checkbox" name="filter-readtime-fifteen-thirty" class="btn hidden" id="filter-readtime-fifteen-thirty" aria-label="Vijftien tot dertig">
-                    <label for="filter-readtime-fifteen-thirty">15-30</label>
-
-                    <input type="checkbox" name="filter-readtime-thirty-plus" class="btn hidden" id="filter-readtime-thirty-plus" aria-label="Dertig of langer">
-                    <label for="filter-readtime-thirty-plus">30+</label>
+                        <input type="checkbox" name="filter-readtime-thirty-plus" class="btn hidden" id="filter-readtime-thirty-plus" aria-label="Dertig of langer">
+                        <label for="filter-readtime-thirty-plus">30+</label>
+                    </div>
                 </fieldset>
                 <fieldset class="button-group filter" role="listbox" id="select-story-length">
                     <legend>Verhaallengte</legend>
-                    <input type="checkbox" name="filter-length-short" class="btn hidden" id="filter-length-short" aria-label="Kort">
-                    <label for="filter-length-short">Kort</label>
-                    <input type="checkbox" name="filter-length-middle" class="btn hidden" id="filter-length-middle" aria-label="Middellang">
-                    <label for="filter-length-middle">Middellang</label>
-                    <input type="checkbox" name="filter-length-long" class="btn hidden" id="filter-length-long" aria-label="Lang">
-                    <label for="filter-length-long">Lang</label>
-                    <input type="checkbox" name="filter-length-very-long" class="btn hidden" id="filter-length-very-long" aria-label="Erg lang">
-                    <label for="filter-length-very-long">Erg lang</label>
+                    <div>
+                        <input type="checkbox" name="filter-length-short" class="btn hidden" id="filter-length-short" aria-label="Kort">
+                        <label for="filter-length-short">Kort</label>
+                        <input type="checkbox" name="filter-length-middle" class="btn hidden" id="filter-length-middle" aria-label="Middellang">
+                        <label for="filter-length-middle">Middellang</label>
+                        <input type="checkbox" name="filter-length-long" class="btn hidden" id="filter-length-long" aria-label="Lang">
+                        <label for="filter-length-long">Lang</label>
+                        <input type="checkbox" name="filter-length-very-long" class="btn hidden" id="filter-length-very-long" aria-label="Erg lang">
+                        <label for="filter-length-very-long">Erg lang</label>
+                    </div>
                 </fieldset>
                 <button class="btn btn-main" type="submit" aria-label="Filteren">Filter</button>
             </form>

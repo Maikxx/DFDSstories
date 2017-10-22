@@ -1,7 +1,7 @@
 {
   "name": "maikelvanveen",
   "version": "1.0.0",
-  "description": "",
+  "description": "Node V6",
   "main": "gulpfile.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -12,12 +12,13 @@
     "ansi-styles": "^3.1.0",
     "babel-preset-es2015": "^6.24.1",
     "browser-sync": "^2.18.12",
+    "eslint": "^4.9.0",
     "gulp": "^3.9.1",
     "gulp-autoprefixer": "^3.1.1",
     "gulp-babel": "^6.1.2",
     "gulp-clean": "^0.3.2",
     "gulp-cssnano": "^2.1.2",
-    "gulp-imagemin": "^3.3.0",
+    "gulp-imagemin": "^3.4.0",
     "gulp-plumber": "^1.1.0",
     "gulp-rename": "^1.2.2",
     "gulp-sass": "^3.1.0",

@@ -5,174 +5,172 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" type="text/css" href="../dist/css/style.min.css">
-    <title>DFDStories || Wachtwoord vergeten</title>
+    <link rel="stylesheet" type="text/css" href="../../dist/css/style.min.css">
+    <title>DFDStories || Zoekresultaten</title>
 </head>
 
-<body>
+<body class="hide-scroll-bar">
     <header>
         <!-- Main nav -->
         <nav>
             <!-- Outer ul -->
-            <ul class="nav list" role="menubar">
+            <ul role="menubar">
                 <!-- Logo -->
                 <li>
-                    <a href="index.html" role="menuitem">
-                        <img src="https://dfdsstyleguide.azurewebsites.net/downloads/images/logo.svg" alt="page-logo">
+                    <a href="../../index.html" role="menuitem">
+                        <img src="../../dist/img/logo.svg" alt="page-logo">
                     </a>
                 </li>
-                <li data-target="main-menu" role="menuitem" aria-label="Open menu" id="toggle-main-menu">&#9776;</li>
+                <li data-target="main-menu" role="menuitem" aria-label="Open menu" id="toggle-main-menu">
+                    <img src="../../dist/img/account.svg" alt="Account icon">
+                </li>
             </ul>
             <noscript>
-                <ul class="nav list" role="menubar">
+                <ul role="menubar">
                     <li>
                         <a href="index.html" role="menuitem">
-                            <img src="https://dfdsstyleguide.azurewebsites.net/downloads/images/logo.svg" alt="page-logo">
+                            <img src="../../dist/img/logo.svg" alt="page-logo">
                         </a>
                     </li>
                     <li>
-                        <a href="html/signup.html" role="menuitem">Inloggen / Aanmelden</a>
+                        <a href="../settings.html" role="menuitem">Accountinstellingen</a>
+                    </li>
+                    <li>
+                        <a href="../reading-history.html" role="menuitem">Leesgeschiedenis</a>
+                    </li>
+                    <li>
+                        <a href="../../index.html#reading-list" role="menuitem">Leeslijst</a>
+                    </li>
+                    <li>
+                        <a href="../notifications.html" role="menuitem">Notificaties</a>
+                    </li>
+                    <li>
+                        <a href="../signup.html" role="menuitem">Inloggen / Aanmelden</a>
                     </li>
                 </ul>
             </noscript>
         </nav>
     </header>
-    <nav id="main-menu">
-        <button class="btn" type="button" data-target="login-form" id="toggle-login-form">Inloggen</button>
-        <form action="#" class="user-form" id="login-form">
-            <fieldset>
-                <legend class="hidden">Inloggen</legend>
-                <label for="login-email">
-                    <span>E-mail</span>
-                    <input type="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" id="login-email">
-                </label>
-                <label for="login-password">
-                    <span>Wachtwoord</span>
-                    <input type="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" id="login-password">
-                </label>
-                <a href="html/forgot.html" aria-label="Herstel wachtwoord">Wachtwoord vergeten?</a>
-                <a href="html/signup.html" aria-label="Aanmelden">Geen lid? Meld je dan aan!</a>
-                <button class="btn btn-main" type="submit" aria-label="Inloggen">Inloggen</button>
-            </fieldset>
-        </form>
-        <menu type="toolbar">
-            <menuitem>
-            <a href="html/settings.html" role="menuitem">Accountinstellingen</a>
-            </menuitem>
-            <menuitem>
-            <a href="html/reading-history.html" role="menuitem">Leesgeschiedenis</a>
-            </menuitem>
-            <menuitem>
-            <a href="#reading-list" role="menuitem">Leeslijst</a>
-            </menuitem>
-            <menuitem>
-            <a href="html/notifications.html" role="menuitem">Notificaties</a>
-            </menuitem>
-        </menu>
-    </nav>
-    <main>
-        <h2>Herstel hier je wachtwoord!</h2>
-        <form action="#">
-            <fieldset>
-                <label for="forgotten-e-mail">E-mail:</label>
-                <input type="email" id="forgotten-e-mail" placeholder="E-mail" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$">
-                <button type="submit">Herstel wachtwoord!</button>
-            </fieldset>
-        </form>
+    <section>
+        <h2 class="hidden">Onzichtbare navigatie</h2>
+        <nav id="main-menu" aria-label="Hoofdmenu, wordt weergeven door op de knop in de header te drukken.">
+            <ul role="menu">
+                <li>
+                    <a href="../signup.html" role="menuitem">Inloggen / Aanmelden</a>
+                </li>
+                <li>
+                    <a href="../settings.html" role="menuitem">Accountinstellingen</a>
+                </li>
+                <li>
+                    <a href="../reading-history.html" role="menuitem">Leesgeschiedenis</a>
+                </li>
+                <li>
+                    <a href="../../index.html#reading-list" role="menuitem">Leeslijst</a>
+                </li>
+                <li>
+                    <a href="../notifications.html" role="menuitem">Notificaties</a>
+                </li>
+            </ul>
+        </nav>
+    </section>
+    <main class="story story-1">
+        <article>
+
+        </article>
     </main>
     <footer class="site-footer">
         <section>
             <h4>Over DFDS</h4>
-            <ul>
-                <li>
+            <ul role="menu">
+                <li role="menuitem">
                     <a href="https://www.dfdsseaways.nl/over-ons">Over ons</a>
                 </li>
-                <li>
+                <li role="menuitem">
                     <a href="https://www.dfdsseaways.nl/over-ons/vacatures">Vacatures</a>
                 </li>
-                <li>
+                <li role="menuitem">
                     <a href="https://blog.dfds.nl/" target="_blank">DFDS Blog</a>
                 </li>
-                <li>
+                <li role="menuitem">
                     <a href="https://www.dfds.com/logistics-solutions" target="_blank">Logistics</a>
                 </li>
-                <li>
+                <li role="menuitem">
                     <a href="https://www.dfds.com/freight-shipping" target="_blank">Freight</a>
                 </li>
-                <li>
+                <li role="menuitem">
                     <a href="https://www.dfds.com/group" target="_blank">DFDS Group</a>
                 </li>
-                <li>
+                <li role="menuitem">
                     <a href="https://www.dfdsseaways.nl/nieuws">Nieuws</a>
                 </li>
             </ul>
         </section>
         <section>
             <h4>Klantenservice</h4>
-            <ul>
-                <li>
+            <ul role="menu">
+                <li role="menuitem">
                     <a href="https://www.dfdsseaways.nl/contact">Contact</a>
                 </li>
-                <li>
+                <li role="menuitem">
                     <a href="https://www.dfdsseaways.nl/contact/veelgestelde-vragen">Veelgestelde vragen</a>
                 </li>
-                <li>
+                <li role="menuitem">
                     <a href="https://www.dfdsseaways.nl/reisvoorbereiding/vaarschema/actueel">Actueel</a>
                 </li>
-                <li>
+                <li role="menuitem">
                     <a href="https://www.dfdsseaways.nl/reisvoorbereiding/vaarschema">Vaarschema &amp; tijden</a>
                 </li>
-                <li>
+                <li role="menuitem">
                     <a href="https://www.dfdsseaways.nl/agenten-login">Agenten login</a>
                 </li>
-                <li>
+                <li role="menuitem">
                     <a href="https://www.dfdsseaways.nl/contact/nieuwsbrief">Nieuwsbrief</a>
                 </li>
             </ul>
         </section>
         <section>
             <h4>Meer Info</h4>
-            <ul>
-                <li>
+            <ul role="menu">
+                <li role="menuitem">
                     <a href="https://www.dfdsseaways.nl/voorwaarden">Voorwaarden</a>
                 </li>
-                <li>
+                <li role="menuitem">
                     <a href="https://www.dfdsseaways.nl/voorwaarden/privacybeleid">Privacybeleid</a>
                 </li>
-                <li>
+                <li role="menuitem">
                     <a href="https://www.dfdsseaways.nl/voorwaarden/cookiebeleid">Cookiebeleid</a>
                 </li>
-                <li>
+                <li role="menuitem">
                     <a href="https://www.dfdsseaways.nl/reisvoorbereiding/brexit">Brexit - meer informatie</a>
                 </li>
             </ul>
         </section>
         <section>
-            <h4>Contact Ons</h4>
-            <ul>
-                <li>
+            <h4>Volg Ons</h4>
+            <ul role="menu">
+                <li role="menuitem">
                     <a href="https://www.facebook.com/dfdsnederland" target="_blank"></a>
                 </li>
-                <li>
+                <li role="menuitem">
                     <a href="https://twitter.com/dfdsnederland" target="_blank"></a>
                 </li>
-                <li>
+                <li role="menuitem">
                     <a href="https://www.instagram.com/dfdsnederland/" target="_blank"></a>
                 </li>
-                <li>
+                <li role="menuitem">
                     <a href="https://nl.pinterest.com/dfdsnederland/" target="_blank"></a>
                 </li>
-                <li>
+                <li role="menuitem">
                     <a href="https://plus.google.com/u/0/+DfdsseawaysNl" target="_blank"></a>
                 </li>
-                <li>
+                <li role="menuitem">
                     <a href="https://www.youtube.com/c/DFDSNederland" target="_blank"></a>
                 </li>
             </ul>
         </section>
         <small>&copy; 2017, DFDS en Maikel van Veen</small>
     </footer>
-    <script src="../dist/js/main.min.js"></script>
+    <script src="../../dist/js/compiled.js"></script>
 </body>
 
 </html>

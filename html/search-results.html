@@ -18,56 +18,68 @@
                 <!-- Logo -->
                 <li>
                     <a href="../index.html" role="menuitem">
-                        <img src="https://dfdsstyleguide.azurewebsites.net/downloads/images/logo.svg" alt="page-logo">
+                        <img src="../dist/img/logo.svg" alt="page-logo">
                     </a>
                 </li>
-                <li data-target="main-menu" role="menuitem" aria-label="Open menu" id="toggle-main-menu">&#9776;</li>
+                <li aria-label="search-form-listitem" data-target="result-page-search-form" aria-label="Open zoekbalk">
+                    <img src="../dist/img/magnifying-glass.svg" alt="search-input-toggle-icon">
+                </li>
+                <li data-target="main-menu" role="menuitem" aria-label="Open menu" id="toggle-main-menu">
+                    <img src="../dist/img/account.svg" alt="Account icon">
+                </li>
             </ul>
             <noscript>
                 <ul role="menubar">
                     <li>
                         <a href="index.html" role="menuitem">
-                            <img src="https://dfdsstyleguide.azurewebsites.net/downloads/images/logo.svg" alt="page-logo">
+                            <img src="../dist/img/logo.svg" alt="page-logo">
                         </a>
                     </li>
                     <li>
-                        <a href="settings.html" role="menuitem">Accountinstellingen</a>
+                        <a href="signup.html" role="menuitem">Inloggen</a>
                     </li>
                     <li>
-                        <a href="reading-history.html" role="menuitem">Leesgeschiedenis</a>
+                        <a href="./stories/kater.html" role="menuitem">Kater - Futloos</a>
                     </li>
                     <li>
-                        <a href="../index.html#reading-list" role="menuitem">Leeslijst</a>
+                        <a href="./stories/paranoia.html" role="menuitem">Paranoia - Gespannen</a>
                     </li>
                     <li>
-                        <a href="notifications.html" role="menuitem">Notificaties</a>
+                        <a href="./stories/vrijdag-de-dertiende.html" role="menuitem">Vrijdag de 13
+                            <span>e</span> - Triest</a>
                     </li>
-                    <li>
-                        <a href="signup.html" role="menuitem">Inloggen / Aanmelden</a>
-                    </li>
+                    <!-- Dynamic inserted list items -->
                 </ul>
             </noscript>
         </nav>
     </header>
-    <nav id="main-menu" aria-label="Hoofdmenu, wordt weergeven door op de knop in de header te drukken.">
-        <ul role="menu">
-            <li>
-                <a href="signup.html" role="menuitem">Inloggen / Aanmelden</a>
-            </li>
-            <li>
-                <a href="settings.html" role="menuitem">Accountinstellingen</a>
-            </li>
-            <li>
-                <a href="reading-history.html" role="menuitem">Leesgeschiedenis</a>
-            </li>
-            <li>
-                <a href="../index.html#reading-list" role="menuitem">Leeslijst</a>
-            </li>
-            <li>
-                <a href="notifications.html" role="menuitem">Notificaties</a>
-            </li>
-        </ul>
-    </nav>
+    <span class="top-span">Toevoegen aan leeslijst</span>
+    <section>
+        <h2 class="hidden">Onzichtbare navigatie</h2>
+        <nav id="main-menu" aria-label="Hoofdmenu, wordt weergeven door op de knop in de header te drukken.">
+            <ul role="menu">
+                <li id="login-node">
+                    <a href="signup.html" role="menuitem">Inloggen</a>
+                </li>
+                <li>
+                    <a href="./stories/kater.html" role="menuitem">Kater - Futloos</a>
+                </li>
+                <li>
+                    <a href="./stories/paranoia.html" role="menuitem">Paranoia - Gespannen</a>
+                </li>
+                <li>
+                    <a href="./stories/vrijdag-de-dertiende.html" role="menuitem">Vrijdag de 13
+                        <span>e</span> - Triest
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <form action="#" id="result-page-search-form">
+            <label for="search-results-search-input" class="hidden">Zoeken</label>
+            <input type="text" id="search-results-search-input">
+            <button type="submit" class="btn">Zoeken</button>
+        </form>
+    </section>
     <main>
         <article class="article-section" id="search-results">
             <header class="section-header">
@@ -92,6 +104,7 @@
 
             <section class="article-wrapper">
                 <h2 class="hidden">Search Results</h2>
+                <!-- HTML is inserted here -->
             </section>
         </article>
     </main>
