@@ -33,17 +33,21 @@ const Utility = {
         if (this.currentPath == "/index.html" || this.currentPath == "/") return "index";
         else if (this.currentPath == "/html/search-results.html") return "searchResults";
         else if (this.currentPath == "/html/signup.html") return "signUp";
+        else if (this.currentPath == "/html/stories/kater.html") return "kater";
+        else if (this.currentPath == "/html/stories/paranoia.html") return "paranoia";
+        else if (this.currentPath == "/html/stories/vrijdag-de-dertiende.html") return "vrijdag";
     },
+    getCurrentScreenHeight: window.innerHeight,
+    getCurrentScreenWidth: window.innerWidth,
     route: function (key, value) {
         localStorage.setItem(key, value);
-        window.location.href = Utility.searchResultLocation;
+        window.location.href = "/html/search-results.html";
     },
-    searchResultLocation: "/html/search-results.html",
-    storyStorage: "https://api.myjson.com/bins/uneyp",
+    storyStorage: "https://api.myjson.com/bins/zbwpn",
     xhr: new XMLHttpRequest()
 };
 
-// Component that loads and creates stories.
+// Component that loads and matches the stories that need to be created.
 const LoadStories = {
     createRequest: function (storageItem) {
         let xhr = Utility.xhr;
@@ -86,7 +90,8 @@ const LoadStories = {
         appendTo.appendChild(ul);
     },
     createArticles: function (data, storageItem) {
-        let ls;
+        let ls,
+            loopCount = 0;
 
         function loopOverStories() {
             let resultArray = [];
@@ -103,13 +108,9 @@ const LoadStories = {
                     }
                 });
             } else if (storageItem == "readingList") {
-                ls = [localStorage.getItem(storageItem).split(",")];
-                data.stories.forEach((story, i) => {
-                    ls.forEach((item) => {
-                        if (item[i] != undefined) {
-                            resultArray.push(story.title);
-                        }
-                    });
+                ls = [...localStorage.getItem(storageItem).split(",")];
+                ls.forEach((item) => {
+                    resultArray.push(item);
                 });
             }
             return resultArray;
@@ -125,27 +126,65 @@ const LoadStories = {
                 DOMTraverse.articleWrapper.style.backgroundColor = "white";
                 DOMTraverse.articleWrapper.appendChild(span);
             } else if (matches.length > 25) {
-                let toShow = matches.slice(0, 25);
-                let toHide = matches.slice(25);
-
-                mapMatches(toShow);
-
-                function createShowMoreButton() {
-                    let button = document.createElement("button");
-
-                    button.setAttribute("type", "button");
-                    button.setAttribute("aria-label", "Toon nog 25 verhalen");
-                    button.classList.add("btn", "btn-main");
-                    button.innerText = "Toon meer verhalen";
-
-                    return button;
+                let currentCount = 0;
+                if (currentCount == 0) {
+                    let toShow = matches.slice(0, 25);
+                    mapMatches(toShow);
                 }
 
                 if (storageItem == "readingList") {
                     DOMTraverse.articleWrapper.classList.add("reading-list-js-results");
                 }
-                DOMTraverse.articleWrapper.appendChild(createShowMoreButton());
                 // Create a function that handles the button click, to load in more stories.
+                (function showNextStories() {
+                    if (Utility.getCurrentScreenWidth > 1039) {
+                        let elHeight = DOMTraverse.articleWrapper.clientHeight;
+
+                        window.addEventListener("scroll", function () {
+                            if (window.pageYOffset > (elHeight - 1500)) {
+                                if (currentCount == 0) {
+                                    let toShow = matches.slice(25, 50);
+                                    elHeight += elHeight;
+                                    currentCount++;
+                                    mapMatches(toShow);
+                                } else if (currentCount == 1) {
+                                    let toShow = matches.slice(50, 75);
+                                    elHeight += 6000;
+                                    currentCount++
+                                    mapMatches(toShow);
+                                } else if (currentCount == 2) {
+                                    let toShow = matches.slice(75, 100);
+                                    elHeight += elHeight;
+                                    currentCount++;
+                                    mapMatches(toShow);
+                                }
+                            }
+                        });
+                    } else {
+                        let elWidth = DOMTraverse.articleWrapper.scrollWidth;
+
+                        DOMTraverse.articleWrapper.addEventListener("scroll", function () {
+                            if (DOMTraverse.articleWrapper.scrollLeft > (elWidth - 1500)) {
+                                if (currentCount == 0) {
+                                    let toShow = matches.slice(25, 50);
+                                    elWidth += elWidth;
+                                    currentCount++;
+                                    mapMatches(toShow);
+                                } else if (currentCount == 1) {
+                                    let toShow = matches.slice(50, 75);
+                                    elWidth += 6000;
+                                    currentCount++
+                                    mapMatches(toShow);
+                                } else if (currentCount == 2) {
+                                    let toShow = matches.slice(75, 100);
+                                    elWidth += elWidth;
+                                    currentCount++;
+                                    mapMatches(toShow);
+                                }
+                            }
+                        });
+                    }
+                })();
             } else {
                 if (storageItem == "readingList") {
                     DOMTraverse.articleWrapper.parentElement.classList.add("reading-list-js-results");
@@ -160,10 +199,36 @@ const LoadStories = {
             });
         })();
 
-        function mapMatches(array) {
-            array.forEach((match, i) => {
-                data.stories.forEach(story => LoadStories.matchStorageToRequest(match, story, i));
-            });
+        function mapMatches(matches) {
+            if (loopCount == 0) {
+                matches.forEach((match, i) => {
+                    data.stories.forEach(story => LoadStories.matchStorageToRequest(match, story, i));
+                });
+                loopCount++;
+            } else if (loopCount == 1) {
+                let iterator = 25;
+                matches.forEach((match) => {
+                    iterator++;
+                    console.log(iterator);
+                    data.stories.forEach(story => LoadStories.matchStorageToRequest(match, story, iterator));
+                });
+                loopCount++;
+            } else if (loopCount == 2) {
+                let iterator = 50;
+                matches.forEach((match) => {
+                    iterator++;
+                    console.log(iterator);
+                    data.stories.forEach(story => LoadStories.matchStorageToRequest(match, story, iterator));
+                });
+                loopCount++;
+            } else if (loopCount == 3) {
+                let iterator = 75;
+                matches.forEach((match) => {
+                    iterator++;
+                    console.log(iterator);
+                    data.stories.forEach(story => LoadStories.matchStorageToRequest(match, story, iterator));
+                });
+            }
         }
 
         DOMTraverse.articleWrapper.removeChild(DOMTraverse.storyLoader[0]);
@@ -173,8 +238,14 @@ const LoadStories = {
         sortButton.style.display = "none";
     },
     matchStorageToRequest: function (match, story, i) {
-        if (match == story.title) {
-            let img = "http://lorempixel.com/400/200/";
+        if (match == story.title.toLowerCase() || match == story.title) {
+            let img;
+            if (story.image != null || story.image != undefined) {
+                img = `/dist/img/storyImages/${story.image}`;
+            } else if (story.image == undefined) {
+                img = "http://lorempixel.com/400/200/";
+            }
+
             let title = story.title.toLowerCase();
             let number = story.nr;
             let by = story.by;
@@ -188,29 +259,60 @@ const LoadStories = {
             let preview = trimmedString;
             let fullText = story.text.substring(Math.max(trimmedString.length, trimmedString.lastIndexOf(" ")));
 
-            DOMTraverse.articleWrapper.innerHTML += LoadStories.Article(img, by, title, number, preview, fullText, i);
+            DOMTraverse.articleWrapper.innerHTML += CreateArticle.Article(img, by, title, number, preview, fullText, i);
         }
-    },
+    }
+};
+
+// Component which holds the structure of each article.
+const CreateArticle = {
     Article: function (img, by, title, number, preview, fullText, i) {
         let article = `
-        <article>
+        <article id="${title}">
+            ${this.ArticleHeader(img, by, title, number, i)}
+            ${this.Paragraph(i, preview, fullText)}
+            ${this.Footer(title)}
+         </article>
+        `;
+        return article;
+    },
+    ArticleHeader: function (img, by, title, number, i) {
+        let header = `
             <header class="article-header">
-                <img src=${img} alt="search-result-image" onclick="Microinteractions.toggleJavascript.call(this)" data-target="rest-text-${i}">
+                <img src=${img} alt="search-result-image" onclick="Microinteractions.toggleJavascript.call(this)" class="toggleFullStory" data-target="rest-text-${i}">
                 <span>Door: ${by}</span>
-                <div><h3>${title} (${number})</h3></div>
+                <div><h3 onclick="Microinteractions.toggleJavascript.call(this)" class="toggleFullStory" data-target="rest-text-${i}">${title} (${number})</h3></div>
             </header>
-            <p onclick="Microinteractions.toggleJavascript.call(this)" aria-label="Open volledig verhaal" data-target="rest-text-${i}">
+        `;
+        return header;
+    },
+    Paragraph: function (i, preview, fullText) {
+        let p = `
+            <p onclick="Microinteractions.toggleJavascript.call(this)" aria-label="Open volledig verhaal" id="article-text-${i}" data-target="rest-text-${i}">
                 ${preview}
                 <span id="rest-text-${i}">${fullText}</span>
             </p>
-            <footer>
-                <button type="button" class="btn btn-main" onClick="ResultPage.addActiveClass.call(this)" id=read-later-${title}>Toevoegen aan leeslijst</button>
-                <button type="button" class="btn btn-main">Downloaden</button>
-            </footer>
-         </article>
         `;
-
-        return article;
+        return p;
+    },
+    Footer: function (title) {
+        let footer;
+        if (Utility.currentPath == "/") {
+            footer = `
+                <footer>
+                    <button type="button" class="btn btn-main" onClick="IndexPage.removeFromList.call(this)" id=read-later-${title}>Verwijderen uit leeslijst</button>
+                    <button type="button" class="btn btn-main">Downloaden</button>
+                </footer>
+            `;
+        } else {
+            footer = `
+                <footer>
+                    <button type="button" class="btn btn-main" onClick="ResultPage.addActiveClass.call(this)" id=read-later-${title}>Toevoegen aan leeslijst</button>
+                    <button type="button" class="btn btn-main">Downloaden</button>
+                </footer>
+            `;
+        }
+        return footer;
     }
 };
 
@@ -226,18 +328,17 @@ const Microinteractions = {
         function getImagePath(image) {
             let path;
             if (Utility.currentPath == "/") {
-                path = `./dist/img/${image}.svg`;
+                path = `./dist/img/icons/${image}.svg`;
             } else if (!Utility.currentPath.includes("stories")) {
-                path = `../dist/img/${image}.svg`;
+                path = `../dist/img/icons/${image}.svg`;
             } else {
-                path = `../../dist/img/${image}.svg`;
+                path = `../../dist/img/icons/${image}.svg`;
             }
             return path;
         }
 
         if (dataTar.includes("main-menu")) {
             this.firstElementChild.alt == "Account icon" ? (
-                getImagePath("multiply"),
                 DOMTraverse.mainTag.classList.add("js-active"),
                 this.firstElementChild.alt = "Sluit icon",
                 this.firstElementChild.src = getImagePath("multiply"),
@@ -250,6 +351,22 @@ const Microinteractions = {
             );
         } else if (dataTar.includes("result-page-search-form")) {
             // this.ariaLabel.includes("Open zoekbalk") ? console.log(true) : console.log(false);
+        } else if (dataTar.includes("rest-text") && this.classList.contains("toggleFullStory")) {
+            function getParagraph() {
+                let dt = this.getAttribute("data-target"),
+                    pNum = dt.slice(dt.lastIndexOf("-") + 1),
+                    paragraph = document.getElementById(`article-text-${pNum}`);
+
+                return paragraph;
+            }
+            let p = getParagraph.call(this);
+            !p.classList.contains("js-active") ? (
+                p.setAttribute("aria-label", "Sluit volledig verhaal"),
+                p.classList.add("js-active")
+            ) : (
+                p.setAttribute("aria-label", "Open volledig verhaal"),
+                p.classList.remove("js-active")
+            );
         } else if (dataTar.includes("rest-text")) {
             !this.classList.contains("js-active") ? (
                 this.setAttribute("aria-label", "Sluit volledig verhaal"),
@@ -274,6 +391,82 @@ const Microinteractions = {
     }()
 };
 
+// Pages
+const Navigation = {
+    getLoginOrSignup: function (path) {
+        if (window.localStorage.getItem("login") != null || window.localStorage.getItem("signUp") != null) {
+            if (path == "index") {
+                this.changeLoginNode("Uitloggen", true, true);
+            } else if (path == "searchResults") {
+                this.changeLoginNode("Uitloggen", true, false);
+            }
+        } else {
+            this.changeLoginNode("Inloggen");
+        }
+    },
+    changeLoginNode: function (linkText, loggedIn, indexPath) {
+        let nodes = this.getNodes();
+        nodes.loginNodeAnchor.innerText = linkText;
+
+        if (loggedIn === true && indexPath === true) {
+            // Link prefixes based from index.html
+            nodes.firstLoginSibling.insertAdjacentHTML("beforeBegin", `
+                    <li class="dynamic-js">
+                        <a href="./html/settings.html" role="menuitem">Accountinstellingen</a>
+                    </li>
+                    <li class="dynamic-js">
+                        <a href="./html/reading-history.html" role="menuitem">Leesgeschiedenis</a>
+                    </li>
+                    <li class="dynamic-js">
+                        <a href="#reading-list" role="menuitem">Leeslijst</a>
+                    </li>
+                    <li class="dynamic-js">
+                        <a href="./html/notifications.html" role="menuitem">Notificaties</a>
+                    </li>
+                `);
+        } else if (loggedIn === true && indexPath !== true) {
+            // Change the link prefixes to the base of the html folder.
+            nodes.firstLoginSibling.insertAdjacentHTML("beforeBegin", `
+                    <li class="dynamic-js">
+                        <a href="settings.html" role="menuitem">Accountinstellingen</a>
+                    </li>
+                    <li class="dynamic-js">
+                        <a href="reading-history.html" role="menuitem">Leesgeschiedenis</a>
+                    </li>
+                    <li class="dynamic-js">
+                        <a href="../index.html#reading-list" role="menuitem">Leeslijst</a>
+                    </li>
+                    <li class="dynamic-js">
+                        <a href="notifications.html" role="menuitem">Notificaties</a>
+                    </li>
+                `);
+        } else {
+            // Remove the added children from above.
+            this.removeAddedMenuItems();
+        }
+    },
+    getNodes: function () {
+        let loginNode = DOMTraverse.mainMenu.querySelector("#login-node"),
+            menuList = loginNode.parentElement,
+            loginNodeAnchor = loginNode.firstElementChild,
+            firstLoginSibling = loginNode.nextElementSibling;
+
+        return {
+            loginNode: loginNode,
+            menuList: menuList,
+            loginNodeAnchor: loginNodeAnchor,
+            firstLoginSibling: firstLoginSibling
+        }
+    },
+    removeAddedMenuItems: function () {
+        let nodes = this.getNodes();
+        let dynamics = [...nodes.menuList.querySelectorAll(".dynamic-js")];
+        dynamics.forEach((li, i) => {
+            dynamics.splice(i, 1);
+        });
+    }
+};
+
 const IndexPage = {
     setFormListeners: function () {
         DOMTraverse.searchform.addEventListener("submit", function (e) {
@@ -286,6 +479,9 @@ const IndexPage = {
         });
 
         DOMTraverse.allStoriesButton.addEventListener("click", () => Utility.route("input", "allStories"));
+    },
+    removeFromList: function () {
+        let readingList = [...window.localStorage.readingList.split(",")];
     },
     getReadingList: function (storageItem) {
         if (window.localStorage.getItem("login") != null || window.localStorage.getItem("signUp") != null) {
@@ -303,7 +499,7 @@ const IndexPage = {
             }
         } else {
             let span = document.createElement("span");
-            span.innerHTML = "Om je leeslijst te zien, moet je ingelogd zijn. <a href='/html/signup.html'>Dit kunt u hier doen</a>.";
+            span.innerHTML = "Om je leeslijst te zien, moet je ingelogd zijn. <a href='/html/signup.html'>U kunt zich hier inloggen</a>.";
             LoadStories.hideSortButton();
             DOMTraverse.articleWrapper.parentElement.classList.add("reading-list-js-no-login");
             DOMTraverse.articleWrapper.appendChild(span);
@@ -321,7 +517,7 @@ const IndexPage = {
         articleWrapper.appendChild(iTag);
         articleWrapper.appendChild(spanTag);
     }
-}
+};
 
 const SignUpPage = {
     Constraint: {
@@ -483,80 +679,122 @@ const ResultPage = {
     }
 };
 
-const Navigation = {
-    getLoginOrSignup: function (path) {
-        if (window.localStorage.getItem("login") != null || window.localStorage.getItem("signUp") != null) {
-            if (path == "index") {
-                this.changeLoginNode("Uitloggen", true, true);
-            } else if (path == "searchResults") {
-                this.changeLoginNode("Uitloggen", true, false);
+const StoryPage = {
+    Kater: {
+        getElements: function () {
+            let kater = document.getElementsByClassName("story-1")[0],
+                article = kater.firstElementChild,
+                allSections = article.querySelectorAll("section"),
+                titleSection = article.querySelector(".title"),
+                paragraph = article.querySelector("p");
+
+            return {
+                allSections: allSections,
+                article: article,
+                kater: kater,
+                paragraph: paragraph,
+                titleSection: titleSection,
             }
-        } else {
-            this.changeLoginNode("Inloggen");
-        }
-    },
-    changeLoginNode: function (linkText, loggedIn, indexPath) {
-        let nodes = this.getNodes();
-        nodes.loginNodeAnchor.innerText = linkText;
+        },
+        getTranslateValue: (translateString) => {
+            let n = translateString.indexOf("("),
+                n1 = translateString.indexOf("%");
 
-        if (loggedIn === true && indexPath === true) {
-            // Link prefixes based from index.html
-            nodes.firstLoginSibling.insertAdjacentHTML("beforeBegin", `
-                    <li class="dynamic-js">
-                        <a href="./html/settings.html" role="menuitem">Accountinstellingen</a>
-                    </li>
-                    <li class="dynamic-js">
-                        <a href="./html/reading-history.html" role="menuitem">Leesgeschiedenis</a>
-                    </li>
-                    <li class="dynamic-js">
-                        <a href="#reading-list" role="menuitem">Leeslijst</a>
-                    </li>
-                    <li class="dynamic-js">
-                        <a href="./html/notifications.html" role="menuitem">Notificaties</a>
-                    </li>
-                `);
-        } else if (loggedIn === true && indexPath !== true) {
-            // Change the link prefixes to the base of the html folder.
-            nodes.firstLoginSibling.insertAdjacentHTML("beforeBegin", `
-                    <li class="dynamic-js">
-                        <a href="settings.html" role="menuitem">Accountinstellingen</a>
-                    </li>
-                    <li class="dynamic-js">
-                        <a href="reading-history.html" role="menuitem">Leesgeschiedenis</a>
-                    </li>
-                    <li class="dynamic-js">
-                        <a href="../index.html#reading-list" role="menuitem">Leeslijst</a>
-                    </li>
-                    <li class="dynamic-js">
-                        <a href="notifications.html" role="menuitem">Notificaties</a>
-                    </li>
-                `);
-        } else {
-            // Remove the added children from above.
-            this.removeAddedMenuItems();
-        }
-    },
-    getNodes: function () {
-        let loginNode = DOMTraverse.mainMenu.querySelector("#login-node"),
-            menuList = loginNode.parentElement,
-            loginNodeAnchor = loginNode.firstElementChild,
-            firstLoginSibling = loginNode.nextElementSibling;
+            let res = parseInt(translateString.slice(n + 1, n1 - 1));
+            return res;
+        },
+        handleScroll: function () {
+            const {
+                allSections,
+                kater,
+                paragraph,
+                titleSection,
+            } = this.getElements();
 
-        return {
-            loginNode: loginNode,
-            menuList: menuList,
-            loginNodeAnchor: loginNodeAnchor,
-            firstLoginSibling: firstLoginSibling
-        }
+            let pActive;
+
+            if (Utility.getCurrentScreenHeight >= 1000) {
+                // Scroll events for higher screens.
+                kater.addEventListener("scroll", () => {
+                    scrollEvents(7);
+                });
+            } else {
+                // Scroll events for less high screens.
+                kater.addEventListener("scroll", () => {
+                    scrollEvents(4);
+                });
+            }
+
+            function scrollEvents(centerPage) {
+                // Check if the user scrolled more than halfway of the story.
+                if (kater.scrollTop >= (kater.scrollHeight / centerPage)) {
+                    // Check if the user has allready scrolled down to the paragraph once.
+                    if (pActive === true) {
+                        titleSection.style.transform = `translateY(700%)`;
+                        // Check if the parapgrah has got a transform that is less than 5% of the center. If that is not the case, set the value of translateX to 0% by default.
+                        if (StoryPage.Kater.getTranslateValue(paragraph.style.transform) <= 5) {
+                            paragraph.style.transform = `translateX(0%)`;
+                        }
+                    } else {
+                        paragraph.style.transform = `translateX(${kater.scrollHeight / (centerPage - 1) - kater.scrollTop}%)`;
+                        setTimeout(function () {
+                            pActive = true;
+                        }, 500);
+                    }
+                } else {
+                    allSections.forEach((section, i) => {
+                        section.style.transform = `skew(${Math.floor(Math.random() * 10) + 5}deg, ${Math.floor(Math.random() * 10) + 5}deg) rotate(${Math.floor(Math.random() * 10) + 5}deg) scale(${Math.random() + 0.5}) translateY(-${kater.scrollTop * centerPage}px) translateX(${kater.scrollTop * centerPage}px)`;
+                    });
+                }
+            }
+        },
     },
-    removeAddedMenuItems: function () {
-        let nodes = this.getNodes();
-        let dynamics = [...nodes.menuList.querySelectorAll(".dynamic-js")];
-        dynamics.forEach((li, i) => {
-            dynamics.splice(i, 1);
-        });
-    }
-};
+    Paranoia: {
+        getElements: function () {
+            const article = document.querySelector(".story-2>article"),
+                followLeft = document.querySelectorAll(".follow-left"),
+                followRight = document.querySelectorAll(".follow-right");
+
+            return {
+                article: article,
+                followLeft: followLeft,
+                followRight: followRight,
+            }
+        },
+        getScrollTop: function () {
+            const {
+                article,
+                followLeft,
+                followRight,
+            } = this.getElements();
+            let scrollTop;
+
+            window.addEventListener("load", function () {
+                followRight.forEach((frEl) => {
+                    frEl.classList.add("js-hide");
+                });
+            });
+            article.addEventListener("scroll", function () {
+                scrollTop = article.scrollTop;
+                if (scrollTop < 300 || scrollTop > 1800 && scrollTop < 2499 || scrollTop > 3200) {
+                    followLeft.forEach((flEl) => {
+                        flEl.classList.remove("js-hide");
+                    });
+                    followRight.forEach((frEl) => {
+                        frEl.classList.add("js-hide");
+                    });
+                } else if (scrollTop > 300 && scrollTop < 1799 || scrollTop > 2500 && scrollTop < 3199) {
+                    followLeft.forEach((flEl) => {
+                        flEl.classList.add("js-hide");
+                    });
+                    followRight.forEach((frEl) => {
+                        frEl.classList.remove("js-hide");
+                    });
+                }
+            });
+        },
+    },
+}
 
 // Fires immediately, which triggers all the JavaScript in the pages.
 let onLoad = function () {
@@ -573,5 +811,9 @@ let onLoad = function () {
         SignUpPage.Constraint.checkElements();
         SignUpPage.Constraint.setCurrentDate();
         SignUpPage.UserActions.init();
+    } else if (cp == "kater") {
+        StoryPage.Kater.handleScroll();
+    } else if (cp == "paranoia") {
+        StoryPage.Paranoia.getScrollTop();
     }
 }();
