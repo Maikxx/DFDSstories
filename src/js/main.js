@@ -129,7 +129,7 @@ const LoadStories = {
                 let currentCount = 0;
                 if (currentCount == 0) {
                     let toShow = matches.slice(0, 25);
-                    mapMatches(toShow);
+                    xmapMatches(toShow);
                 }
 
                 if (storageItem == "readingList") {
@@ -137,6 +137,9 @@ const LoadStories = {
                 }
                 // Create a function that handles the button click, to load in more stories.
                 (function showNextStories() {
+                    window.addEventListener("resize", function () {
+                        location.reload();
+                    });
                     if (Utility.getCurrentScreenWidth > 1039) {
                         let elHeight = DOMTraverse.articleWrapper.clientHeight;
 
@@ -209,7 +212,6 @@ const LoadStories = {
                 let iterator = 25;
                 matches.forEach((match) => {
                     iterator++;
-                    console.log(iterator);
                     data.stories.forEach(story => LoadStories.matchStorageToRequest(match, story, iterator));
                 });
                 loopCount++;
@@ -217,7 +219,6 @@ const LoadStories = {
                 let iterator = 50;
                 matches.forEach((match) => {
                     iterator++;
-                    console.log(iterator);
                     data.stories.forEach(story => LoadStories.matchStorageToRequest(match, story, iterator));
                 });
                 loopCount++;
@@ -225,7 +226,6 @@ const LoadStories = {
                 let iterator = 75;
                 matches.forEach((match) => {
                     iterator++;
-                    console.log(iterator);
                     data.stories.forEach(story => LoadStories.matchStorageToRequest(match, story, iterator));
                 });
             }
@@ -752,13 +752,15 @@ const StoryPage = {
     Paranoia: {
         getElements: function () {
             const article = document.querySelector(".story-2>article"),
-                followLeft = document.querySelectorAll(".follow-left"),
-                followRight = document.querySelectorAll(".follow-right");
+                followLeft = article.querySelectorAll(".follow-left"),
+                followRight = article.querySelectorAll(".follow-right"),
+                paragraph = article.querySelector("p");
 
             return {
                 article: article,
                 followLeft: followLeft,
                 followRight: followRight,
+                paragraph: paragraph,
             }
         },
         getScrollTop: function () {
@@ -766,6 +768,7 @@ const StoryPage = {
                 article,
                 followLeft,
                 followRight,
+                paragraph,
             } = this.getElements();
             let scrollTop;
 
@@ -774,8 +777,8 @@ const StoryPage = {
                     frEl.classList.add("js-hide");
                 });
             });
-            article.addEventListener("scroll", function () {
-                scrollTop = article.scrollTop;
+            paragraph.addEventListener("scroll", function () {
+                scrollTop = paragraph.scrollTop;
                 if (scrollTop < 300 || scrollTop > 1800 && scrollTop < 2499 || scrollTop > 3200) {
                     followLeft.forEach((flEl) => {
                         flEl.classList.remove("js-hide");
@@ -792,6 +795,43 @@ const StoryPage = {
                     });
                 }
             });
+        },
+    },
+    VrijdagDeDertiende: {
+        getElements: function () {
+            const verticalDrop = document.querySelector(".vertical-drop"),
+                dividerRight = document.querySelector(".divider__right");
+
+            return {
+                verticalDrop: verticalDrop,
+                dividerRight: dividerRight,
+            }
+        },
+        handleScroll: function () {
+            const {
+                verticalDrop,
+                dividerRight,
+            } = this.getElements();
+
+            let lastScrollTop = dividerRight.scrollTop;
+
+            dividerRight.addEventListener("scroll", function () {
+                let st = dividerRight.scrollTop,
+                    randomPositiveOrNegative = Math.floor(Math.random() * 1.2) + .5;
+
+                randomPositiveOrNegative *= Math.floor((Math.random() * 2) == 1 ? 1 : -1);
+
+                let verticalDropTransform = verticalDrop.style.transform,
+                    translateProp = verticalDropTransform.substr(0, verticalDropTransform.indexOf(" ")),
+                    translateValue = translateProp.slice(translateProp.indexOf("(") + 1, translateProp.indexOf("%"));
+
+                if (st > lastScrollTop) {
+                    verticalDrop.style.transform = `translateY(${dividerRight.scrollTop}%) rotateZ(90deg) scale(${Math.random() * (1.2 - .5) + .5}) translateX(${randomPositiveOrNegative}%)`;
+                } else {
+                    verticalDrop.style.transform = `translateY(${translateValue - (dividerRight.scrollTop / 50)}%) rotateZ(90deg) scale(${Math.random() * (1.2 - .5) + .5}) translateX(${randomPositiveOrNegative}%)`;
+                }
+                lastScrollTop = st;
+            }, false);
         },
     },
 }
@@ -815,5 +855,7 @@ let onLoad = function () {
         StoryPage.Kater.handleScroll();
     } else if (cp == "paranoia") {
         StoryPage.Paranoia.getScrollTop();
+    } else if (cp == "vrijdag") {
+        StoryPage.VrijdagDeDertiende.handleScroll();
     }
 }();

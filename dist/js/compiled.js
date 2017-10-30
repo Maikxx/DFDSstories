@@ -128,7 +128,7 @@ var LoadStories = {
                 var currentCount = 0;
                 if (currentCount == 0) {
                     var toShow = matches.slice(0, 25);
-                    mapMatches(toShow);
+                    xmapMatches(toShow);
                 }
 
                 if (storageItem == "readingList") {
@@ -136,6 +136,9 @@ var LoadStories = {
                 }
                 // Create a function that handles the button click, to load in more stories.
                 (function showNextStories() {
+                    window.addEventListener("resize", function () {
+                        location.reload();
+                    });
                     if (Utility.getCurrentScreenWidth > 1039) {
                         var elHeight = DOMTraverse.articleWrapper.clientHeight;
 
@@ -210,7 +213,6 @@ var LoadStories = {
                 var iterator = 25;
                 matches.forEach(function (match) {
                     iterator++;
-                    console.log(iterator);
                     data.stories.forEach(function (story) {
                         return LoadStories.matchStorageToRequest(match, story, iterator);
                     });
@@ -220,7 +222,6 @@ var LoadStories = {
                 var _iterator = 50;
                 matches.forEach(function (match) {
                     _iterator++;
-                    console.log(_iterator);
                     data.stories.forEach(function (story) {
                         return LoadStories.matchStorageToRequest(match, story, _iterator);
                     });
@@ -230,7 +231,6 @@ var LoadStories = {
                 var _iterator2 = 75;
                 matches.forEach(function (match) {
                     _iterator2++;
-                    console.log(_iterator2);
                     data.stories.forEach(function (story) {
                         return LoadStories.matchStorageToRequest(match, story, _iterator2);
                     });
@@ -713,20 +713,23 @@ var StoryPage = {
     Paranoia: {
         getElements: function getElements() {
             var article = document.querySelector(".story-2>article"),
-                followLeft = document.querySelectorAll(".follow-left"),
-                followRight = document.querySelectorAll(".follow-right");
+                followLeft = article.querySelectorAll(".follow-left"),
+                followRight = article.querySelectorAll(".follow-right"),
+                paragraph = article.querySelector("p");
 
             return {
                 article: article,
                 followLeft: followLeft,
-                followRight: followRight
+                followRight: followRight,
+                paragraph: paragraph
             };
         },
         getScrollTop: function getScrollTop() {
             var _getElements2 = this.getElements(),
                 article = _getElements2.article,
                 followLeft = _getElements2.followLeft,
-                followRight = _getElements2.followRight;
+                followRight = _getElements2.followRight,
+                paragraph = _getElements2.paragraph;
 
             var scrollTop = void 0;
 
@@ -735,8 +738,8 @@ var StoryPage = {
                     frEl.classList.add("js-hide");
                 });
             });
-            article.addEventListener("scroll", function () {
-                scrollTop = article.scrollTop;
+            paragraph.addEventListener("scroll", function () {
+                scrollTop = paragraph.scrollTop;
                 if (scrollTop < 300 || scrollTop > 1800 && scrollTop < 2499 || scrollTop > 3200) {
                     followLeft.forEach(function (flEl) {
                         flEl.classList.remove("js-hide");
@@ -753,6 +756,42 @@ var StoryPage = {
                     });
                 }
             });
+        }
+    },
+    VrijdagDeDertiende: {
+        getElements: function getElements() {
+            var verticalDrop = document.querySelector(".vertical-drop"),
+                dividerRight = document.querySelector(".divider__right");
+
+            return {
+                verticalDrop: verticalDrop,
+                dividerRight: dividerRight
+            };
+        },
+        handleScroll: function handleScroll() {
+            var _getElements3 = this.getElements(),
+                verticalDrop = _getElements3.verticalDrop,
+                dividerRight = _getElements3.dividerRight;
+
+            var lastScrollTop = dividerRight.scrollTop;
+
+            dividerRight.addEventListener("scroll", function () {
+                var st = dividerRight.scrollTop,
+                    randomPositiveOrNegative = Math.floor(Math.random() * 1.2) + .5;
+
+                randomPositiveOrNegative *= Math.floor(Math.random() * 2 == 1 ? 1 : -1);
+
+                var verticalDropTransform = verticalDrop.style.transform,
+                    translateProp = verticalDropTransform.substr(0, verticalDropTransform.indexOf(" ")),
+                    translateValue = translateProp.slice(translateProp.indexOf("(") + 1, translateProp.indexOf("%"));
+
+                if (st > lastScrollTop) {
+                    verticalDrop.style.transform = "translateY(" + dividerRight.scrollTop + "%) rotateZ(90deg) scale(" + (Math.random() * (1.2 - .5) + .5) + ") translateX(" + randomPositiveOrNegative + "%)";
+                } else {
+                    verticalDrop.style.transform = "translateY(" + (translateValue - dividerRight.scrollTop / 50) + "%) rotateZ(90deg) scale(" + (Math.random() * (1.2 - .5) + .5) + ") translateX(" + randomPositiveOrNegative + "%)";
+                }
+                lastScrollTop = st;
+            }, false);
         }
     }
 
@@ -775,5 +814,7 @@ var StoryPage = {
         StoryPage.Kater.handleScroll();
     } else if (cp == "paranoia") {
         StoryPage.Paranoia.getScrollTop();
+    } else if (cp == "vrijdag") {
+        StoryPage.VrijdagDeDertiende.handleScroll();
     }
 }();
