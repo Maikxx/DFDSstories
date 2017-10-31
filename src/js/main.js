@@ -3,16 +3,20 @@ const DOMTraverse = {
     /* Multiple Pages */
     articleWrapper: document.querySelector(".article-wrapper"),
     mainMenu: document.getElementById("main-menu"),
+    mainMenuToggle: document.getElementById("toggle-main-menu"),
     mainTag: document.querySelector("main"),
     sectionTitles: document.getElementsByClassName("section-title"),
 
     /* Index Page */
     allStoriesButton: document.getElementById("show-all-stories"),
+    filterForm: document.getElementById("filter-form"),
     searchform: document.getElementById("search-form"),
     searchInput: document.getElementById("search-for-title"),
 
     /* Results Page */
-    topSpan: document.getElementsByClassName("top-span")[0],
+    topSpans: [...document.getElementsByClassName("top-span")],
+    topSpanReadingList: document.getElementsByClassName("top-span reading-list")[0],
+    topSpanDownloads: document.getElementsByClassName("top-span downloads")[0],
     storyLoader: document.getElementsByClassName("story-loader"),
 
     /* Signup Page */
@@ -30,20 +34,46 @@ const DOMTraverse = {
 const Utility = {
     currentPath: window.location.pathname,
     getCurrentPath: function () {
-        if (this.currentPath == "/index.html" || this.currentPath == "/") return "index";
-        else if (this.currentPath == "/html/search-results.html") return "searchResults";
-        else if (this.currentPath == "/html/signup.html") return "signUp";
-        else if (this.currentPath == "/html/stories/kater.html") return "kater";
-        else if (this.currentPath == "/html/stories/paranoia.html") return "paranoia";
-        else if (this.currentPath == "/html/stories/vrijdag-de-dertiende.html") return "vrijdag";
+        if (this.currentPath == "/index.html" || this.currentPath == "/" || this.currentPath == "/projects/dfds_seaways/" || this.currentPath == "/projects/dfds_seaways/index.html") {
+            return "index";
+        } else if (this.currentPath == "/projects/dfds_seaways/html/search-results.html" || this.currentPath == "/html/search-results.html") return "searchResults";
+        else if (this.currentPath == "/html/signup.html" || this.currentPath == "/projects/dfds_seaways/html/signup.html") return "signUp";
+        else if (this.currentPath == "/html/stories/kater.html" || this.currentPath == "/projects/dfds_seaways/html/stories/kater.html") return "kater";
+        else if (this.currentPath == "/html/stories/paranoia.html" || this.currentPath == "/projects/dfds_seaways/html/stories/paranoia.html") return "paranoia";
+        else if (this.currentPath == "/html/stories/vrijdag-de-dertiende.html" || this.currentPath == "/projects/dfds_seaways/html/stories/vrijdag-de-dertiende.html") return "vrijdag";
     },
     getCurrentScreenHeight: window.innerHeight,
     getCurrentScreenWidth: window.innerWidth,
+    getImagePath: function (image) {
+        let path;
+        if (this.currentPath.includes("dfds_seaways")) {
+            if (this.currentPath == "/" || this.currentPath.includes("/index.html")) {
+                path = `/projects/dfds_seaways/dist/img/icons/${image}.svg`;
+            } else if (!this.currentPath.includes("stories")) {
+                path = `../dist/img/icons/${image}.svg`;
+            } else {
+                path = `../../dist/img/icons/${image}.svg`;
+            }
+        } else {
+            if (this.currentPath == "/" || this.currentPath == "/index.html") {
+                path = `./dist/img/icons/${image}.svg`;
+            } else if (!this.currentPath.includes("stories")) {
+                path = `../dist/img/icons/${image}.svg`;
+            } else {
+                path = `../../dist/img/icons/${image}.svg`;
+            }
+        }
+        return path;
+    },
     route: function (key, value) {
         localStorage.setItem(key, value);
-        window.location.href = "/html/search-results.html";
+        if (this.currentPath == "/" || this.currentPath == "/index.html") {
+            window.location.href = "/html/search-results.html";
+        } else {
+            window.location.href = "/projects/dfds_seaways/html/search-results.html";
+        }
     },
-    storyStorage: "https://api.myjson.com/bins/zbwpn",
+    storyStorage: "https://api.myjson.com/bins/qvlgr",
     xhr: new XMLHttpRequest()
 };
 
@@ -96,28 +126,74 @@ const LoadStories = {
         function loopOverStories() {
             let resultArray = [];
 
-            if (storageItem == "input") {
-                ls = localStorage.getItem(storageItem);
-                data.stories.forEach(story => {
-                    if (ls === "allStories") {
-                        resultArray.push(story.title);
-                    } else {
-                        if (story.title.toLowerCase().includes(ls.toLowerCase()) || (story.text.indexOf(ls.toLowerCase()) != -1)) {
+            if (localStorage.getItem("filters") === undefined || localStorage.getItem("filters") === null) {
+                if (storageItem == "input") {
+                    ls = localStorage.getItem(storageItem);
+                    data.stories.forEach(story => {
+                        if (ls === "allStories") {
                             resultArray.push(story.title);
+                        } else {
+                            if (story.title.toLowerCase().includes(ls.toLowerCase()) || (story.text.indexOf(ls.toLowerCase()) != -1)) {
+                                resultArray.push(story.title);
+                            }
                         }
+                    });
+                } else if (storageItem == "readingList") {
+                    ls = [...localStorage.getItem(storageItem).split(",")];
+                    ls.forEach((item) => {
+                        resultArray.push(item);
+                    });
+                }
+            } else {
+                ls = JSON.parse(localStorage.getItem("filters"));
+                for (const filter in ls) {
+                    if (ls.hasOwnProperty(filter)) {
+                        resultArray.push({
+                            filter: ls[filter]
+                        });
                     }
-                });
-            } else if (storageItem == "readingList") {
-                ls = [...localStorage.getItem(storageItem).split(",")];
-                ls.forEach((item) => {
-                    resultArray.push(item);
-                });
+                }
             }
             return resultArray;
         }
 
         (function getResults() {
-            let matches = loopOverStories();
+            let matches;
+
+            function theUserIsFiltering() {
+                const filters = loopOverStories();
+                let filtersArray = [];
+                let resultArray = [];
+
+                (function getFilters() {
+                    filters.forEach((filter) => {
+                        for (const filterValue in filter) {
+                            if (filter.hasOwnProperty(filterValue)) {
+                                filter[filterValue].forEach((value) => {
+                                    filtersArray.push(value);
+                                });
+                            }
+                        }
+                    });
+                })();
+
+                data.stories.forEach((story) => {
+                    filtersArray.forEach((filter) => {
+                        if (story.readTime === filter || story.storyLength === filter || story.ageSuggested === filter) {
+                            resultArray.push(story.title);
+                        }
+                    });
+                });
+
+                return resultArray;
+            }
+
+            if (localStorage.getItem("filters") === undefined || localStorage.getItem("filters") === null) {
+                matches = loopOverStories();
+            } else {
+                matches = theUserIsFiltering();
+            }
+
             if (matches.length == 0 || matches == undefined) {
                 LoadStories.hideSortButton();
                 let span = document.createElement("span");
@@ -125,11 +201,12 @@ const LoadStories = {
 
                 DOMTraverse.articleWrapper.style.backgroundColor = "white";
                 DOMTraverse.articleWrapper.appendChild(span);
+                setStoryAmount();
             } else if (matches.length > 25) {
                 let currentCount = 0;
                 if (currentCount == 0) {
                     let toShow = matches.slice(0, 25);
-                    xmapMatches(toShow);
+                    mapMatches(toShow);
                 }
 
                 if (storageItem == "readingList") {
@@ -137,9 +214,6 @@ const LoadStories = {
                 }
                 // Create a function that handles the button click, to load in more stories.
                 (function showNextStories() {
-                    window.addEventListener("resize", function () {
-                        location.reload();
-                    });
                     if (Utility.getCurrentScreenWidth > 1039) {
                         let elHeight = DOMTraverse.articleWrapper.clientHeight;
 
@@ -188,18 +262,23 @@ const LoadStories = {
                         });
                     }
                 })();
+
+                setStoryAmount();
             } else {
                 if (storageItem == "readingList") {
                     DOMTraverse.articleWrapper.parentElement.classList.add("reading-list-js-results");
                 }
                 mapMatches(matches);
+                setStoryAmount();
             }
 
-            [...DOMTraverse.sectionTitles].forEach((title) => {
-                if (title.innerHTML == "Resultaten" || title.innerHTML == "Leeslijst") {
-                    title.innerHTML += ` - ${matches.length}`;
-                }
-            });
+            function setStoryAmount() {
+                [...DOMTraverse.sectionTitles].forEach((title) => {
+                    if (title.innerHTML == "Resultaten" || title.innerHTML == "Leeslijst") {
+                        title.innerHTML += ` - ${matches.length}`;
+                    }
+                });
+            }
         })();
 
         function mapMatches(matches) {
@@ -232,23 +311,35 @@ const LoadStories = {
         }
 
         DOMTraverse.articleWrapper.removeChild(DOMTraverse.storyLoader[0]);
+        this.loadingFininished = true;
     },
     hideSortButton: function () {
         let sortButton = document.getElementById("toggle-button-group-sort");
         sortButton.style.display = "none";
     },
+    loadingFininished: false,
     matchStorageToRequest: function (match, story, i) {
         if (match == story.title.toLowerCase() || match == story.title) {
             let img;
             if (story.image != null || story.image != undefined) {
-                img = `/dist/img/storyImages/${story.image}`;
-            } else if (story.image == undefined) {
-                img = "http://lorempixel.com/400/200/";
-            }
+                if (!Utility.currentPath.includes("dfds_seaways")) {
+                    img = `/dist/img/storyImages/${story.image}`;
+                } else if (Utility.currentPath.includes("search-results")) {
+                    img = `../dist/img/storyImages/${story.image}`;
+                } else {
+                    img = `dist/img/storyImages/${story.image}`;
+                }
+            } else return;
 
-            let title = story.title.toLowerCase();
-            let number = story.nr;
-            let by = story.by;
+            let title = story.title.toLowerCase(),
+                number = story.nr,
+                by = story.by;
+
+            let filters = {
+                readTime: story.readTime,
+                storyLength: story.storyLength,
+                ageSuggested: story.ageSuggested
+            };
 
             let maxLength = 150;
 
@@ -256,22 +347,141 @@ const LoadStories = {
             let trimmedString = story.text.substr(0, maxLength);
             trimmedString = story.text.substr(0, Math.min(trimmedString.length, trimmedString.lastIndexOf(" ")));
 
-            let preview = trimmedString;
-            let fullText = story.text.substring(Math.max(trimmedString.length, trimmedString.lastIndexOf(" ")));
+            let preview = trimmedString,
+                fullText = story.text.substring(Math.max(trimmedString.length, trimmedString.lastIndexOf(" ")));
 
-            DOMTraverse.articleWrapper.innerHTML += CreateArticle.Article(img, by, title, number, preview, fullText, i);
+            DOMTraverse.articleWrapper.innerHTML += CreateArticle.Article(img, by, title, number, preview, fullText, i, filters);
         }
+    }
+};
+
+const SortStories = {
+    getElements: function () {
+        const sortForm = document.getElementById("button-group-sort"),
+            inputs = sortForm.querySelectorAll("input"),
+            labels = sortForm.querySelectorAll("label");
+
+        return {
+            sortForm: sortForm,
+            inputs: inputs,
+            labels: labels,
+        }
+    },
+    determineActiveSorter: function () {
+        const {
+            sortForm,
+            inputs,
+            labels,
+        } = this.getElements();
+
+        let previousCheckedInput = [],
+            prev,
+            currentActive;
+
+        inputs.forEach((input) => {
+            function pushActives(inp) {
+                previousCheckedInput.push(inp);
+            }
+
+            if (input.checked) {
+                pushActives(input);
+            }
+
+            input.addEventListener("click", function () {
+                if (this.checked === true) {
+                    pushActives(this);
+
+                    prev = previousCheckedInput.shift();
+                    prev.checked = false;
+                } else {
+                    prev = this;
+                }
+
+                prev.addEventListener("change", function () {
+                    setTimeout(function () {
+                        if (this.checked === false) {
+                            this.checked = true;
+                        }
+                    }, 500);
+                });
+                currentActive = previousCheckedInput[0];
+                SortStories.sortPerActive(currentActive);
+            });
+        });
+
+        currentActive = previousCheckedInput[0];
+        SortStories.sortPerActive(currentActive);
+    },
+    getStoriesArray: function () {
+        let articles = document.querySelectorAll(".article-wrapper article");
+        return articles;
+    },
+    sortPerActive: function (currentActive) {
+        let stories = [...this.getStoriesArray()],
+            storyTitles = [],
+            storyNumbers = [];
+
+        // Laurens Holst @Stackoverflow - Fisher Yates Algorithm.
+        function shuffle(array) {
+            let currentIndex = array.length,
+                temporaryValue, randomIndex;
+
+            // While there remain elements to shuffle...
+            while (0 !== currentIndex) {
+
+                // Pick a remaining element...
+                randomIndex = Math.floor(Math.random() * currentIndex);
+                currentIndex -= 1;
+
+                // And swap it with the current element.
+                temporaryValue = array[currentIndex];
+                array[currentIndex] = array[randomIndex];
+                array[randomIndex] = temporaryValue;
+            }
+
+            return array;
+        }
+
+        if (currentActive.name.includes("numeric")) {
+            function getStoryNum(story) {
+                let storyNumString = story.firstElementChild.firstElementChild.dataset.target,
+                    storyNum = storyNumString.slice(storyNumString.lastIndexOf("-" + 1));
+
+                return storyNum;
+            }
+            let num = stories.sort(function (a, b) {
+                return getStoryNum(a) == getStoryNum(b) ? 0 : (getStoryNum(a) > getStoryNum(b) ? 1 : -1);
+            });
+            this.updateHTML(num);
+        } else if (currentActive.name.includes("alphabetically")) {
+            let alpha = stories.sort(function (a, b) {
+                return a.id == b.id ? 0 : (a.id > b.id ? 1 : -1);
+            });
+            this.updateHTML(alpha);
+        } else if (currentActive.name.includes("popularity")) {
+            let pop = shuffle(stories);
+            this.updateHTML(pop);
+        } else if (currentActive.name.includes("relevance")) {
+            let rel = shuffle(stories);
+            this.updateHTML(rel);
+        }
+    },
+    updateHTML: function (typeSort) {
+        DOMTraverse.articleWrapper.innerHTML = "";
+        typeSort.forEach((story) => {
+            DOMTraverse.articleWrapper.appendChild(story);
+        });
     }
 };
 
 // Component which holds the structure of each article.
 const CreateArticle = {
-    Article: function (img, by, title, number, preview, fullText, i) {
+    Article: function (img, by, title, number, preview, fullText, i, filters) {
         let article = `
-        <article id="${title}">
+        <article id="${title}" data-filter-readTime=${filters.readTime} data-filter-storyLength=${filters.storyLength} data-filter-ageSuggested=${filters.ageSuggested}>
             ${this.ArticleHeader(img, by, title, number, i)}
             ${this.Paragraph(i, preview, fullText)}
-            ${this.Footer(title)}
+            ${this.Footer(title, this.ErrorModal(i), i)}
          </article>
         `;
         return article;
@@ -281,7 +491,7 @@ const CreateArticle = {
             <header class="article-header">
                 <img src=${img} alt="search-result-image" onclick="Microinteractions.toggleJavascript.call(this)" class="toggleFullStory" data-target="rest-text-${i}">
                 <span>Door: ${by}</span>
-                <div><h3 onclick="Microinteractions.toggleJavascript.call(this)" class="toggleFullStory" data-target="rest-text-${i}">${title} (${number})</h3></div>
+                <div onclick="Microinteractions.toggleJavascript.call(this)" class="toggleFullStory" data-target="rest-text-${i}"><h3>${title} (${number})</h3></div>
             </header>
         `;
         return header;
@@ -295,24 +505,52 @@ const CreateArticle = {
         `;
         return p;
     },
-    Footer: function (title) {
+    Footer: function (title, errorModal, i) {
         let footer;
         if (Utility.currentPath == "/") {
             footer = `
                 <footer>
                     <button type="button" class="btn btn-main" onClick="IndexPage.removeFromList.call(this)" id=read-later-${title}>Verwijderen uit leeslijst</button>
-                    <button type="button" class="btn btn-main">Downloaden</button>
+                    <button type="button" class="btn btn-main" id="toggle-download-modal-${i}">Toevoegen aan downloadlijst</button>
+                    ${errorModal}
                 </footer>
             `;
         } else {
             footer = `
                 <footer>
                     <button type="button" class="btn btn-main" onClick="ResultPage.addActiveClass.call(this)" id=read-later-${title}>Toevoegen aan leeslijst</button>
-                    <button type="button" class="btn btn-main">Downloaden</button>
+                    <button type="button" class="btn btn-main" id="toggle-download-modal-${i}" onClick="Downloading.handlePopup.call(this)">Toevoegen aan downloadlijst</button>
+                    ${errorModal}
                 </footer>
             `;
         }
         return footer;
+    },
+    ErrorModal: function (i) {
+        let src;
+        if (Utility.currentPath.includes("dfds_seaways")) {
+            src = "/projects/dfds_seaways/dist/img/icons/multiply_white.svg";
+        } else {
+            src = "/dist/img/icons/multiply_white.svg";
+        }
+        let errorModal = `
+            <section id="download-modal-${i}">
+                <header>
+                    <h4>Inloggen Vereist!</h4>
+                    <img src=${src} id="remove-modal-${i}"/>
+                    </header>
+                <p>
+                    Om verhalen toe te voegen aan de
+                    downloadlijst dient u ingelogd te zijn. U
+                    kunt snel naar de inlogpagina navigeren
+                    door op dit venster te klikken of door
+                    in het menu rechtsboven op “Inloggen /
+                    aanmelden” te drukken.
+                </p>
+            </section>
+        `;
+
+        return errorModal;
     }
 };
 
@@ -325,28 +563,17 @@ const Microinteractions = {
     determineElClicked: function () {
         let dataTar = this.dataset.target;
 
-        function getImagePath(image) {
-            let path;
-            if (Utility.currentPath == "/") {
-                path = `./dist/img/icons/${image}.svg`;
-            } else if (!Utility.currentPath.includes("stories")) {
-                path = `../dist/img/icons/${image}.svg`;
-            } else {
-                path = `../../dist/img/icons/${image}.svg`;
-            }
-            return path;
-        }
-
         if (dataTar.includes("main-menu")) {
             this.firstElementChild.alt == "Account icon" ? (
+                DOMTraverse.mainMenu.classList.add("js-active"),
                 DOMTraverse.mainTag.classList.add("js-active"),
                 this.firstElementChild.alt = "Sluit icon",
-                this.firstElementChild.src = getImagePath("multiply"),
+                this.firstElementChild.src = Utility.getImagePath("multiply"),
                 this.setAttribute("aria-label", "Sluit hoofdmenu")
             ) : (
                 DOMTraverse.mainTag.classList.remove("js-active"),
                 this.firstElementChild.alt = "Account icon",
-                this.firstElementChild.src = getImagePath("account"),
+                this.firstElementChild.src = Utility.getImagePath("account"),
                 this.setAttribute("aria-label", "Open hoofdmenu")
             );
         } else if (dataTar.includes("result-page-search-form")) {
@@ -391,55 +618,162 @@ const Microinteractions = {
     }()
 };
 
+const Downloading = {
+    isUserLoggedIn: Boolean,
+    getElements: function () {
+        const downloadButton = this;
+
+        const storyNumber = downloadButton.id.slice(downloadButton.id.lastIndexOf("-") + 1),
+            modal = document.getElementById(`download-modal-${storyNumber}`),
+            closeModalButton = modal.firstElementChild.firstElementChild.nextElementSibling;
+
+        return {
+            downloadButton: downloadButton,
+            storyNumber: storyNumber,
+            modal: modal,
+            closeModalButton: closeModalButton,
+        }
+    },
+    handlePopup: function () {
+        const {
+            downloadButton,
+            storyNumber,
+            modal,
+            closeModalButton,
+        } = Downloading.getElements.call(this);
+
+        let loading = true;
+        determineIfLoading();
+
+        if (Downloading.isUserLoggedIn) {
+            modal.classList.remove("js-active");
+
+            let mappableDownloadList = undefined;
+            let stringified;
+
+            let storyToAdd = this.parentElement.parentElement.id;
+
+            if (window.localStorage.getItem("downloadList") !== null) {
+                if (window.localStorage.getItem("downloadList").length !== 0) {
+                    mappableDownloadList = window.localStorage.getItem("downloadList").split(",");
+                    let isItemInCurrentDownloadList = false;
+
+                    mappableDownloadList.forEach((listItem) => {
+                        if (storyToAdd === listItem) {
+                            isItemInCurrentDownloadList = true;
+                        }
+                    });
+
+                    if (isItemInCurrentDownloadList === false) {
+                        stringified = mappableDownloadList.toString();
+                        stringified += `,${storyToAdd}`;
+
+                        setLocalStorage(stringified);
+                        addSuccessResponses();
+                    } else {
+                        addSuccessResponses(true);
+                    }
+                } else {
+                    addInitialItems(stringified, storyToAdd);
+                    setLocalStorage(stringified);
+                    addSuccessResponses();
+                }
+            } else {
+                addInitialItems(stringified, storyToAdd);
+                setLocalStorage(stringified);
+                addSuccessResponses();
+            }
+        } else {
+            modal.classList.add("js-active");
+            closeModalButton.addEventListener("click", function () {
+                modal.classList.remove("js-active");
+            });
+
+            setTimeout(function () {
+                modal.classList.remove("js-active");
+            }, 10000);
+
+            // Create a function that handles with the onclick of the text in the modal
+        }
+
+        function addInitialItems(stringified, storyToAdd) {
+            stringified = "";
+            stringified += `${storyToAdd}`;
+        }
+
+        function setLocalStorage(stringified) {
+            window.localStorage.setItem("downloadList", stringified);
+        }
+
+        function addSuccessResponses(isAddedAllready = false) {
+            let downloadSpan = DOMTraverse.topSpanDownloads;
+
+            loading = false;
+            determineIfLoading();
+
+            downloadButton.classList.add("js-success");
+            downloadButton.innerText = "Al toegevoegd aan downloadlijst";
+
+            if (!isAddedAllready) {
+                downloadSpan.classList.add("js-active");
+                setTimeout(() => {
+                    downloadSpan.classList.remove("js-active");
+                }, 5000);
+            }
+        }
+
+        function determineIfLoading() {
+            if (loading === true) {
+                downloadButton.classList.add("js-loading");
+            } else {
+                downloadButton.classList.remove("js-loading");
+            }
+        }
+    },
+};
+
 // Pages
 const Navigation = {
     getLoginOrSignup: function (path) {
         if (window.localStorage.getItem("login") != null || window.localStorage.getItem("signUp") != null) {
             if (path == "index") {
                 this.changeLoginNode("Uitloggen", true, true);
+                Downloading.isUserLoggedIn = true;
             } else if (path == "searchResults") {
                 this.changeLoginNode("Uitloggen", true, false);
+                Downloading.isUserLoggedIn = true;
             }
         } else {
             this.changeLoginNode("Inloggen");
+            Downloading.isUserLoggedIn = false;
+            console.log(Downloading.isUserLoggedIn);
         }
     },
     changeLoginNode: function (linkText, loggedIn, indexPath) {
         let nodes = this.getNodes();
         nodes.loginNodeAnchor.innerText = linkText;
 
-        if (loggedIn === true && indexPath === true) {
-            // Link prefixes based from index.html
-            nodes.firstLoginSibling.insertAdjacentHTML("beforeBegin", `
-                    <li class="dynamic-js">
-                        <a href="./html/settings.html" role="menuitem">Accountinstellingen</a>
-                    </li>
-                    <li class="dynamic-js">
-                        <a href="./html/reading-history.html" role="menuitem">Leesgeschiedenis</a>
-                    </li>
-                    <li class="dynamic-js">
-                        <a href="#reading-list" role="menuitem">Leeslijst</a>
-                    </li>
-                    <li class="dynamic-js">
-                        <a href="./html/notifications.html" role="menuitem">Notificaties</a>
-                    </li>
-                `);
-        } else if (loggedIn === true && indexPath !== true) {
+        if (loggedIn === true && indexPath !== true) {
             // Change the link prefixes to the base of the html folder.
+
+            // Create the downloadpage.
             nodes.firstLoginSibling.insertAdjacentHTML("beforeBegin", `
-                    <li class="dynamic-js">
-                        <a href="settings.html" role="menuitem">Accountinstellingen</a>
-                    </li>
-                    <li class="dynamic-js">
-                        <a href="reading-history.html" role="menuitem">Leesgeschiedenis</a>
-                    </li>
-                    <li class="dynamic-js">
-                        <a href="../index.html#reading-list" role="menuitem">Leeslijst</a>
-                    </li>
-                    <li class="dynamic-js">
-                        <a href="notifications.html" role="menuitem">Notificaties</a>
-                    </li>
-                `);
+                <li class="dynamic-js">
+                    <a href="download-list.html">Downloadlijst</a>
+                </li>
+                <li class= "dynamic-js">
+                    <a href="../index.html#reading-list" role="menuitem">Leeslijst</a>
+                </li>
+            `);
+        } else if (loggedIn === true && indexPath === true) {
+            nodes.firstLoginSibling.insertAdjacentHTML("beforeBegin", `
+                <li class="dynamic-js">
+                    <a href="html/download-list.html">Downloadlijst</a>
+                </li>
+                <li class= "dynamic-js">
+                    <a href="#reading-list" role="menuitem">Leeslijst</a>
+                </li>
+            `);
         } else {
             // Remove the added children from above.
             this.removeAddedMenuItems();
@@ -473,12 +807,30 @@ const IndexPage = {
             e.preventDefault();
 
             let input = DOMTraverse.searchInput.value;
+            console.log(true);
 
             this.reset();
+
+            if (window.localStorage.getItem("filters") !== undefined) {
+                window.localStorage.removeItem("filters");
+            }
             Utility.route("input", input);
         });
 
-        DOMTraverse.allStoriesButton.addEventListener("click", () => Utility.route("input", "allStories"));
+        DOMTraverse.allStoriesButton.addEventListener("click", () => {
+            if (window.localStorage.getItem("filters") !== undefined) {
+                window.localStorage.removeItem("filters");
+            }
+            Utility.route("input", "allStories");
+        });
+
+        DOMTraverse.filterForm.addEventListener("submit", function (e) {
+            e.preventDefault();
+
+            IndexPage.Filtering.handleFilterForm();
+
+            this.reset();
+        });
     },
     removeFromList: function () {
         let readingList = [...window.localStorage.readingList.split(",")];
@@ -516,7 +868,64 @@ const IndexPage = {
         articleWrapper.classList.add("no-results");
         articleWrapper.appendChild(iTag);
         articleWrapper.appendChild(spanTag);
-    }
+    },
+    Filtering: {
+        getElements: function () {
+            const filterFormFieldsets = DOMTraverse.filterForm.querySelectorAll("fieldset");
+            const filterFormInputs = DOMTraverse.filterForm.querySelectorAll("input");
+
+            return {
+                filterFormFieldsets: filterFormFieldsets,
+                filterFormInputs: filterFormInputs,
+            }
+        },
+        getActiveInputs: function () {
+            const {
+                filterFormFieldsets,
+                filterFormInputs
+            } = this.getElements();
+
+            let checkedArray = [];
+
+            filterFormInputs.forEach((input) => {
+                if (input.checked) {
+                    checkedArray.push(input);
+                }
+            });
+            return checkedArray;
+        },
+        handleFilterForm: function () {
+            let activeInputs = this.getActiveInputs();
+
+            if (activeInputs.length === 0 || activeInputs === undefined) {
+                // Tell the user to select some filters
+            } else {
+                // Move forward to matching the filters to the stories.
+                if (window.localStorage.getItem("input") != undefined) {
+                    window.localStorage.removeItem("input");
+                }
+
+                let filterFor = {
+                    readTime: [],
+                    ageSuggested: [],
+                    storyLength: [],
+                };
+
+                activeInputs.forEach((activeInput) => {
+                    if (activeInput.id.includes("readTime")) {
+                        filterFor.readTime.push(activeInput.id.substr(16));
+                    } else if (activeInput.id.includes("ageSuggested")) {
+                        filterFor.ageSuggested.push(activeInput.id.substr(20));
+                    } else if (activeInput.id.includes("storyLength")) {
+                        filterFor.storyLength.push(activeInput.id.substr(19));
+                    }
+                });
+
+                // Create something in the request module so that the filters are matched with the stories.
+                Utility.route("filters", JSON.stringify(filterFor));
+            }
+        },
+    },
 };
 
 const SignUpPage = {
@@ -605,7 +1014,11 @@ const SignUpPage = {
 
             function setStorage(login) {
                 localStorage.setItem("login", JSON.stringify(login));
-                window.location.href = "/index.html";
+                if (Utility.currentPath.includes("dfds_seaways")) {
+                    window.location.href = "../index.html";
+                } else {
+                    window.location.href = "/index.html";
+                }
             }
         },
         userPasswordReset: function () {
@@ -664,18 +1077,18 @@ const ResultPage = {
         // Get current reading list.
         let title = this.id.slice(this.id.lastIndexOf("-") + 1);
 
-        let readingListStorage = window.localStorage.getItem("readingList");
+        let readingListArray = window.localStorage.getItem("readingList");
 
         ResultPage.readingListArray.push(title);
 
         window.localStorage.setItem("readingList", ResultPage.readingListArray);
     },
     showTopMessage: function () {
-        DOMTraverse.topSpan.classList.add("js-active");
+        DOMTraverse.topSpanReadingList.classList.add("js-active");
         setTimeout(() => {
             this.classList.remove("js-active");
-            DOMTraverse.topSpan.classList.remove("js-active");
-        }, 3000);
+            DOMTraverse.topSpanReadingList.classList.remove("js-active");
+        }, 4000);
     }
 };
 
@@ -840,12 +1253,36 @@ const StoryPage = {
 let onLoad = function () {
     let cp = Utility.getCurrentPath();
 
+    DOMTraverse.topSpans.forEach((span) => {
+        window.addEventListener("scroll", function () {
+            if (window.pageYOffset === 0) {
+                span.style.top = "4em";
+            } else {
+                span.style.top = "0";
+            }
+        });
+    });
+
     if (cp == "index") {
         IndexPage.getReadingList("readingList");
         IndexPage.setFormListeners();
         Navigation.getLoginOrSignup("index");
     } else if (cp == "searchResults") {
-        LoadStories.createRequest("input");
+        if (window.localStorage.getItem("input") !== undefined) {
+            LoadStories.createRequest("input");
+        } else if (window.localStorage.getItem("filters") !== undefined) {
+            LoadStories.createRequest("filters");
+        }
+        if (LoadStories.loadingFininished === true) {
+            SortStories.determineActiveSorter();
+        } else {
+            let checkForLoaded = setInterval(() => {
+                if (LoadStories.loadingFininished === true) {
+                    SortStories.determineActiveSorter();
+                    clearInterval(checkForLoaded);
+                }
+            }, 500);
+        }
         Navigation.getLoginOrSignup("searchResults");
     } else if (cp == "signUp") {
         SignUpPage.Constraint.checkElements();

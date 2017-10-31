@@ -1,7 +1,37 @@
+@font-face {
+    font-family: 'Bold';
+    src: url('../fonts/dfds-bold.eot');
+    src: url('../fonts/dfds-bold.eot?#iefix') format('embedded-opentype'), url('../fonts/dfds-bold.woff2') format('woff2'), url('../fonts/dfds-bold.woff') format('woff'), url('../fonts/dfds-bold.ttf') format('truetype'), url('../fonts/dfds-bold.svg#svgFontName') format('svg');
+}
+
+@font-face {
+    font-family: 'Light';
+    src: url('../fonts/dfds-light.eot');
+    src: url('../fonts/dfds-light.eot?#iefix') format('embedded-opentype'), url('../fonts/dfds-light.woff2') format('woff2'), url('../fonts/dfds-light.woff') format('woff'), url('../fonts/dfds-light.ttf') format('truetype'), url('../fonts/dfds-light.svg#svgFontName') format('svg');
+}
+
+@font-face {
+    font-family: 'Grandi';
+    src: url('../fonts/grandi-personal-use-black-italic.eot');
+    src: url('../fonts/grandi-personal-use-black-italic.eot?#iefix') format('embedded-opentype'), url('../fonts/grandi-personal-use-black-italic.woff2') format('woff2'), url('../fonts/grandi-personal-use-black-italic.woff') format('woff'), url('../fonts/grandi-personal-use-black-italic.ttf') format('truetype'), url('../fonts/grandi-personal-use-black-italic.svg#svgFontName') format('svg');
+}
+
+@font-face {
+    font-family: 'SilomWeb';
+    src: url('../fonts/silom.eot');
+    src: url('../fonts/silom.eot?#iefix') format('embedded-opentype'), url('../fonts/silom.woff2') format('woff2'), url('../fonts/silom.woff') format('woff'), url('../fonts/silom.ttf') format('truetype'), url('../fonts/silom.svg#svgFontName') format('svg');
+}
+
+@font-face {
+    font-family: 'CaslonWeb';
+    src: url('../fonts/BigCaslon.eot');
+    src: url('../fonts/BigCaslon-Medium.eot?#iefix') format('embedded-opentype'), url('../fonts/BigCaslon.woff2') format('woff2'), url('../fonts/BigCaslon-Medium.woff') format('woff'), url('../fonts/BigCaslon-Medium.ttf') format('truetype'), url('../fonts/BigCaslon-Medium.svg#svgFontName') format('svg');
+}
+
 :root {
     /*Fonts*/
-    --bold-family: "DFDS Bold", "Segoe UI", "Lucida Grande", "Helvetica Neue", Arial, sans-serif;
-    --light-family: "DFDS Light", "Segoe UI", "Lucida Grande", "Helvetica Neue", Arial, sans-serif;
+    --bold-family: "Bold", "Segoe UI", "Lucida Grande", "Helvetica Neue", Arial, sans-serif;
+    --light-family: "Light", "Segoe UI", "Lucida Grande", "Helvetica Neue", Arial, sans-serif;
     --segoe-family: "Segoe UI", "Lucida Grande", "Helvetica Neue", Arial, sans-serif;
     /* Miscelaneous */
     --gap: 1.25rem;
@@ -32,12 +62,18 @@ ul {
     list-style: none;
 }
 
+body,
+html {
+    overflow-x: hidden;
+}
+
 body {
     background-color: var(--gray-medium);
     font-family: var(--segoe-family);
     font-weight: 400;
     line-height: 1.5;
     overflow-x: hidden;
+    position: relative;
     &.hide-scroll-bar {
         &::-webkit-scrollbar {
             display: none;
@@ -228,18 +264,28 @@ body {
         }
     }
     &>span {
-        background-color: var(--tertiary-orange);
         color: var(--white);
         display: block;
-        height: 2em;
+        position: fixed;
+        top: 4em;
+        left: 0;
+        right: 0;
         line-height: 2;
         opacity: 0;
         padding: 0 var(--outer-margin);
         text-align: right;
+        word-wrap: wrap;
         transform: translateX(100%);
         transition: all var(--transition-speed) cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        width: 100vw;
         z-index: 3;
+        &.reading-list {
+            background-color: var(--tertiary-orange);
+            height: 2em;
+        }
+        &.downloads {
+            background-color: var(--primary-blue);
+            height: 4em;
+        }
         &.js-active {
             opacity: 1;
             transform: translateX(0);
@@ -536,7 +582,7 @@ main {
                     }
                 }
                 span {
-                    font-family: "Grandi PERSONAL USE", Arial, Helvetica, sans-serif;
+                    font-family: "Grandi", Arial, Helvetica, sans-serif;
                     font-size: 250%;
                     opacity: .3;
                 }
@@ -569,7 +615,7 @@ main {
                         min-height: 50%;
                         & * {
                             color: var(--white);
-                            font-family: "Silom", Arial, Helvetica, sans-serif;
+                            font-family: "SilomWeb", Arial, Helvetica, sans-serif;
                         }
                         header {
                             margin: 0 auto 4em;
@@ -796,7 +842,7 @@ main {
                     }
                     &__right {
                         background-color: var(--white);
-                        font-family: "Big Caslon Medium";
+                        font-family: "CaslonWeb", Arial, Helvetica, sans-serif;
                         padding: 1em .5em 1em;
                         position: relative;
                         min-height: 65%;
@@ -861,19 +907,7 @@ main {
             display: block;
             font-size: .9em;
             margin: .4em 0 .2em;
-            position: relative; // &[for*="sign-up-password"] {
-            //     &::after {
-            //         border-radius: 50%;
-            //         border: 2px solid var(--gray);
-            //         color: var(--gray);
-            //         content: "?";
-            //         display: inline-block;
-            //         height: 1.5em;
-            //         text-align: center;
-            //         transform: scale(.5);
-            //         width: 1.5em;
-            //     }
-            // }
+            position: relative;
         }
         &>small {
             color: var(--gray);
@@ -1196,6 +1230,16 @@ main {
     }
 }
 
+// Loader animation
+@keyframes loading {
+    0% {
+        transform: translateY(-50%) rotateZ(0deg);
+    }
+    100% {
+        transform: translateY(-50%) rotateZ(360deg);
+    }
+}
+
 .article-wrapper {
     display: flex;
     flex-direction: row;
@@ -1337,18 +1381,18 @@ main {
         display: flex;
         flex-direction: column;
         margin-right: 1em;
-        min-width: 80%;
-        max-width: 25rem;
+        min-width: 100%;
+        max-width: 15rem;
         overflow: hidden;
         scroll-snap-coordinate: 50% 50%;
         width: 90%;
         &:last-of-type {
             margin-right: -30%;
         }
-        h3 {
+        &>h3 {
             font-size: 1.1em;
         }
-        p {
+        &>p {
             font-size: .9em;
             margin: 0 .625rem auto;
             max-width: 30rem;
@@ -1371,9 +1415,11 @@ main {
         }
         footer {
             margin: 0 .625rem;
+            position: relative;
             button {
                 position: relative;
                 width: 100%;
+                z-index: 3;
                 &::before {
                     content: "";
                     height: 50%;
@@ -1394,6 +1440,62 @@ main {
                         background: url("../img/icons/download.svg") left no-repeat;
                         background-size: contain;
                     }
+                    &.js-loading {
+                        background-color: #FFAF65;
+                        cursor: not-allowed;
+                        &::before {
+                            background: url("../img/icons/loading.svg") left no-repeat;
+                            background-size: contain;
+                            animation: loading 500ms ease-in-out forwards infinite;
+                        }
+                    }
+                    &.js-success {
+                        background-color: var(--primary-blue);
+                        &::before {
+                            background: url("../img/icons/verify-sign.svg") left no-repeat;
+                            background-size: contain;
+                        }
+                    }
+                }
+            }
+            section {
+                background-color: var(--white);
+                border: 1px solid #95989A;
+                bottom: 0;
+                box-shadow: 3px 3px 5px rgba(0, 0, 0, .4);
+                margin-bottom: .5em;
+                opacity: 0;
+                position: absolute;
+                right: 0;
+                transform: translateX(4000%) scale(0);
+                transform-origin: right bottom;
+                transition: all 500ms ease-in-out;
+                z-index: 5;
+                &.js-active {
+                    opacity: 1;
+                    transform: translateX(0) scale(1);
+                }
+                &>header {
+                    align-items: center;
+                    background-color: var(--tertiary-orange);
+                    display: flex;
+                    justify-content: space-between;
+                    padding: .5em .5em;
+                    &>h4 {
+                        color: var(--white);
+                        text-transform: capitalize;
+                    }
+                    &>img {
+                        box-sizing: content-box;
+                        cursor: pointer;
+                        max-height: 1.25em;
+                        padding: .5em;
+                    }
+                }
+                &>p {
+                    color: var(--secondary-blue);
+                    cursor: pointer;
+                    padding: .5em;
                 }
             }
         }

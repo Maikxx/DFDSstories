@@ -36,9 +36,6 @@
                         <a href="html/signup.html" role="menuitem">Inloggen</a>
                     </li>
                     <li>
-                        <a href="html/reading-history.html" role="menuitem">Leesgeschiedenis</a>
-                    </li>
-                    <li>
                         <a href="html/stories/kater.html" role="menuitem">Kater - Futloos</a>
                     </li>
                     <li>
@@ -53,6 +50,7 @@
         </nav>
     </header>
     <section>
+        <h4 class="hidden">Main Navigation</h4>
         <nav id="main-menu">
             <ul role="menu">
                 <li id="login-node">
@@ -89,51 +87,51 @@
                 </fieldset>
                 <a href="#" aria-label="Laat alle verhalen zien" id="show-all-stories">of toon alle verhalen</a>
             </form>
-            <form action="#" class="find-stories-form filter" id="filter-form">
+            <form action="#" method="POST" class="find-stories-form filter" id="filter-form">
                 <span>Filter verhalen</span>
-                <fieldset class="button-group filter" role="listbox" id="select-age">
+                <fieldset class="button-group filter" role="listbox" id="select-ageSuggested">
                     <legend>Leeftijd</legend>
                     <div>
-                        <input type="checkbox" name="filter-age-all" class="btn hidden" id="filter-age-all" aria-label="Alle leeftijden">
-                        <label for="filter-age-all">Elke</label>
+                        <input type="checkbox" name="filter-ageSuggested-all" class="btn hidden" id="filter-ageSuggested-all" aria-label="Alle leeftijden">
+                        <label for="filter-ageSuggested-all">Elke</label>
 
-                        <input type="checkbox" name="filter-age-six-plus" class="btn hidden" id="filter-age-six-plus" aria-label="Zes of ouder">
-                        <label for="filter-age-six-plus">6+</label>
+                        <input type="checkbox" name="filter-ageSuggested-6+" class="btn hidden" id="filter-ageSuggested-6+" aria-label="Zes of ouder">
+                        <label for="filter-ageSuggested-6+">6+</label>
 
-                        <input type="checkbox" name="filter-age-twelve-plus" class="btn hidden" id="filter-age-twelve-plus" aria-label="Zes of ouder">
-                        <label for="filter-age-twelve-plus">12+</label>
+                        <input type="checkbox" name="filter-ageSuggested-12+" class="btn hidden" id="filter-ageSuggested-12+" aria-label="Zes of ouder">
+                        <label for="filter-ageSuggested-12+">12+</label>
 
-                        <input type="checkbox" name="filter-age-eightteen-plus" class="btn hidden" id="filter-age-eightteen-plus" aria-label="Achtien of ouder">
-                        <label for="filter-age-eightteen-plus">18+</label>
+                        <input type="checkbox" name="filter-ageSuggested-18+" class="btn hidden" id="filter-ageSuggested-18+" aria-label="Achtien of ouder">
+                        <label for="filter-ageSuggested-18+">18+</label>
                     </div>
                 </fieldset>
-                <fieldset class="button-group filter" role="listbox" id="select-read-time">
+                <fieldset class="button-group filter" role="listbox" id="select-readTime">
                     <legend>Leestijd in minuten</legend>
                     <div>
-                        <input type="checkbox" name="filter-readtime-one-five" class="btn hidden" id="filter-readtime-one-five" aria-label="Een tot vijf">
-                        <label for="filter-readtime-one-five">1-5</label>
+                        <input type="checkbox" name="filter-readTime-1-5" class="btn hidden" id="filter-readTime-1-5" aria-label="Een tot vijf">
+                        <label for="filter-readTime-1-5">1-5</label>
 
-                        <input type="checkbox" name="filter-readtime-five-ten" class="btn hidden" id="filter-readtime-five-ten" aria-label="Vijf tot tien">
-                        <label for="filter-readtime-five-ten">5-10</label>
+                        <input type="checkbox" name="filter-readTime-5-10" class="btn hidden" id="filter-readTime-5-10" aria-label="Vijf tot tien">
+                        <label for="filter-readTime-5-10">5-10</label>
 
-                        <input type="checkbox" name="filter-readtime-ten-twenty" class="btn hidden" id="filter-readtime-ten-twenty" aria-label="Tien tot twintig">
-                        <label for="filter-readtime-ten-twenty">10-20</label>
+                        <input type="checkbox" name="filter-readTime-10-20" class="btn hidden" id="filter-readTime-10-20" aria-label="Tien tot twintig">
+                        <label for="filter-readTime-10-20">10-20</label>
 
-                        <input type="checkbox" name="filter-readtime-twenty-plus" class="btn hidden" id="filter-readtime-twenty-plus" aria-label="Twintig of langer">
-                        <label for="filter-readtime-twenty-plus">20+</label>
+                        <input type="checkbox" name="filter-readTime-20+" class="btn hidden" id="filter-readTime-20+" aria-label="Twintig of langer">
+                        <label for="filter-readTime-20+">20+</label>
                     </div>
                 </fieldset>
-                <fieldset class="button-group filter" role="listbox" id="select-story-length">
+                <fieldset class="button-group filter" role="listbox" id="select-storyLength">
                     <legend>Verhaallengte</legend>
                     <div>
-                        <input type="checkbox" name="filter-length-short" class="btn hidden" id="filter-length-short" aria-label="Kort">
-                        <label for="filter-length-short">Kort</label>
-                        <input type="checkbox" name="filter-length-middle" class="btn hidden" id="filter-length-middle" aria-label="Middellang">
-                        <label for="filter-length-middle">Middellang</label>
-                        <input type="checkbox" name="filter-length-long" class="btn hidden" id="filter-length-long" aria-label="Lang">
-                        <label for="filter-length-long">Lang</label>
-                        <input type="checkbox" name="filter-length-very-long" class="btn hidden" id="filter-length-very-long" aria-label="Erg lang">
-                        <label for="filter-length-very-long">Erg lang</label>
+                        <input type="checkbox" name="filter-storyLength-short" class="btn hidden" id="filter-storyLength-short" aria-label="Kort">
+                        <label for="filter-storyLength-short">Kort</label>
+                        <input type="checkbox" name="filter-storyLength-middleLong" class="btn hidden" id="filter-storyLength-middleLong" aria-label="Middellang">
+                        <label for="filter-storyLength-middleLong">Middellang</label>
+                        <input type="checkbox" name="filter-storyLength-long" class="btn hidden" id="filter-storyLength-long" aria-label="Lang">
+                        <label for="filter-storyLength-long">Lang</label>
+                        <input type="checkbox" name="filter-storyLength-veryLong" class="btn hidden" id="filter-storyLength-veryLong" aria-label="Erg lang">
+                        <label for="filter-storyLength-veryLong">Erg lang</label>
                     </div>
                 </fieldset>
                 <button class="btn btn-main" type="submit" aria-label="Filteren">Filter</button>
@@ -251,7 +249,7 @@
         </section>
         <small>&copy; 2017, DFDS en Maikel van Veen</small>
     </footer>
-    <script src="dist/js/compiled.js"></script>
+    <script src="dist/js/main.min.js"></script>
 </body>
 
 </html>

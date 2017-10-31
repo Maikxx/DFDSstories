@@ -7,16 +7,20 @@ var DOMTraverse = {
     /* Multiple Pages */
     articleWrapper: document.querySelector(".article-wrapper"),
     mainMenu: document.getElementById("main-menu"),
+    mainMenuToggle: document.getElementById("toggle-main-menu"),
     mainTag: document.querySelector("main"),
     sectionTitles: document.getElementsByClassName("section-title"),
 
     /* Index Page */
     allStoriesButton: document.getElementById("show-all-stories"),
+    filterForm: document.getElementById("filter-form"),
     searchform: document.getElementById("search-form"),
     searchInput: document.getElementById("search-for-title"),
 
     /* Results Page */
-    topSpan: document.getElementsByClassName("top-span")[0],
+    topSpans: [].concat(_toConsumableArray(document.getElementsByClassName("top-span"))),
+    topSpanReadingList: document.getElementsByClassName("top-span reading-list")[0],
+    topSpanDownloads: document.getElementsByClassName("top-span downloads")[0],
     storyLoader: document.getElementsByClassName("story-loader"),
 
     /* Signup Page */
@@ -34,15 +38,42 @@ var DOMTraverse = {
 var Utility = {
     currentPath: window.location.pathname,
     getCurrentPath: function getCurrentPath() {
-        if (this.currentPath == "/index.html" || this.currentPath == "/") return "index";else if (this.currentPath == "/html/search-results.html") return "searchResults";else if (this.currentPath == "/html/signup.html") return "signUp";else if (this.currentPath == "/html/stories/kater.html") return "kater";else if (this.currentPath == "/html/stories/paranoia.html") return "paranoia";else if (this.currentPath == "/html/stories/vrijdag-de-dertiende.html") return "vrijdag";
+        if (this.currentPath == "/index.html" || this.currentPath == "/" || this.currentPath == "/projects/dfds_seaways/" || this.currentPath == "/projects/dfds_seaways/index.html") {
+            return "index";
+        } else if (this.currentPath == "/projects/dfds_seaways/html/search-results.html" || this.currentPath == "/html/search-results.html") return "searchResults";else if (this.currentPath == "/html/signup.html" || this.currentPath == "/projects/dfds_seaways/html/signup.html") return "signUp";else if (this.currentPath == "/html/stories/kater.html" || this.currentPath == "/projects/dfds_seaways/html/stories/kater.html") return "kater";else if (this.currentPath == "/html/stories/paranoia.html" || this.currentPath == "/projects/dfds_seaways/html/stories/paranoia.html") return "paranoia";else if (this.currentPath == "/html/stories/vrijdag-de-dertiende.html" || this.currentPath == "/projects/dfds_seaways/html/stories/vrijdag-de-dertiende.html") return "vrijdag";
     },
     getCurrentScreenHeight: window.innerHeight,
     getCurrentScreenWidth: window.innerWidth,
+    getImagePath: function getImagePath(image) {
+        var path = void 0;
+        if (this.currentPath.includes("dfds_seaways")) {
+            if (this.currentPath == "/" || this.currentPath.includes("/index.html")) {
+                path = "/projects/dfds_seaways/dist/img/icons/" + image + ".svg";
+            } else if (!this.currentPath.includes("stories")) {
+                path = "../dist/img/icons/" + image + ".svg";
+            } else {
+                path = "../../dist/img/icons/" + image + ".svg";
+            }
+        } else {
+            if (this.currentPath == "/" || this.currentPath == "/index.html") {
+                path = "./dist/img/icons/" + image + ".svg";
+            } else if (!this.currentPath.includes("stories")) {
+                path = "../dist/img/icons/" + image + ".svg";
+            } else {
+                path = "../../dist/img/icons/" + image + ".svg";
+            }
+        }
+        return path;
+    },
     route: function route(key, value) {
         localStorage.setItem(key, value);
-        window.location.href = "/html/search-results.html";
+        if (this.currentPath == "/" || this.currentPath == "/index.html") {
+            window.location.href = "/html/search-results.html";
+        } else {
+            window.location.href = "/projects/dfds_seaways/html/search-results.html";
+        }
     },
-    storyStorage: "https://api.myjson.com/bins/zbwpn",
+    storyStorage: "https://api.myjson.com/bins/qvlgr",
     xhr: new XMLHttpRequest()
 };
 
@@ -95,28 +126,74 @@ var LoadStories = {
         function loopOverStories() {
             var resultArray = [];
 
-            if (storageItem == "input") {
-                ls = localStorage.getItem(storageItem);
-                data.stories.forEach(function (story) {
-                    if (ls === "allStories") {
-                        resultArray.push(story.title);
-                    } else {
-                        if (story.title.toLowerCase().includes(ls.toLowerCase()) || story.text.indexOf(ls.toLowerCase()) != -1) {
+            if (localStorage.getItem("filters") === undefined || localStorage.getItem("filters") === null) {
+                if (storageItem == "input") {
+                    ls = localStorage.getItem(storageItem);
+                    data.stories.forEach(function (story) {
+                        if (ls === "allStories") {
                             resultArray.push(story.title);
+                        } else {
+                            if (story.title.toLowerCase().includes(ls.toLowerCase()) || story.text.indexOf(ls.toLowerCase()) != -1) {
+                                resultArray.push(story.title);
+                            }
                         }
+                    });
+                } else if (storageItem == "readingList") {
+                    ls = [].concat(_toConsumableArray(localStorage.getItem(storageItem).split(",")));
+                    ls.forEach(function (item) {
+                        resultArray.push(item);
+                    });
+                }
+            } else {
+                ls = JSON.parse(localStorage.getItem("filters"));
+                for (var filter in ls) {
+                    if (ls.hasOwnProperty(filter)) {
+                        resultArray.push({
+                            filter: ls[filter]
+                        });
                     }
-                });
-            } else if (storageItem == "readingList") {
-                ls = [].concat(_toConsumableArray(localStorage.getItem(storageItem).split(",")));
-                ls.forEach(function (item) {
-                    resultArray.push(item);
-                });
+                }
             }
             return resultArray;
         }
 
         (function getResults() {
-            var matches = loopOverStories();
+            var matches = void 0;
+
+            function theUserIsFiltering() {
+                var filters = loopOverStories();
+                var filtersArray = [];
+                var resultArray = [];
+
+                (function getFilters() {
+                    filters.forEach(function (filter) {
+                        for (var filterValue in filter) {
+                            if (filter.hasOwnProperty(filterValue)) {
+                                filter[filterValue].forEach(function (value) {
+                                    filtersArray.push(value);
+                                });
+                            }
+                        }
+                    });
+                })();
+
+                data.stories.forEach(function (story) {
+                    filtersArray.forEach(function (filter) {
+                        if (story.readTime === filter || story.storyLength === filter || story.ageSuggested === filter) {
+                            resultArray.push(story.title);
+                        }
+                    });
+                });
+
+                return resultArray;
+            }
+
+            if (localStorage.getItem("filters") === undefined || localStorage.getItem("filters") === null) {
+                matches = loopOverStories();
+            } else {
+                matches = theUserIsFiltering();
+            }
+
             if (matches.length == 0 || matches == undefined) {
                 LoadStories.hideSortButton();
                 var span = document.createElement("span");
@@ -124,11 +201,12 @@ var LoadStories = {
 
                 DOMTraverse.articleWrapper.style.backgroundColor = "white";
                 DOMTraverse.articleWrapper.appendChild(span);
+                setStoryAmount();
             } else if (matches.length > 25) {
                 var currentCount = 0;
                 if (currentCount == 0) {
                     var toShow = matches.slice(0, 25);
-                    xmapMatches(toShow);
+                    mapMatches(toShow);
                 }
 
                 if (storageItem == "readingList") {
@@ -136,9 +214,6 @@ var LoadStories = {
                 }
                 // Create a function that handles the button click, to load in more stories.
                 (function showNextStories() {
-                    window.addEventListener("resize", function () {
-                        location.reload();
-                    });
                     if (Utility.getCurrentScreenWidth > 1039) {
                         var elHeight = DOMTraverse.articleWrapper.clientHeight;
 
@@ -187,18 +262,23 @@ var LoadStories = {
                         });
                     }
                 })();
+
+                setStoryAmount();
             } else {
                 if (storageItem == "readingList") {
                     DOMTraverse.articleWrapper.parentElement.classList.add("reading-list-js-results");
                 }
                 mapMatches(matches);
+                setStoryAmount();
             }
 
-            [].concat(_toConsumableArray(DOMTraverse.sectionTitles)).forEach(function (title) {
-                if (title.innerHTML == "Resultaten" || title.innerHTML == "Leeslijst") {
-                    title.innerHTML += " - " + matches.length;
-                }
-            });
+            function setStoryAmount() {
+                [].concat(_toConsumableArray(DOMTraverse.sectionTitles)).forEach(function (title) {
+                    if (title.innerHTML == "Resultaten" || title.innerHTML == "Leeslijst") {
+                        title.innerHTML += " - " + matches.length;
+                    }
+                });
+            }
         })();
 
         function mapMatches(matches) {
@@ -239,23 +319,35 @@ var LoadStories = {
         }
 
         DOMTraverse.articleWrapper.removeChild(DOMTraverse.storyLoader[0]);
+        this.loadingFininished = true;
     },
     hideSortButton: function hideSortButton() {
         var sortButton = document.getElementById("toggle-button-group-sort");
         sortButton.style.display = "none";
     },
+    loadingFininished: false,
     matchStorageToRequest: function matchStorageToRequest(match, story, i) {
         if (match == story.title.toLowerCase() || match == story.title) {
             var img = void 0;
             if (story.image != null || story.image != undefined) {
-                img = "/dist/img/storyImages/" + story.image;
-            } else if (story.image == undefined) {
-                img = "http://lorempixel.com/400/200/";
-            }
+                if (!Utility.currentPath.includes("dfds_seaways")) {
+                    img = "/dist/img/storyImages/" + story.image;
+                } else if (Utility.currentPath.includes("search-results")) {
+                    img = "../dist/img/storyImages/" + story.image;
+                } else {
+                    img = "dist/img/storyImages/" + story.image;
+                }
+            } else return;
 
-            var title = story.title.toLowerCase();
-            var number = story.nr;
-            var by = story.by;
+            var title = story.title.toLowerCase(),
+                number = story.nr,
+                by = story.by;
+
+            var filters = {
+                readTime: story.readTime,
+                storyLength: story.storyLength,
+                ageSuggested: story.ageSuggested
+            };
 
             var maxLength = 150;
 
@@ -263,36 +355,167 @@ var LoadStories = {
             var trimmedString = story.text.substr(0, maxLength);
             trimmedString = story.text.substr(0, Math.min(trimmedString.length, trimmedString.lastIndexOf(" ")));
 
-            var preview = trimmedString;
-            var fullText = story.text.substring(Math.max(trimmedString.length, trimmedString.lastIndexOf(" ")));
+            var preview = trimmedString,
+                fullText = story.text.substring(Math.max(trimmedString.length, trimmedString.lastIndexOf(" ")));
 
-            DOMTraverse.articleWrapper.innerHTML += CreateArticle.Article(img, by, title, number, preview, fullText, i);
+            DOMTraverse.articleWrapper.innerHTML += CreateArticle.Article(img, by, title, number, preview, fullText, i, filters);
         }
+    }
+};
+
+var SortStories = {
+    getElements: function getElements() {
+        var sortForm = document.getElementById("button-group-sort"),
+            inputs = sortForm.querySelectorAll("input"),
+            labels = sortForm.querySelectorAll("label");
+
+        return {
+            sortForm: sortForm,
+            inputs: inputs,
+            labels: labels
+        };
+    },
+    determineActiveSorter: function determineActiveSorter() {
+        var _getElements = this.getElements(),
+            sortForm = _getElements.sortForm,
+            inputs = _getElements.inputs,
+            labels = _getElements.labels;
+
+        var previousCheckedInput = [],
+            prev = void 0,
+            currentActive = void 0;
+
+        inputs.forEach(function (input) {
+            function pushActives(inp) {
+                previousCheckedInput.push(inp);
+            }
+
+            if (input.checked) {
+                pushActives(input);
+            }
+
+            input.addEventListener("click", function () {
+                if (this.checked === true) {
+                    pushActives(this);
+
+                    prev = previousCheckedInput.shift();
+                    prev.checked = false;
+                } else {
+                    prev = this;
+                }
+
+                prev.addEventListener("change", function () {
+                    setTimeout(function () {
+                        if (this.checked === false) {
+                            this.checked = true;
+                        }
+                    }, 500);
+                });
+                currentActive = previousCheckedInput[0];
+                SortStories.sortPerActive(currentActive);
+            });
+        });
+
+        currentActive = previousCheckedInput[0];
+        SortStories.sortPerActive(currentActive);
+    },
+    getStoriesArray: function getStoriesArray() {
+        var articles = document.querySelectorAll(".article-wrapper article");
+        return articles;
+    },
+    sortPerActive: function sortPerActive(currentActive) {
+        var stories = [].concat(_toConsumableArray(this.getStoriesArray())),
+            storyTitles = [],
+            storyNumbers = [];
+
+        // Laurens Holst @Stackoverflow - Fisher Yates Algorithm.
+        function shuffle(array) {
+            var currentIndex = array.length,
+                temporaryValue = void 0,
+                randomIndex = void 0;
+
+            // While there remain elements to shuffle...
+            while (0 !== currentIndex) {
+
+                // Pick a remaining element...
+                randomIndex = Math.floor(Math.random() * currentIndex);
+                currentIndex -= 1;
+
+                // And swap it with the current element.
+                temporaryValue = array[currentIndex];
+                array[currentIndex] = array[randomIndex];
+                array[randomIndex] = temporaryValue;
+            }
+
+            return array;
+        }
+
+        if (currentActive.name.includes("numeric")) {
+            var getStoryNum = function getStoryNum(story) {
+                var storyNumString = story.firstElementChild.firstElementChild.dataset.target,
+                    storyNum = storyNumString.slice(storyNumString.lastIndexOf("-" + 1));
+
+                return storyNum;
+            };
+
+            var num = stories.sort(function (a, b) {
+                return getStoryNum(a) == getStoryNum(b) ? 0 : getStoryNum(a) > getStoryNum(b) ? 1 : -1;
+            });
+            this.updateHTML(num);
+        } else if (currentActive.name.includes("alphabetically")) {
+            var alpha = stories.sort(function (a, b) {
+                return a.id == b.id ? 0 : a.id > b.id ? 1 : -1;
+            });
+            this.updateHTML(alpha);
+        } else if (currentActive.name.includes("popularity")) {
+            var pop = shuffle(stories);
+            this.updateHTML(pop);
+        } else if (currentActive.name.includes("relevance")) {
+            var rel = shuffle(stories);
+            this.updateHTML(rel);
+        }
+    },
+    updateHTML: function updateHTML(typeSort) {
+        DOMTraverse.articleWrapper.innerHTML = "";
+        typeSort.forEach(function (story) {
+            DOMTraverse.articleWrapper.appendChild(story);
+        });
     }
 };
 
 // Component which holds the structure of each article.
 var CreateArticle = {
-    Article: function Article(img, by, title, number, preview, fullText, i) {
-        var article = "\n        <article id=\"" + title + "\">\n            " + this.ArticleHeader(img, by, title, number, i) + "\n            " + this.Paragraph(i, preview, fullText) + "\n            " + this.Footer(title) + "\n         </article>\n        ";
+    Article: function Article(img, by, title, number, preview, fullText, i, filters) {
+        var article = "\n        <article id=\"" + title + "\" data-filter-readTime=" + filters.readTime + " data-filter-storyLength=" + filters.storyLength + " data-filter-ageSuggested=" + filters.ageSuggested + ">\n            " + this.ArticleHeader(img, by, title, number, i) + "\n            " + this.Paragraph(i, preview, fullText) + "\n            " + this.Footer(title, this.ErrorModal(i), i) + "\n         </article>\n        ";
         return article;
     },
     ArticleHeader: function ArticleHeader(img, by, title, number, i) {
-        var header = "\n            <header class=\"article-header\">\n                <img src=" + img + " alt=\"search-result-image\" onclick=\"Microinteractions.toggleJavascript.call(this)\" class=\"toggleFullStory\" data-target=\"rest-text-" + i + "\">\n                <span>Door: " + by + "</span>\n                <div><h3 onclick=\"Microinteractions.toggleJavascript.call(this)\" class=\"toggleFullStory\" data-target=\"rest-text-" + i + "\">" + title + " (" + number + ")</h3></div>\n            </header>\n        ";
+        var header = "\n            <header class=\"article-header\">\n                <img src=" + img + " alt=\"search-result-image\" onclick=\"Microinteractions.toggleJavascript.call(this)\" class=\"toggleFullStory\" data-target=\"rest-text-" + i + "\">\n                <span>Door: " + by + "</span>\n                <div onclick=\"Microinteractions.toggleJavascript.call(this)\" class=\"toggleFullStory\" data-target=\"rest-text-" + i + "\"><h3>" + title + " (" + number + ")</h3></div>\n            </header>\n        ";
         return header;
     },
     Paragraph: function Paragraph(i, preview, fullText) {
         var p = "\n            <p onclick=\"Microinteractions.toggleJavascript.call(this)\" aria-label=\"Open volledig verhaal\" id=\"article-text-" + i + "\" data-target=\"rest-text-" + i + "\">\n                " + preview + "\n                <span id=\"rest-text-" + i + "\">" + fullText + "</span>\n            </p>\n        ";
         return p;
     },
-    Footer: function Footer(title) {
+    Footer: function Footer(title, errorModal, i) {
         var footer = void 0;
         if (Utility.currentPath == "/") {
-            footer = "\n                <footer>\n                    <button type=\"button\" class=\"btn btn-main\" onClick=\"IndexPage.removeFromList.call(this)\" id=read-later-" + title + ">Verwijderen uit leeslijst</button>\n                    <button type=\"button\" class=\"btn btn-main\">Downloaden</button>\n                </footer>\n            ";
+            footer = "\n                <footer>\n                    <button type=\"button\" class=\"btn btn-main\" onClick=\"IndexPage.removeFromList.call(this)\" id=read-later-" + title + ">Verwijderen uit leeslijst</button>\n                    <button type=\"button\" class=\"btn btn-main\" id=\"toggle-download-modal-" + i + "\">Toevoegen aan downloadlijst</button>\n                    " + errorModal + "\n                </footer>\n            ";
         } else {
-            footer = "\n                <footer>\n                    <button type=\"button\" class=\"btn btn-main\" onClick=\"ResultPage.addActiveClass.call(this)\" id=read-later-" + title + ">Toevoegen aan leeslijst</button>\n                    <button type=\"button\" class=\"btn btn-main\">Downloaden</button>\n                </footer>\n            ";
+            footer = "\n                <footer>\n                    <button type=\"button\" class=\"btn btn-main\" onClick=\"ResultPage.addActiveClass.call(this)\" id=read-later-" + title + ">Toevoegen aan leeslijst</button>\n                    <button type=\"button\" class=\"btn btn-main\" id=\"toggle-download-modal-" + i + "\" onClick=\"Downloading.handlePopup.call(this)\">Toevoegen aan downloadlijst</button>\n                    " + errorModal + "\n                </footer>\n            ";
         }
         return footer;
+    },
+    ErrorModal: function ErrorModal(i) {
+        var src = void 0;
+        if (Utility.currentPath.includes("dfds_seaways")) {
+            src = "/projects/dfds_seaways/dist/img/icons/multiply_white.svg";
+        } else {
+            src = "/dist/img/icons/multiply_white.svg";
+        }
+        var errorModal = "\n            <section id=\"download-modal-" + i + "\">\n                <header>\n                    <h4>Inloggen Vereist!</h4>\n                    <img src=" + src + " id=\"remove-modal-" + i + "\"/>\n                    </header>\n                <p>\n                    Om verhalen toe te voegen aan de\n                    downloadlijst dient u ingelogd te zijn. U\n                    kunt snel naar de inlogpagina navigeren\n                    door op dit venster te klikken of door\n                    in het menu rechtsboven op \u201CInloggen /\n                    aanmelden\u201D te drukken.\n                </p>\n            </section>\n        ";
+
+        return errorModal;
     }
 };
 
@@ -305,20 +528,8 @@ var Microinteractions = {
     determineElClicked: function determineElClicked() {
         var dataTar = this.dataset.target;
 
-        function getImagePath(image) {
-            var path = void 0;
-            if (Utility.currentPath == "/") {
-                path = "./dist/img/icons/" + image + ".svg";
-            } else if (!Utility.currentPath.includes("stories")) {
-                path = "../dist/img/icons/" + image + ".svg";
-            } else {
-                path = "../../dist/img/icons/" + image + ".svg";
-            }
-            return path;
-        }
-
         if (dataTar.includes("main-menu")) {
-            this.firstElementChild.alt == "Account icon" ? (DOMTraverse.mainTag.classList.add("js-active"), this.firstElementChild.alt = "Sluit icon", this.firstElementChild.src = getImagePath("multiply"), this.setAttribute("aria-label", "Sluit hoofdmenu")) : (DOMTraverse.mainTag.classList.remove("js-active"), this.firstElementChild.alt = "Account icon", this.firstElementChild.src = getImagePath("account"), this.setAttribute("aria-label", "Open hoofdmenu"));
+            this.firstElementChild.alt == "Account icon" ? (DOMTraverse.mainMenu.classList.add("js-active"), DOMTraverse.mainTag.classList.add("js-active"), this.firstElementChild.alt = "Sluit icon", this.firstElementChild.src = Utility.getImagePath("multiply"), this.setAttribute("aria-label", "Sluit hoofdmenu")) : (DOMTraverse.mainTag.classList.remove("js-active"), this.firstElementChild.alt = "Account icon", this.firstElementChild.src = Utility.getImagePath("account"), this.setAttribute("aria-label", "Open hoofdmenu"));
         } else if (dataTar.includes("result-page-search-form")) {
             // this.ariaLabel.includes("Open zoekbalk") ? console.log(true) : console.log(false);
         } else if (dataTar.includes("rest-text") && this.classList.contains("toggleFullStory")) {
@@ -350,29 +561,149 @@ var Microinteractions = {
     }()
 };
 
+var Downloading = {
+    isUserLoggedIn: Boolean,
+    getElements: function getElements() {
+        var downloadButton = this;
+
+        var storyNumber = downloadButton.id.slice(downloadButton.id.lastIndexOf("-") + 1),
+            modal = document.getElementById("download-modal-" + storyNumber),
+            closeModalButton = modal.firstElementChild.firstElementChild.nextElementSibling;
+
+        return {
+            downloadButton: downloadButton,
+            storyNumber: storyNumber,
+            modal: modal,
+            closeModalButton: closeModalButton
+        };
+    },
+    handlePopup: function handlePopup() {
+        var _Downloading$getEleme = Downloading.getElements.call(this),
+            downloadButton = _Downloading$getEleme.downloadButton,
+            storyNumber = _Downloading$getEleme.storyNumber,
+            modal = _Downloading$getEleme.modal,
+            closeModalButton = _Downloading$getEleme.closeModalButton;
+
+        var loading = true;
+        determineIfLoading();
+
+        if (Downloading.isUserLoggedIn) {
+            modal.classList.remove("js-active");
+
+            var mappableDownloadList = undefined;
+            var stringified = void 0;
+
+            var storyToAdd = this.parentElement.parentElement.id;
+
+            if (window.localStorage.getItem("downloadList") !== null) {
+                if (window.localStorage.getItem("downloadList").length !== 0) {
+                    mappableDownloadList = window.localStorage.getItem("downloadList").split(",");
+                    var isItemInCurrentDownloadList = false;
+
+                    mappableDownloadList.forEach(function (listItem) {
+                        if (storyToAdd === listItem) {
+                            isItemInCurrentDownloadList = true;
+                        }
+                    });
+
+                    if (isItemInCurrentDownloadList === false) {
+                        stringified = mappableDownloadList.toString();
+                        stringified += "," + storyToAdd;
+
+                        setLocalStorage(stringified);
+                        addSuccessResponses();
+                    } else {
+                        addSuccessResponses(true);
+                    }
+                } else {
+                    addInitialItems(stringified, storyToAdd);
+                    setLocalStorage(stringified);
+                    addSuccessResponses();
+                }
+            } else {
+                addInitialItems(stringified, storyToAdd);
+                setLocalStorage(stringified);
+                addSuccessResponses();
+            }
+        } else {
+            modal.classList.add("js-active");
+            closeModalButton.addEventListener("click", function () {
+                modal.classList.remove("js-active");
+            });
+
+            setTimeout(function () {
+                modal.classList.remove("js-active");
+            }, 10000);
+
+            // Create a function that handles with the onclick of the text in the modal
+        }
+
+        function addInitialItems(stringified, storyToAdd) {
+            stringified = "";
+            stringified += "" + storyToAdd;
+        }
+
+        function setLocalStorage(stringified) {
+            window.localStorage.setItem("downloadList", stringified);
+        }
+
+        function addSuccessResponses() {
+            var isAddedAllready = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+
+            var downloadSpan = DOMTraverse.topSpanDownloads;
+
+            loading = false;
+            determineIfLoading();
+
+            downloadButton.classList.add("js-success");
+            downloadButton.innerText = "Al toegevoegd aan downloadlijst";
+
+            if (!isAddedAllready) {
+                downloadSpan.classList.add("js-active");
+                setTimeout(function () {
+                    downloadSpan.classList.remove("js-active");
+                }, 5000);
+            }
+        }
+
+        function determineIfLoading() {
+            if (loading === true) {
+                downloadButton.classList.add("js-loading");
+            } else {
+                downloadButton.classList.remove("js-loading");
+            }
+        }
+    }
+};
+
 // Pages
 var Navigation = {
     getLoginOrSignup: function getLoginOrSignup(path) {
         if (window.localStorage.getItem("login") != null || window.localStorage.getItem("signUp") != null) {
             if (path == "index") {
                 this.changeLoginNode("Uitloggen", true, true);
+                Downloading.isUserLoggedIn = true;
             } else if (path == "searchResults") {
                 this.changeLoginNode("Uitloggen", true, false);
+                Downloading.isUserLoggedIn = true;
             }
         } else {
             this.changeLoginNode("Inloggen");
+            Downloading.isUserLoggedIn = false;
+            console.log(Downloading.isUserLoggedIn);
         }
     },
     changeLoginNode: function changeLoginNode(linkText, loggedIn, indexPath) {
         var nodes = this.getNodes();
         nodes.loginNodeAnchor.innerText = linkText;
 
-        if (loggedIn === true && indexPath === true) {
-            // Link prefixes based from index.html
-            nodes.firstLoginSibling.insertAdjacentHTML("beforeBegin", "\n                    <li class=\"dynamic-js\">\n                        <a href=\"./html/settings.html\" role=\"menuitem\">Accountinstellingen</a>\n                    </li>\n                    <li class=\"dynamic-js\">\n                        <a href=\"./html/reading-history.html\" role=\"menuitem\">Leesgeschiedenis</a>\n                    </li>\n                    <li class=\"dynamic-js\">\n                        <a href=\"#reading-list\" role=\"menuitem\">Leeslijst</a>\n                    </li>\n                    <li class=\"dynamic-js\">\n                        <a href=\"./html/notifications.html\" role=\"menuitem\">Notificaties</a>\n                    </li>\n                ");
-        } else if (loggedIn === true && indexPath !== true) {
+        if (loggedIn === true && indexPath !== true) {
             // Change the link prefixes to the base of the html folder.
-            nodes.firstLoginSibling.insertAdjacentHTML("beforeBegin", "\n                    <li class=\"dynamic-js\">\n                        <a href=\"settings.html\" role=\"menuitem\">Accountinstellingen</a>\n                    </li>\n                    <li class=\"dynamic-js\">\n                        <a href=\"reading-history.html\" role=\"menuitem\">Leesgeschiedenis</a>\n                    </li>\n                    <li class=\"dynamic-js\">\n                        <a href=\"../index.html#reading-list\" role=\"menuitem\">Leeslijst</a>\n                    </li>\n                    <li class=\"dynamic-js\">\n                        <a href=\"notifications.html\" role=\"menuitem\">Notificaties</a>\n                    </li>\n                ");
+
+            // Create the downloadpage.
+            nodes.firstLoginSibling.insertAdjacentHTML("beforeBegin", "\n                <li class=\"dynamic-js\">\n                    <a href=\"download-list.html\">Downloadlijst</a>\n                </li>\n                <li class= \"dynamic-js\">\n                    <a href=\"../index.html#reading-list\" role=\"menuitem\">Leeslijst</a>\n                </li>\n            ");
+        } else if (loggedIn === true && indexPath === true) {
+            nodes.firstLoginSibling.insertAdjacentHTML("beforeBegin", "\n                <li class=\"dynamic-js\">\n                    <a href=\"html/download-list.html\">Downloadlijst</a>\n                </li>\n                <li class= \"dynamic-js\">\n                    <a href=\"#reading-list\" role=\"menuitem\">Leeslijst</a>\n                </li>\n            ");
         } else {
             // Remove the added children from above.
             this.removeAddedMenuItems();
@@ -406,13 +737,29 @@ var IndexPage = {
             e.preventDefault();
 
             var input = DOMTraverse.searchInput.value;
+            console.log(true);
 
             this.reset();
+
+            if (window.localStorage.getItem("filters") !== undefined) {
+                window.localStorage.removeItem("filters");
+            }
             Utility.route("input", input);
         });
 
         DOMTraverse.allStoriesButton.addEventListener("click", function () {
-            return Utility.route("input", "allStories");
+            if (window.localStorage.getItem("filters") !== undefined) {
+                window.localStorage.removeItem("filters");
+            }
+            Utility.route("input", "allStories");
+        });
+
+        DOMTraverse.filterForm.addEventListener("submit", function (e) {
+            e.preventDefault();
+
+            IndexPage.Filtering.handleFilterForm();
+
+            this.reset();
         });
     },
     removeFromList: function removeFromList() {
@@ -451,6 +798,62 @@ var IndexPage = {
         articleWrapper.classList.add("no-results");
         articleWrapper.appendChild(iTag);
         articleWrapper.appendChild(spanTag);
+    },
+    Filtering: {
+        getElements: function getElements() {
+            var filterFormFieldsets = DOMTraverse.filterForm.querySelectorAll("fieldset");
+            var filterFormInputs = DOMTraverse.filterForm.querySelectorAll("input");
+
+            return {
+                filterFormFieldsets: filterFormFieldsets,
+                filterFormInputs: filterFormInputs
+            };
+        },
+        getActiveInputs: function getActiveInputs() {
+            var _getElements2 = this.getElements(),
+                filterFormFieldsets = _getElements2.filterFormFieldsets,
+                filterFormInputs = _getElements2.filterFormInputs;
+
+            var checkedArray = [];
+
+            filterFormInputs.forEach(function (input) {
+                if (input.checked) {
+                    checkedArray.push(input);
+                }
+            });
+            return checkedArray;
+        },
+        handleFilterForm: function handleFilterForm() {
+            var activeInputs = this.getActiveInputs();
+
+            if (activeInputs.length === 0 || activeInputs === undefined) {
+                // Tell the user to select some filters
+            } else {
+                // Move forward to matching the filters to the stories.
+                if (window.localStorage.getItem("input") != undefined) {
+                    window.localStorage.removeItem("input");
+                }
+
+                var filterFor = {
+                    readTime: [],
+                    ageSuggested: [],
+                    storyLength: []
+                };
+
+                activeInputs.forEach(function (activeInput) {
+                    if (activeInput.id.includes("readTime")) {
+                        filterFor.readTime.push(activeInput.id.substr(16));
+                    } else if (activeInput.id.includes("ageSuggested")) {
+                        filterFor.ageSuggested.push(activeInput.id.substr(20));
+                    } else if (activeInput.id.includes("storyLength")) {
+                        filterFor.storyLength.push(activeInput.id.substr(19));
+                    }
+                });
+
+                // Create something in the request module so that the filters are matched with the stories.
+                Utility.route("filters", JSON.stringify(filterFor));
+            }
+        }
     }
 };
 
@@ -563,7 +966,11 @@ var SignUpPage = {
 
             function setStorage(login) {
                 localStorage.setItem("login", JSON.stringify(login));
-                window.location.href = "/index.html";
+                if (Utility.currentPath.includes("dfds_seaways")) {
+                    window.location.href = "../index.html";
+                } else {
+                    window.location.href = "/index.html";
+                }
             }
         },
         userPasswordReset: function userPasswordReset() {
@@ -624,7 +1031,7 @@ var ResultPage = {
         // Get current reading list.
         var title = this.id.slice(this.id.lastIndexOf("-") + 1);
 
-        var readingListStorage = window.localStorage.getItem("readingList");
+        var readingListArray = window.localStorage.getItem("readingList");
 
         ResultPage.readingListArray.push(title);
 
@@ -633,11 +1040,11 @@ var ResultPage = {
     showTopMessage: function showTopMessage() {
         var _this3 = this;
 
-        DOMTraverse.topSpan.classList.add("js-active");
+        DOMTraverse.topSpanReadingList.classList.add("js-active");
         setTimeout(function () {
             _this3.classList.remove("js-active");
-            DOMTraverse.topSpan.classList.remove("js-active");
-        }, 3000);
+            DOMTraverse.topSpanReadingList.classList.remove("js-active");
+        }, 4000);
     }
 };
 
@@ -666,11 +1073,11 @@ var StoryPage = {
             return res;
         },
         handleScroll: function handleScroll() {
-            var _getElements = this.getElements(),
-                allSections = _getElements.allSections,
-                kater = _getElements.kater,
-                paragraph = _getElements.paragraph,
-                titleSection = _getElements.titleSection;
+            var _getElements3 = this.getElements(),
+                allSections = _getElements3.allSections,
+                kater = _getElements3.kater,
+                paragraph = _getElements3.paragraph,
+                titleSection = _getElements3.titleSection;
 
             var pActive = void 0;
 
@@ -725,11 +1132,11 @@ var StoryPage = {
             };
         },
         getScrollTop: function getScrollTop() {
-            var _getElements2 = this.getElements(),
-                article = _getElements2.article,
-                followLeft = _getElements2.followLeft,
-                followRight = _getElements2.followRight,
-                paragraph = _getElements2.paragraph;
+            var _getElements4 = this.getElements(),
+                article = _getElements4.article,
+                followLeft = _getElements4.followLeft,
+                followRight = _getElements4.followRight,
+                paragraph = _getElements4.paragraph;
 
             var scrollTop = void 0;
 
@@ -769,9 +1176,9 @@ var StoryPage = {
             };
         },
         handleScroll: function handleScroll() {
-            var _getElements3 = this.getElements(),
-                verticalDrop = _getElements3.verticalDrop,
-                dividerRight = _getElements3.dividerRight;
+            var _getElements5 = this.getElements(),
+                verticalDrop = _getElements5.verticalDrop,
+                dividerRight = _getElements5.dividerRight;
 
             var lastScrollTop = dividerRight.scrollTop;
 
@@ -799,12 +1206,36 @@ var StoryPage = {
 };var onLoad = function () {
     var cp = Utility.getCurrentPath();
 
+    DOMTraverse.topSpans.forEach(function (span) {
+        window.addEventListener("scroll", function () {
+            if (window.pageYOffset === 0) {
+                span.style.top = "4em";
+            } else {
+                span.style.top = "0";
+            }
+        });
+    });
+
     if (cp == "index") {
         IndexPage.getReadingList("readingList");
         IndexPage.setFormListeners();
         Navigation.getLoginOrSignup("index");
     } else if (cp == "searchResults") {
-        LoadStories.createRequest("input");
+        if (window.localStorage.getItem("input") !== undefined) {
+            LoadStories.createRequest("input");
+        } else if (window.localStorage.getItem("filters") !== undefined) {
+            LoadStories.createRequest("filters");
+        }
+        if (LoadStories.loadingFininished === true) {
+            SortStories.determineActiveSorter();
+        } else {
+            var checkForLoaded = setInterval(function () {
+                if (LoadStories.loadingFininished === true) {
+                    SortStories.determineActiveSorter();
+                    clearInterval(checkForLoaded);
+                }
+            }, 500);
+        }
         Navigation.getLoginOrSignup("searchResults");
     } else if (cp == "signUp") {
         SignUpPage.Constraint.checkElements();

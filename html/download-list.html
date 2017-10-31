@@ -6,16 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" type="text/css" href="../dist/css/style.min.css">
-    <title>DFDStories || Leesgeschiedenis</title>
+    <title>DFDStories || Downloadlijst</title>
 </head>
 
 <body>
     <header>
-        <!-- Main nav -->
         <nav>
-            <!-- Outer ul -->
             <ul role="menubar">
-                <!-- Logo -->
                 <li>
                     <a href="../index.html" role="menuitem">
                         <img src="../dist/img/icons/logo.svg" alt="page-logo">
@@ -33,58 +30,97 @@
                         </a>
                     </li>
                     <li>
-                        <a href="settings.html" role="menuitem">Accountinstellingen</a>
+                        <a href="signup.html" role="menuitem">Inloggen</a>
                     </li>
                     <li>
-                        <a href="../index.html#reading-list" role="menuitem">Leeslijst</a>
+                        <a href="./stories/kater.html" role="menuitem">Kater - Futloos</a>
                     </li>
                     <li>
-                        <a href="notifications.html" role="menuitem">Notificaties</a>
+                        <a href="./stories/paranoia.html" role="menuitem">Paranoia - Gespannen</a>
+                    </li>
+                    <li>
+                        <a href="./stories/vrijdag-de-dertiende.html" role="menuitem">Vrijdag de 13
+                            <span>e</span> - Triest</a>
                     </li>
                 </ul>
             </noscript>
         </nav>
     </header>
+
+    <span class="top-span reading-list">Toevoegen aan leeslijst</span>
+
     <section>
+        <h2 class="hidden">Onzichtbare navigatie</h2>
         <nav id="main-menu" aria-label="Hoofdmenu, wordt weergeven door op de knop in de header te drukken.">
             <ul role="menu">
+                <li id="login-node">
+                    <a href="signup.html" role="menuitem">Inloggen</a>
+                </li>
+                <!-- Dynamic inserted list items -->
                 <li>
-                    <a href="https://www.dfdsseaways.nl/my-page" role="menuitem">Accountinstellingen</a>
+                    <a href="./stories/kater.html" role="menuitem">Kater - Futloos</a>
                 </li>
                 <li>
-                    <a href="../index.html#reading-list" role="menuitem">Leeslijst</a>
+                    <a href="./stories/paranoia.html" role="menuitem">Paranoia - Gespannen</a>
                 </li>
                 <li>
-                    <a href="notifications.html" role="menuitem">Notificaties</a>
+                    <a href="./stories/vrijdag-de-dertiende.html" role="menuitem">Vrijdag de 13
+                        <span>e</span> - Triest
+                    </a>
                 </li>
             </ul>
         </nav>
     </section>
     <main>
-        <article class="article-section" id="reading-history-section">
+        <article class="article-section" id="download-list">
             <header class="section-header">
-                <h2 class="section-title">Leesgechiedenis</h2>
+                <h2 class="section-title">Downloadlijst</h2>
 
-                <button data-target="button-group-sort" id="toggle-button-group-sort" aria-label="Open sortatiebalk"></button>
-
-                <form action="#" class="button-group sort" id="button-group-sort">
-                    <input type="checkbox" name="sort-alphabetically" class="btn hidden" id="sort-alphabetically" aria-label="Sorteer alfabetisch: A-Z">
-                    <label for="sort-alphabetically">A-Z</label>
-
-                    <input type="checkbox" name="sort-numeric" class="btn hidden" id="sort-numeric" aria-label="Sorteer numeriek: 0-99" checked>
-                    <label for="sort-numeric">0-99</label>
-
-                    <input type="checkbox" name="sort-popularity" class="btn hidden" id="sort-popularity" aria-label="Sorteer op populariteit: populairst">
-                    <label for="sort-popularity">Populariteit</label>
-
-                    <input type="checkbox" name="sort-relevance" class="btn hidden" id="sort-relevance" aria-label="Sorteer op relevantie: relevantst">
-                    <label for="sort-relevance">Relevantie</label>
-                </form>
+                <button type="button" class="btn btn-main">Alles Downloaden</button>
             </header>
 
-            <section class="article-wrapper">
-                <h2 class="hidden">History</h2>
-            </section>
+            <!-- Create a new HTML & CSS list for the downloads -->
+
+            <article>
+                <header>
+                    <img src="../dist/img/icons/multiply.svg" alt="Sluit modal button">
+                </header>
+                <form>
+                    <fieldset>
+                        <div>
+                            <p>
+                                Wilt u een e-mail verzenden naar uw inbox, zodat u deze kunt openen op uw telefoon, tablet of ander mobiel device om zo het
+                                verhaal direct te downloaden op het door u gekozen device?
+                            </p>
+                            <input type="email" name="download-by-email" placeholder="voorbeeld@example.com">
+                            <button type="submit">Mail mij</button>
+                        </div>
+                    </fieldset>
+                </form>
+                <form>
+                    <fieldset>
+                        <div>
+                            <p>
+                                Als u liever een sms wilt ontvangen met een link naar de downloads voor uw mobiel, kunt u ook een sms sturen vanaf hier naar
+                                uw mobiele telefoon.
+                            </p>
+                            <input type="tel" name="download-by-sms" placeholder="06-58393939">
+                            <button type="submit">SMS mij</button>
+                        </div>
+                    </fieldset>
+                </form>
+                <form>
+                    <fieldset>
+                        <div>
+                            <p>
+                                U kunt ook zelf de link kopiëren om deze dan op een eigen manier naar uw telefoon of tablet te krijgen.
+                            </p>
+                            <input type="url" name="download-by-sms" placeholder="http://www.link.li.getter.nl/s?=biwgowohgwelgnwekglwengnkwegnelgnkll">
+                            <button type="submit">Kopieer</button>
+                        </div>
+                    </fieldset>
+                </form>
+            </article>
         </article>
     </main>
     <footer class="site-footer">
