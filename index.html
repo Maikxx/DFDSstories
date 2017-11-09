@@ -21,6 +21,9 @@
                         <img src="./dist/img/icons/logo.svg" alt="page-logo">
                     </a>
                 </li>
+                <li id="download-loader">
+                    <img src="dist/img/icons/spinner.svg" alt="download-loader">
+                </li>
                 <li data-target="main-menu" role="menuitem" aria-label="Open menu" id="toggle-main-menu">
                     <img src="./dist/img/icons/account.svg" alt="Account icon">
                 </li>
@@ -135,6 +138,16 @@
                     </div>
                 </fieldset>
                 <button class="btn btn-main" type="submit" aria-label="Filteren">Filter</button>
+                <section id="download-modal-small-screen">
+                    <header>
+                        <h4>Downloadinformatie</h4>
+                        <img src="dist/img/icons/multiply_white.svg" id="remove-modal-download-information" />
+                    </header>
+                    <p>
+                        Er staan verhalen voor u klaar om te downloaden. Als u alle verhalen tegelijk wilt downloaden kunt u hier op deze melding
+                        drukken. Als u de verhalen handmatig één voor één wilt downloaden gaat u naar de downloadlijst.
+                    </p>
+                </section>
             </form>
         </section>
         <article class="article-section" id="reading-list-section">
@@ -152,6 +165,9 @@
                     <label for="sort-relevance">Relevantie</label>
                 </form>
             </header>
+
+            <img src="../dist/img/icons/right-chevron.svg" alt="Arrow right" class="right-chevron">
+
             <section id="reading-list" class="article-wrapper">
                 <h2 class="hidden">Leeslijst</h2>
             </section>

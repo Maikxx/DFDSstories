@@ -2,6 +2,7 @@
 const DOMTraverse = {
     /* Multiple Pages */
     articleWrapper: document.querySelector(".article-wrapper"),
+    articleSection: document.getElementsByClassName("article-section")[0],
     mainMenu: document.getElementById("main-menu"),
     mainMenuToggle: document.getElementById("toggle-main-menu"),
     mainTag: document.querySelector("main"),
@@ -9,15 +10,23 @@ const DOMTraverse = {
 
     /* Index Page */
     allStoriesButton: document.getElementById("show-all-stories"),
+    downloadInformationModal: document.getElementById("download-modal-small-screen"),
+    downloadLoader: document.getElementById("download-loader"),
     filterForm: document.getElementById("filter-form"),
     searchform: document.getElementById("search-form"),
     searchInput: document.getElementById("search-for-title"),
 
+    /* Download Page */
+    downloadWrapper: document.getElementsByClassName("download-wrapper")[0],
+    downloadModal: document.getElementsByClassName("download-modal")[0],
+    downloadStoryButton: document.getElementById("download-story-button"),
+    downloadAllButton: document.getElementById("download-all-button"),
+
     /* Results Page */
-    topSpans: [...document.getElementsByClassName("top-span")],
-    topSpanReadingList: document.getElementsByClassName("top-span reading-list")[0],
-    topSpanDownloads: document.getElementsByClassName("top-span downloads")[0],
     storyLoader: document.getElementsByClassName("story-loader"),
+    topSpanDownloads: document.getElementsByClassName("top-span downloads")[0],
+    topSpanReadingList: document.getElementsByClassName("top-span reading-list")[0],
+    topSpans: [...document.getElementsByClassName("top-span")],
 
     /* Signup Page */
     // Forms
@@ -37,6 +46,7 @@ const Utility = {
         if (this.currentPath == "/index.html" || this.currentPath == "/" || this.currentPath == "/projects/dfds_seaways/" || this.currentPath == "/projects/dfds_seaways/index.html") {
             return "index";
         } else if (this.currentPath == "/projects/dfds_seaways/html/search-results.html" || this.currentPath == "/html/search-results.html") return "searchResults";
+        else if (this.currentPath == "/html/download-list.html" || this.currentPath == "/projects/dfds_seaways/html/download-list.html") return "downloads";
         else if (this.currentPath == "/html/signup.html" || this.currentPath == "/projects/dfds_seaways/html/signup.html") return "signUp";
         else if (this.currentPath == "/html/stories/kater.html" || this.currentPath == "/projects/dfds_seaways/html/stories/kater.html") return "kater";
         else if (this.currentPath == "/html/stories/paranoia.html" || this.currentPath == "/projects/dfds_seaways/html/stories/paranoia.html") return "paranoia";
@@ -65,6 +75,7 @@ const Utility = {
         }
         return path;
     },
+    MajorBreakPointTwo: 1039,
     route: function (key, value) {
         localStorage.setItem(key, value);
         if (this.currentPath == "/" || this.currentPath == "/index.html") {
@@ -214,7 +225,7 @@ const LoadStories = {
                 }
                 // Create a function that handles the button click, to load in more stories.
                 (function showNextStories() {
-                    if (Utility.getCurrentScreenWidth > 1039) {
+                    if (Utility.getCurrentScreenWidth > Utility.MajorBreakPointTwo) {
                         let elHeight = DOMTraverse.articleWrapper.clientHeight;
 
                         window.addEventListener("scroll", function () {
@@ -264,12 +275,14 @@ const LoadStories = {
                 })();
 
                 setStoryAmount();
+                setChevron();
             } else {
                 if (storageItem == "readingList") {
                     DOMTraverse.articleWrapper.parentElement.classList.add("reading-list-js-results");
                 }
                 mapMatches(matches);
                 setStoryAmount();
+                setChevron();
             }
 
             function setStoryAmount() {
@@ -307,6 +320,15 @@ const LoadStories = {
                     iterator++;
                     data.stories.forEach(story => LoadStories.matchStorageToRequest(match, story, iterator));
                 });
+            }
+        }
+
+        function setChevron() {
+            if (Utility.getCurrentScreenWidth < Utility.MajorBreakPointTwo) {
+                DOMTraverse.articleSection.querySelector(".right-chevron").classList.add("js-active");
+                console.log(true);
+            } else {
+                DOMTraverse.articleSection.removeChild(DOMTraverse.articleSection.querySelector(".right-chevron"));
             }
         }
 
@@ -355,6 +377,7 @@ const LoadStories = {
     }
 };
 
+// Component that holds most dynamica of the sorting process.
 const SortStories = {
     getElements: function () {
         const sortForm = document.getElementById("button-group-sort"),
@@ -481,7 +504,7 @@ const CreateArticle = {
         <article id="${title}" data-filter-readTime=${filters.readTime} data-filter-storyLength=${filters.storyLength} data-filter-ageSuggested=${filters.ageSuggested}>
             ${this.ArticleHeader(img, by, title, number, i)}
             ${this.Paragraph(i, preview, fullText)}
-            ${this.Footer(title, this.ErrorModal(i), i)}
+            ${this.Footer(title, this.UploadSection(i, by), this.ErrorModalDownloads(i), this.ErrorModalUploads(i), this.errorModalLogin(i), i)}
          </article>
         `;
         return article;
@@ -489,44 +512,80 @@ const CreateArticle = {
     ArticleHeader: function (img, by, title, number, i) {
         let header = `
             <header class="article-header">
-                <img src=${img} alt="search-result-image" onclick="Microinteractions.toggleJavascript.call(this)" class="toggleFullStory" data-target="rest-text-${i}">
+                <img src=${img} alt="search-result-image" onclick="Microinteractions.toggleJavascript.call(this)" class="toggleFullStory" data-target="rest-text-${i}" data-open="upload-photo-section-${i}">
                 <span>Door: ${by}</span>
-                <div onclick="Microinteractions.toggleJavascript.call(this)" class="toggleFullStory" data-target="rest-text-${i}"><h3>${title} (${number})</h3></div>
+                <div onclick="Microinteractions.toggleJavascript.call(this)" class="toggleFullStory" data-target="rest-text-${i}" data-open="upload-photo-section-${i}"><h3>${title} (${number})</h3></div>
             </header>
         `;
         return header;
     },
     Paragraph: function (i, preview, fullText) {
         let p = `
-            <p onclick="Microinteractions.toggleJavascript.call(this)" aria-label="Open volledig verhaal" id="article-text-${i}" data-target="rest-text-${i}">
+            <p onclick="Microinteractions.toggleJavascript.call(this)" aria-label="Open volledig verhaal" id="article-text-${i}" data-target="rest-text-${i}" data-open="upload-photo-section-${i}">
                 ${preview}
                 <span id="rest-text-${i}">${fullText}</span>
             </p>
         `;
         return p;
     },
-    Footer: function (title, errorModal, i) {
+    Footer: function (title, UploadSection, errorModalDownloads, errorModalUploads, errorModalLogin, i) {
         let footer;
         if (Utility.currentPath == "/") {
             footer = `
                 <footer>
+                    ${UploadSection}
                     <button type="button" class="btn btn-main" onClick="IndexPage.removeFromList.call(this)" id=read-later-${title}>Verwijderen uit leeslijst</button>
                     <button type="button" class="btn btn-main" id="toggle-download-modal-${i}">Toevoegen aan downloadlijst</button>
-                    ${errorModal}
+                    ${errorModalDownloads}
+                    ${errorModalUploads}
+                    ${errorModalLogin}
                 </footer>
             `;
         } else {
             footer = `
                 <footer>
+                    ${UploadSection}
                     <button type="button" class="btn btn-main" onClick="ResultPage.addActiveClass.call(this)" id=read-later-${title}>Toevoegen aan leeslijst</button>
                     <button type="button" class="btn btn-main" id="toggle-download-modal-${i}" onClick="Downloading.handlePopup.call(this)">Toevoegen aan downloadlijst</button>
-                    ${errorModal}
+                    ${errorModalDownloads}
+                    ${errorModalUploads}
+                    ${errorModalLogin}
                 </footer>
             `;
         }
         return footer;
     },
-    ErrorModal: function (i) {
+    UploadSection: function (i, by) {
+        let section = `
+            <section class="upload-photo-section" id="upload-photo-section-${i}">
+                <p>
+                    De foto geuploaded bij dit verhaal was van:
+                    ${by}. Hij heeft al <span>${Math.floor(Math.random() * 400) + 10} volgers</span>
+                    verkregen door regelmatig foto’s te plaatsen
+                    bij verhalen die hij passend vindt bij zijn reis-
+                    foto’s. Denk je dat je het beter kunt?
+                </p>
+                <form id="upload-image-form-${i}">
+                    <fieldset>
+                        <div>
+                            <label for="select-image-${i}">Upload je foto</label>
+                            <input type="file" accept=".jpg, .png" id="select-image-${i}">
+                            <button type="button" class="btn btn-main" onclick="UploadPhoto.submitActions.call(this)">Upload</button>
+                        </div>
+                    </fieldset>
+                </form>
+                <p>
+                    dan hier je foto en wie weet ontdekken
+                    toekomstige reizigers nog mooie locaties
+                    door jouw foto’s! Je weet nooit wat voor
+                    bedankje ze je hiervoor kunnen geven.
+                </p>
+            </section>
+        `;
+
+        return section;
+    },
+    ErrorModalUploads: function (i) {
         let src;
         if (Utility.currentPath.includes("dfds_seaways")) {
             src = "/projects/dfds_seaways/dist/img/icons/multiply_white.svg";
@@ -534,11 +593,62 @@ const CreateArticle = {
             src = "/dist/img/icons/multiply_white.svg";
         }
         let errorModal = `
-            <section id="download-modal-${i}">
+            <section id="uploads-modal-${i}" class="uploads-modal">
+                <header>
+                    <h4>Uploadfout - Formaat</h4>
+                    <img src=${src} class="remove-uploads-modal">
+                </header>
+                <p>
+                    Zo te zien is er iets fout gegaan bij het
+                    uploaden van de door u zo zeer
+                    gewaardeerde foto. Zorg ervoor dat de
+                    afbeelding niet groter is dan 20mb en het
+                    een .jp(e)g of .png formaat heeft.
+                </p>
+            </section>
+        `;
+
+        return errorModal;
+    },
+    errorModalLogin: function (i) {
+        let src;
+        if (Utility.currentPath.includes("dfds_seaways")) {
+            src = "/projects/dfds_seaways/dist/img/icons/multiply_white.svg";
+        } else {
+            src = "/dist/img/icons/multiply_white.svg";
+        }
+        let errorModal = `
+            <section id="login-modal-${i}" class="login-modal">
+                <header>
+                    <h4>Inloggen Vereist!</h4>
+                    <img src=${src} class="remove-login-modal">
+                </header>
+                <p>
+                    Om verhalen toe te voegen aan de
+                    leeslijst dient u ingelogd te zijn. U
+                    kunt snel naar de inlogpagina navigeren
+                    door op dit venster te klikken of door
+                    in het menu rechtsboven op “Inloggen /
+                    aanmelden” te drukken.
+                </p>
+            </section>
+        `;
+
+        return errorModal;
+    },
+    ErrorModalDownloads: function (i) {
+        let src;
+        if (Utility.currentPath.includes("dfds_seaways")) {
+            src = "/projects/dfds_seaways/dist/img/icons/multiply_white.svg";
+        } else {
+            src = "/dist/img/icons/multiply_white.svg";
+        }
+        let errorModal = `
+            <section id="download-modal-${i}" class="download-modal">
                 <header>
                     <h4>Inloggen Vereist!</h4>
                     <img src=${src} id="remove-modal-${i}"/>
-                    </header>
+                </header>
                 <p>
                     Om verhalen toe te voegen aan de
                     downloadlijst dient u ingelogd te zijn. U
@@ -554,10 +664,13 @@ const CreateArticle = {
     }
 };
 
-// Component that contains microinteractions
+// Component that contains microinteractions.
 const Microinteractions = {
     toggleJavascript: function () {
         document.getElementById(`${this.dataset.target}`).classList.toggle("js-active");
+        if (this.dataset.open !== undefined && this.dataset.open !== null) {
+            document.getElementById(`${this.dataset.open}`).classList.toggle("js-active");
+        }
         Microinteractions.determineElClicked.call(this);
     },
     determineElClicked: function () {
@@ -618,8 +731,61 @@ const Microinteractions = {
     }()
 };
 
+const UploadPhoto = {
+    submitActions: function () {
+        let input = this.previousElementSibling,
+            inputValue = input.value,
+            section = this.parentElement.parentElement.parentElement.parentElement,
+            paragraphs = section.querySelectorAll("p");
+
+        if (window.localStorage.getItem("login") !== null || window.localStorage.getItem("signUp") !== null) {
+
+        }
+        if (inputValue !== null && inputValue !== undefined && inputValue.length !== 0 && inputValue.includes(".jpg") || inputValue.includes(".png")) {
+            this.classList.add("js-success");
+            this.innerHTML = "Geuploaded";
+
+            // Loading State ontbreekt, maar is hetzelfde als de andere loading states.
+
+            paragraphs.forEach((p) => {
+                section.removeChild(p);
+            });
+
+            section.innerHTML += `
+                <p>
+                    Je hebt voor dit verhaal op \${datum} al een
+                    foto geuploaded, deze foto is te zien voor
+                    alle mensen die zich in de buurt bevinden van
+                    locatie, waar de foto vandaan is genomen.
+                    Als u vindt dat u, op dezelfde OF een andere
+                    locatie een betere foto hebt gemaakt, schroom
+                    dan niet om die ook te uploaden.
+                </p>
+            `;
+        } else {
+            // Show error modal
+            const footer = this.parentElement.parentElement.parentElement.parentElement.parentElement,
+                uploadErrorModal = footer.querySelector(".uploads-modal");
+
+            this.classList.add("js-error");
+            uploadErrorModal.classList.add("js-active");
+
+            setTimeout(function () {
+                this.classList.remove("js-error");
+                uploadErrorModal.classList.remove("js-active");
+            }, 5000);
+
+            uploadErrorModal.querySelector(".remove-uploads-modal").addEventListener("click", function () {
+                uploadErrorModal.classList.remove("js-active");
+            });
+        }
+    },
+}
+
+// Component that holds most dynamica of the download process.
 const Downloading = {
     isUserLoggedIn: Boolean,
+    downloading: false,
     getElements: function () {
         const downloadButton = this;
 
@@ -711,25 +877,113 @@ const Downloading = {
             loading = false;
             determineIfLoading();
 
-            downloadButton.classList.add("js-success");
-            downloadButton.innerText = "Al toegevoegd aan downloadlijst";
 
             if (!isAddedAllready) {
-                downloadSpan.classList.add("js-active");
+                downloadButton.classList.add("js-loading");
+
+                setTimeout(() => {
+                    downloadSpan.classList.add("js-active");
+                    downloadButton.classList.remove("js-loading");
+                    downloadButton.classList.add("js-success");
+                    downloadButton.innertText = "Toegevoegd aan downloadlijst";
+                }, 4000);
+
                 setTimeout(() => {
                     downloadSpan.classList.remove("js-active");
-                }, 5000);
+                }, 8000);
+            } else {
+                downloadButton.classList.add("js-success");
+                downloadButton.innerText = "Al toegevoegd aan downloadlijst";
             }
         }
 
         function determineIfLoading() {
             if (loading === true) {
                 downloadButton.classList.add("js-loading");
+
+                setTimeout(() => {
+                    downloadButton.classList.remove("js-loading");
+                }, 4000);
             } else {
                 downloadButton.classList.remove("js-loading");
             }
         }
     },
+    handleButtonClick: function () {
+        const button = DOMTraverse.downloadStoryButton,
+            modal = DOMTraverse.downloadModal,
+            downloadAllButon = DOMTraverse.downloadAllButton;
+
+        const buttons = [button, downloadAllButon];
+        buttons.forEach((button) => {
+            button.addEventListener("click", function () {
+                modal.classList.add("js-active");
+            });
+        });
+    },
+    handleModalClick: function () {
+        const modal = DOMTraverse.downloadModal,
+            allForms = modal.querySelectorAll("form"),
+            allButtons = modal.querySelectorAll(".btn-main"),
+            closeButton = modal.querySelector("#close-modal-button");
+
+        closeButton.addEventListener("click", function () {
+            modal.classList.remove("js-active");
+        });
+
+        allForms.forEach((form) => {
+            form.addEventListener("submit", (e) => {
+                e.preventDefault();
+            });
+
+            form.addEventListener("keyup", function (e) {
+                if (e.target.getAttribute("type") === "email") {
+                    SignUpPage.Constraint.matchConstraintToInputField("email", e.target);
+                }
+            });
+        });
+
+        allButtons.forEach((button) => {
+            button.addEventListener("click", function () {
+                handleButtonClicks.call(this);
+            });
+        });
+
+        function handleButtonClicks() {
+            if (this.getAttribute("name").includes("sms") || this.getAttribute("name").includes("mail")) {
+                Downloading.downloading = true;
+                this.classList.add("js-loading");
+                this.innerText = "Versturen...";
+                setTimeout(() => {
+                    this.classList.remove("js-loading");
+                    this.innerText = "Verstuur opnieuw";
+                    this.classList.add("js-success");
+                }, 4000);
+            } else {
+                Downloading.downloading = true;
+            }
+        }
+    },
+    SmallScreenDownload: function () {
+        let modal = DOMTraverse.downloadInformationModal,
+            loader = DOMTraverse.downloadLoader,
+            paragraph = modal.querySelector("p");
+
+        modal.classList.add("js-active");
+
+        paragraph.addEventListener("click", function () {
+            loader.classList.add("js-active");
+
+            setTimeout(() => {
+                loader.classList.remove("js-active");
+                loader.firstElementChild.setAttribute("src", "dist/img/icons/verify_sign.svg");
+            }, 4000);
+        });
+
+        setTimeout(() => {
+            modal.classList.remove("js-active");
+        }, 4000);
+    }
 };
 
 // Pages
@@ -737,46 +991,18 @@ const Navigation = {
     getLoginOrSignup: function (path) {
         if (window.localStorage.getItem("login") != null || window.localStorage.getItem("signUp") != null) {
             if (path == "index") {
-                this.changeLoginNode("Uitloggen", true, true);
+                this.changeLoginNode("Uitloggen", true, true, false);
                 Downloading.isUserLoggedIn = true;
             } else if (path == "searchResults") {
-                this.changeLoginNode("Uitloggen", true, false);
+                this.changeLoginNode("Uitloggen", true, false, false);
+                Downloading.isUserLoggedIn = true;
+            } else if (path == "stories") {
+                this.changeLoginNode("Uitloggen", true, false, true);
                 Downloading.isUserLoggedIn = true;
             }
         } else {
             this.changeLoginNode("Inloggen");
             Downloading.isUserLoggedIn = false;
-            console.log(Downloading.isUserLoggedIn);
-        }
-    },
-    changeLoginNode: function (linkText, loggedIn, indexPath) {
-        let nodes = this.getNodes();
-        nodes.loginNodeAnchor.innerText = linkText;
-
-        if (loggedIn === true && indexPath !== true) {
-            // Change the link prefixes to the base of the html folder.
-
-            // Create the downloadpage.
-            nodes.firstLoginSibling.insertAdjacentHTML("beforeBegin", `
-                <li class="dynamic-js">
-                    <a href="download-list.html">Downloadlijst</a>
-                </li>
-                <li class= "dynamic-js">
-                    <a href="../index.html#reading-list" role="menuitem">Leeslijst</a>
-                </li>
-            `);
-        } else if (loggedIn === true && indexPath === true) {
-            nodes.firstLoginSibling.insertAdjacentHTML("beforeBegin", `
-                <li class="dynamic-js">
-                    <a href="html/download-list.html">Downloadlijst</a>
-                </li>
-                <li class= "dynamic-js">
-                    <a href="#reading-list" role="menuitem">Leeslijst</a>
-                </li>
-            `);
-        } else {
-            // Remove the added children from above.
-            this.removeAddedMenuItems();
         }
     },
     getNodes: function () {
@@ -790,6 +1016,42 @@ const Navigation = {
             menuList: menuList,
             loginNodeAnchor: loginNodeAnchor,
             firstLoginSibling: firstLoginSibling
+        }
+    },
+    changeLoginNode: function (linkText, loggedIn, indexPath, storyPath) {
+        let nodes = this.getNodes();
+        nodes.loginNodeAnchor.innerText = linkText;
+
+        if (loggedIn && indexPath === false && storyPath === false) {
+            // Change the link prefixes to the base of the html folder.
+            nodes.firstLoginSibling.insertAdjacentHTML("beforebegin", `
+                <li class="dynamic-js">
+                    <a href="download-list.html" role="menuitem">Downloadlijst</a>
+                </li>
+                <li class= "dynamic-js">
+                    <a href="../index.html#reading-list" role="menuitem">Leeslijst</a>
+                </li>
+            `);
+        } else if (loggedIn && indexPath && storyPath === false) {
+            nodes.firstLoginSibling.insertAdjacentHTML("beforebegin", `
+                <li class="dynamic-js">
+                    <a href="html/download-list.html" role="menuitem">Downloadlijst</a>
+                </li>
+                <li class= "dynamic-js">
+                    <a href="#reading-list" role="menuitem">Leeslijst</a>
+                </li>
+            `);
+        } else if (loggedIn && storyPath) {
+            nodes.loginNode.insertAdjacentHTML("afterend", `
+                <li class="dynamic-js">
+                    <a href="../download-list.html" role="menuitem">Downloadlijst</a>
+                </li>
+                <li class= "dynamic-js">
+                    <a href="../../index.html#reading-list" role="menuitem">Leeslijst</a>
+                </li>
+            `);
+        } else {
+            this.removeAddedMenuItems();
         }
     },
     removeAddedMenuItems: function () {
@@ -807,7 +1069,6 @@ const IndexPage = {
             e.preventDefault();
 
             let input = DOMTraverse.searchInput.value;
-            console.log(true);
 
             this.reset();
 
@@ -959,7 +1220,7 @@ const SignUpPage = {
             return {
                 email: email,
                 name: name,
-                password: password
+                password: password,
             }
         },
         matchConstraintToInputField: function (constraint, input) {
@@ -1067,11 +1328,17 @@ const SignUpPage = {
 const ResultPage = {
     readingListArray: [],
     addActiveClass: function () {
-        this.classList.toggle("js-active");
-        setTimeout(() => {
-            ResultPage.addToReadingList.call(this);
-            ResultPage.showTopMessage.call(this);
-        }, 1500);
+
+        if (window.localStorage.getItem("login") !== null || window.localStorage.getItem("signUp") !== null) {
+            this.classList.toggle("js-loading");
+
+            setTimeout(() => {
+                ResultPage.addToReadingList.call(this);
+                ResultPage.showTopMessage.call(this);
+            }, 1500);
+        } else {
+
+        }
     },
     addToReadingList: function () {
         // Get current reading list.
@@ -1086,9 +1353,17 @@ const ResultPage = {
     showTopMessage: function () {
         DOMTraverse.topSpanReadingList.classList.add("js-active");
         setTimeout(() => {
-            this.classList.remove("js-active");
+            this.classList.remove("js-loading");
+            this.classList.add("js-active");
+            this.innerText = "Toegevoegd aan leeslijst";
             DOMTraverse.topSpanReadingList.classList.remove("js-active");
         }, 4000);
+
+        setTimeout(() => {
+            this.classList.remove("js-active");
+            this.classList.add("js-remove");
+            this.innerText = "Verwijderen uit leeslijst";
+        }, 8000);
     }
 };
 
@@ -1264,6 +1539,9 @@ let onLoad = function () {
     });
 
     if (cp == "index") {
+        if (Utility.getCurrentScreenWidth < Utility.MajorBreakPointTwo && Downloading.downloading) {
+            Downloading.SmallScreenDownload();
+        }
         IndexPage.getReadingList("readingList");
         IndexPage.setFormListeners();
         Navigation.getLoginOrSignup("index");
@@ -1284,15 +1562,21 @@ let onLoad = function () {
             }, 500);
         }
         Navigation.getLoginOrSignup("searchResults");
+    } else if (cp == "downloads") {
+        Downloading.handleButtonClick();
+        Downloading.handleModalClick();
     } else if (cp == "signUp") {
         SignUpPage.Constraint.checkElements();
         SignUpPage.Constraint.setCurrentDate();
         SignUpPage.UserActions.init();
     } else if (cp == "kater") {
         StoryPage.Kater.handleScroll();
+        Navigation.getLoginOrSignup("stories");
     } else if (cp == "paranoia") {
         StoryPage.Paranoia.getScrollTop();
+        Navigation.getLoginOrSignup("stories");
     } else if (cp == "vrijdag") {
         StoryPage.VrijdagDeDertiende.handleScroll();
+        Navigation.getLoginOrSignup("stories");
     }
 }();

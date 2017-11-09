@@ -51,7 +51,8 @@ gulp.task('ppJS', () => {
 
 gulp.task('watch', ['ppCSS', 'ppJS'], () => {
     browserSync.init({
-        server: "./"
+        server: "./",
+        port: 4000,
     });
 
 

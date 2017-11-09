@@ -76,14 +76,46 @@
             <header class="section-header">
                 <h2 class="section-title">Downloadlijst</h2>
 
-                <button type="button" class="btn btn-main">Alles Downloaden</button>
+                <button type="button" class="btn btn-main" id="download-all-button">Alles Downloaden</button>
             </header>
 
             <!-- Create a new HTML & CSS list for the downloads -->
 
-            <article>
+            <article class="download-wrapper">
+                <section>
+                    <h2>Gedownloadde verhalen:</h2>
+                    <article>
+                        <img src="../dist/img/storyImages/anima.jpg" alt="Gedownload verhaal">
+                        <h3>Verhaal: Levendig</h3>
+                        <span>
+                            Op het device:
+                            <br>Samsung Galazy S6
+                        </span>
+                        <footer>
+                            <button class="btn btn-main">Toevoegen aan leeslijst</button>
+                            <button class="btn btn-main">Verwijderen van device</button>
+                        </footer>
+                    </article>
+                </section>
+                <section>
+                    <h2>Klaarstaande verhalen:</h2>
+                    <article>
+                        <img src="../dist/img/storyImages/verrast.jpg" alt="Klaarstaand verhaal">
+                        <h3>Verhaal: Verrast</h3>
+                        <span>
+                            Klaar om naar een device te downloaden.
+                        </span>
+                        <footer>
+                            <button class="btn btn-main">Toevoegen aan leeslijst</button>
+                            <button class="btn btn-main" id="download-story-button">Downloaden</button>
+                        </footer>
+                    </article>
+                </section>
+            </article>
+
+            <article class="download-modal">
                 <header>
-                    <img src="../dist/img/icons/multiply.svg" alt="Sluit modal button">
+                    <img src="../dist/img/icons/multiply.svg" id="close-modal-button" alt="Sluit modal button">
                 </header>
                 <form>
                     <fieldset>
@@ -93,7 +125,7 @@
                                 verhaal direct te downloaden op het door u gekozen device?
                             </p>
                             <input type="email" name="download-by-email" placeholder="voorbeeld@example.com">
-                            <button type="submit">Mail mij</button>
+                            <button type="submit" class="btn btn-main" name="mail-button">Mail mij</button>
                         </div>
                     </fieldset>
                 </form>
@@ -105,7 +137,7 @@
                                 uw mobiele telefoon.
                             </p>
                             <input type="tel" name="download-by-sms" placeholder="06-58393939">
-                            <button type="submit">SMS mij</button>
+                            <button type="submit" class="btn btn-main" name="sms-button">SMS mij</button>
                         </div>
                     </fieldset>
                 </form>
@@ -115,8 +147,8 @@
                             <p>
                                 U kunt ook zelf de link kopiëren om deze dan op een eigen manier naar uw telefoon of tablet te krijgen.
                             </p>
-                            <input type="url" name="download-by-sms" placeholder="http://www.link.li.getter.nl/s?=biwgowohgwelgnwekglwengnkwegnelgnkll">
-                            <button type="submit">Kopieer</button>
+                            <input type="url" name="download-by-sms" value="http://www.link.li.getter.nl/s?=bi">
+                            <button type="submit" class="btn btn-main" name="link-button">Kopieer</button>
                         </div>
                     </fieldset>
                 </form>
@@ -215,7 +247,7 @@
         </section>
         <small>&copy; 2017, DFDS en Maikel van Veen</small>
     </footer>
-    <script src="../dist/js/compiled.js"></script>
+    <script src="../dist/js/main.min.js"></script>
 </body>
 
 </html>
