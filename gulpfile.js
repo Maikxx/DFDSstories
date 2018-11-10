@@ -55,23 +55,23 @@ gulp.task('watch', ['ppCSS', 'ppJS'], () => {
         port: 4000,
     })
 
-
     gulp.watch(`./**/*.html`, reloadBrowser)
     gulp.watch(`${assetsDir}/css/style.scss`, ['ppCSS'])
     gulp.watch(`${assetsDir}/js/main.js`, ['ppJS'])
 })
 
-gulp.task('cleanImages', () => {
-    gulp.src(`${distDir}/img`)
-        .pipe(clean())
-})
-
-gulp.task('ppImages', () => {
+gulp.task('buildAssets', () => {
     gulp.src(`${assetsDir}/img/**/*`, {
-            base: `${assetsDir}/img/`
-        })
+        base: `${assetsDir}/img/`
+    })
         .pipe(minifyImage())
         .pipe(gulp.dest(`${distDir}/img`))
+
+    gulp.src(`${assetsDir}/fonts/**/*`)
+        .pipe(gulp.dest(`${distDir}/fonts`))
+
+    gulp.src(`${assetsDir}/json/**/*`)
+        .pipe(gulp.dest(`${distDir}/json`))
 })
 
 gulp.task('cleanDist', () => {
@@ -79,6 +79,6 @@ gulp.task('cleanDist', () => {
         .pipe(clean())
 })
 
-gulp.task('buildDist', ['ppCSS', 'ppJS', 'ppImages'], () => {
+gulp.task('buildDist', ['cleanDist', 'ppCSS', 'ppJS'], () => {
     console.log('Done')
 })

@@ -7,7 +7,9 @@
   "license": "Apache",
   "private": true,
   "scripts": {
-    "serve": "gulp watch"
+    "serve": "yarn clean:dist && gulp watch",
+    "clean:dist": "gulp cleanDist && yarn build:assets",
+    "build:assets": " gulp buildAssets"
   },
   "devDependencies": {
     "ansi-styles": "^3.1.0",
