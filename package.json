@@ -4,7 +4,7 @@
   "description": "A stories website built for the company DFDS.",
   "main": "index.js",
   "author": "Maikel van Veen",
-  "license": "MIT",
+  "license": "Apache",
   "private": true,
   "devDependencies": {
     "ansi-styles": "^3.1.0",
