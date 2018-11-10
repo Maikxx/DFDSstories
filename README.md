@@ -6,8 +6,6 @@ This project is a website for a travel company called DFDS. On this page you can
 
 The website allows you to log in, so you can save the stories you want to read later to your profile. Also when you are logged in, you get the potential to save the stories offline to your mobile device, so you can allways read them, even when the network is offline.
 
-The current version is already packaged with a [dist folder](./dist). To check this project out offline simply copy the [dist folder](./dist) folder, as well as the [html folder](./html) folder and the [index.html](./index.html). Then you can simply see the project by double clicking on the index.html page locally.
-
 If you want to start the server by yourself and check things out or change something around, feel free to do so, by typing `gulp watch` in the correct folder (where the [package.json](./package.json) is located). This will spin up a server for you to work in.
 
 ## Motivation
