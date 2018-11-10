@@ -18,4 +18,4 @@ I will not be maintaining this version of the project, but rather will make a ne
 
 ## Licence
 
-[MIT](LICENSE)
+[Apache](LICENSE) by [Maikel van Veen](https://github.com/maikxx).
