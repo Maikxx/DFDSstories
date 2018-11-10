@@ -1,4 +1,4 @@
-# Verhalenwebsite DFDS - DFDStories
+# Travel story website for DFDS - DFDStories
 
 ## Synopsis
 
