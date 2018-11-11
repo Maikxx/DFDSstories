@@ -45,17 +45,25 @@ const Utility = {
     getCurrentPath: function () {
         if (this.currentPath == "/index.html" || this.currentPath == "/" || this.currentPath == "/projects/dfds_seaways/" || this.currentPath == "/projects/dfds_seaways/index.html") {
             return "index"
-        } else if (this.currentPath == "/projects/dfds_seaways/html/search-results.html" || this.currentPath == "/html/search-results.html") return "searchResults"
-        else if (this.currentPath == "/html/download-list.html" || this.currentPath == "/projects/dfds_seaways/html/download-list.html") return "downloads"
-        else if (this.currentPath == "/html/signup.html" || this.currentPath == "/projects/dfds_seaways/html/signup.html") return "signUp"
-        else if (this.currentPath == "/html/stories/kater.html" || this.currentPath == "/projects/dfds_seaways/html/stories/kater.html") return "kater"
-        else if (this.currentPath == "/html/stories/paranoia.html" || this.currentPath == "/projects/dfds_seaways/html/stories/paranoia.html") return "paranoia"
-        else if (this.currentPath == "/html/stories/vrijdag-de-dertiende.html" || this.currentPath == "/projects/dfds_seaways/html/stories/vrijdag-de-dertiende.html") return "vrijdag"
+        } else if (this.currentPath == "/projects/dfds_seaways/html/search-results.html" || this.currentPath == "/html/search-results.html") {
+            return "searchResults"
+        } else if (this.currentPath == "/html/download-list.html" || this.currentPath == "/projects/dfds_seaways/html/download-list.html") {
+            return "downloads"
+        } else if (this.currentPath == "/html/signup.html" || this.currentPath == "/projects/dfds_seaways/html/signup.html") {
+            return "signUp"
+        } else if (this.currentPath == "/html/stories/kater.html" || this.currentPath == "/projects/dfds_seaways/html/stories/kater.html") {
+            return "kater"
+        } else if (this.currentPath == "/html/stories/paranoia.html" || this.currentPath == "/projects/dfds_seaways/html/stories/paranoia.html") {
+            return "paranoia"
+        } else if (this.currentPath == "/html/stories/vrijdag-de-dertiende.html" || this.currentPath == "/projects/dfds_seaways/html/stories/vrijdag-de-dertiende.html") {
+            return "vrijdag"
+        }
     },
     getCurrentScreenHeight: window.innerHeight,
     getCurrentScreenWidth: window.innerWidth,
     getImagePath: function (image) {
         let path
+
         if (this.currentPath.includes("dfds_seaways")) {
             if (this.currentPath == "/" || this.currentPath.includes("/index.html")) {
                 path = `/projects/dfds_seaways/dist/img/icons/${image}.svg`
@@ -73,6 +81,7 @@ const Utility = {
                 path = `../../dist/img/icons/${image}.svg`
             }
         }
+
         return path
     },
     MajorBreakPointTwo: 1039,
@@ -91,7 +100,7 @@ const Utility = {
 // Component that loads and matches the stories that need to be created.
 const LoadStories = {
     createRequest: function (storageItem) {
-        let xhr = Utility.xhr
+        const xhr = Utility.xhr
         xhr.open("GET", Utility.storyStorage, true)
 
         let processing
@@ -115,6 +124,7 @@ const LoadStories = {
 
         function alertError(error) {
             const span = document.createElement("span")
+
             span.innerText = `Oeps, er ging iets fout. Probeer de pagina opnieuw te laden om de fout op te lossen!`
             DOMTraverse.articleWrapper.appendChild(span)
         }
@@ -173,8 +183,8 @@ const LoadStories = {
 
             function theUserIsFiltering() {
                 const filters = loopOverStories()
-                let filtersArray = []
-                let resultArray = []
+                const filtersArray = []
+                const resultArray = []
 
                 (function getFilters() {
                     filters.forEach((filter) => {
@@ -207,7 +217,7 @@ const LoadStories = {
 
             if (matches.length == 0 || matches == undefined) {
                 LoadStories.hideSortButton()
-                let span = document.createElement("span")
+                const span = document.createElement("span")
                 span.innerHTML = `Helaas, er zijn geen matches gevonden met de opgegeven input: ${ls}.<br>Probeer een ander zoekwoord, of gebruik de filters om te zoeken.`
 
                 DOMTraverse.articleWrapper.style.backgroundColor = "white"
@@ -215,6 +225,7 @@ const LoadStories = {
                 setStoryAmount()
             } else if (matches.length > 25) {
                 let currentCount = 0
+
                 if (currentCount == 0) {
                     let toShow = matches.slice(0, 25)
                     mapMatches(toShow)
@@ -231,17 +242,17 @@ const LoadStories = {
                         window.addEventListener("scroll", function () {
                             if (window.pageYOffset > (elHeight - 1500)) {
                                 if (currentCount == 0) {
-                                    let toShow = matches.slice(25, 50)
+                                    const toShow = matches.slice(25, 50)
                                     elHeight += elHeight
                                     currentCount++
                                     mapMatches(toShow)
                                 } else if (currentCount == 1) {
-                                    let toShow = matches.slice(50, 75)
+                                    const toShow = matches.slice(50, 75)
                                     elHeight += 6000
                                     currentCount++
                                     mapMatches(toShow)
                                 } else if (currentCount == 2) {
-                                    let toShow = matches.slice(75, 100)
+                                    const toShow = matches.slice(75, 100)
                                     elHeight += elHeight
                                     currentCount++
                                     mapMatches(toShow)
@@ -254,17 +265,17 @@ const LoadStories = {
                         DOMTraverse.articleWrapper.addEventListener("scroll", function () {
                             if (DOMTraverse.articleWrapper.scrollLeft > (elWidth - 1500)) {
                                 if (currentCount == 0) {
-                                    let toShow = matches.slice(25, 50)
+                                    const toShow = matches.slice(25, 50)
                                     elWidth += elWidth
                                     currentCount++
                                     mapMatches(toShow)
                                 } else if (currentCount == 1) {
-                                    let toShow = matches.slice(50, 75)
+                                    const toShow = matches.slice(50, 75)
                                     elWidth += 6000
                                     currentCount++
                                     mapMatches(toShow)
                                 } else if (currentCount == 2) {
-                                    let toShow = matches.slice(75, 100)
+                                    const toShow = matches.slice(75, 100)
                                     elWidth += elWidth
                                     currentCount++
                                     mapMatches(toShow)
@@ -440,9 +451,7 @@ const SortStories = {
         return articles
     },
     sortPerActive: function (currentActive) {
-        let stories = [...this.getStoriesArray()],
-            storyTitles = [],
-            storyNumbers = []
+        let stories = [...this.getStoriesArray()]
 
         // Laurens Holst @Stackoverflow - Fisher Yates Algorithm.
         function shuffle(array) {
@@ -501,7 +510,12 @@ const SortStories = {
 const CreateArticle = {
     Article: function (img, by, title, number, preview, fullText, i, filters) {
         let article = `
-        <article id="${title}" data-filter-readTime=${filters.readTime} data-filter-storyLength=${filters.storyLength} data-filter-ageSuggested=${filters.ageSuggested}>
+        <article
+            id="${title}"
+            data-filter-readTime=${filters.readTime}
+            data-filter-storyLength=${filters.storyLength}
+            data-filter-ageSuggested=${filters.ageSuggested}
+        >
             ${this.ArticleHeader(img, by, title, number, i)}
             ${this.Paragraph(i, preview, fullText)}
             ${this.Footer(title, this.UploadSection(i, by), this.ErrorModalDownloads(i), this.ErrorModalUploads(i), this.errorModalLogin(i), i)}
@@ -510,32 +524,66 @@ const CreateArticle = {
         return article
     },
     ArticleHeader: function (img, by, title, number, i) {
-        let header = `
+        return `
             <header class="article-header">
-                <img src=${img} alt="search-result-image" onclick="Microinteractions.toggleJavascript.call(this)" class="toggleFullStory" data-target="rest-text-${i}" data-open="upload-photo-section-${i}">
-                <span>Door: ${by}</span>
-                <div onclick="Microinteractions.toggleJavascript.call(this)" class="toggleFullStory" data-target="rest-text-${i}" data-open="upload-photo-section-${i}"><h3>${title} (${number})</h3></div>
+                <img
+                    src=${img}
+                    alt="search-result-image"
+                    onclick="Microinteractions.toggleJavascript.call(this)"
+                    class="toggleFullStory"
+                    data-target="rest-text-${i}"
+                    data-open="upload-photo-section-${i}"
+                >
+                <span>
+                    Door: ${by}
+                </span>
+                <div
+                    onclick="Microinteractions.toggleJavascript.call(this)"
+                    class="toggleFullStory"
+                    data-target="rest-text-${i}"
+                    data-open="upload-photo-section-${i}"
+                >
+                    <h3>
+                        ${title} (${number})
+                    </h3>
+                </div>
             </header>
         `
-        return header
     },
     Paragraph: function (i, preview, fullText) {
-        let p = `
-            <p onclick="Microinteractions.toggleJavascript.call(this)" aria-label="Open volledig verhaal" id="article-text-${i}" data-target="rest-text-${i}" data-open="upload-photo-section-${i}">
+        return `
+            <p
+                onclick="Microinteractions.toggleJavascript.call(this)"
+                aria-label="Open volledig verhaal"
+                id="article-text-${i}"
+                data-target="rest-text-${i}"
+                data-open="upload-photo-section-${i}"
+            >
                 ${preview}
-                <span id="rest-text-${i}">${fullText}</span>
+                <span id="rest-text-${i}">
+                    ${fullText}
+                </span>
             </p>
         `
-        return p
     },
     Footer: function (title, UploadSection, errorModalDownloads, errorModalUploads, errorModalLogin, i) {
         let footer
+
         if (Utility.currentPath == "/") {
             footer = `
                 <footer>
                     ${UploadSection}
-                    <button type="button" class="btn btn-main" onClick="IndexPage.removeFromList.call(this)" id=read-later-${title}>Verwijderen uit leeslijst</button>
-                    <button type="button" class="btn btn-main" id="toggle-download-modal-${i}">Toevoegen aan downloadlijst</button>
+                    <button
+                        type="button"
+                        class="btn btn-main"
+                        onClick="IndexPage.removeFromList.call(this)"
+                        id=read-later-${title}
+                    >
+                        Verwijderen uit leeslijst
+                    </button>
+                    <button type="button" class="btn btn-main" id="toggle-download-modal-${i}">
+                        Toevoegen aan downloadlijst
+                    </button>
                     ${errorModalDownloads}
                     ${errorModalUploads}
                     ${errorModalLogin}
@@ -545,18 +593,33 @@ const CreateArticle = {
             footer = `
                 <footer>
                     ${UploadSection}
-                    <button type="button" class="btn btn-main" onClick="ResultPage.addActiveClass.call(this)" id=read-later-${title}>Toevoegen aan leeslijst</button>
-                    <button type="button" class="btn btn-main" id="toggle-download-modal-${i}" onClick="Downloading.handlePopup.call(this)">Toevoegen aan downloadlijst</button>
+                    <button
+                        type="button"
+                        class="btn btn-main"
+                        onClick="ResultPage.addActiveClass.call(this)"
+                        id=read-later-${title}
+                    >
+                        Toevoegen aan leeslijst
+                    </button>
+                    <button
+                        type="button"
+                        class="btn btn-main"
+                        id="toggle-download-modal-${i}"
+                        onClick="Downloading.handlePopup.call(this)"
+                    >
+                        Toevoegen aan downloadlijst
+                    </button>
                     ${errorModalDownloads}
                     ${errorModalUploads}
                     ${errorModalLogin}
                 </footer>
             `
         }
+
         return footer
     },
     UploadSection: function (i, by) {
-        let section = `
+        return `
             <section class="upload-photo-section" id="upload-photo-section-${i}">
                 <p>
                     De foto geuploaded bij dit verhaal was van:
@@ -568,9 +631,13 @@ const CreateArticle = {
                 <form id="upload-image-form-${i}">
                     <fieldset>
                         <div>
-                            <label for="select-image-${i}">Upload je foto</label>
+                            <label for="select-image-${i}">
+                                Upload je foto
+                            </label>
                             <input type="file" accept=".jpg, .png" id="select-image-${i}">
-                            <button type="button" class="btn btn-main" onclick="UploadPhoto.submitActions.call(this)">Upload</button>
+                            <button type="button" class="btn btn-main" onclick="UploadPhoto.submitActions.call(this)">
+                                Upload
+                            </button>
                         </div>
                     </fieldset>
                 </form>
@@ -582,20 +649,22 @@ const CreateArticle = {
                 </p>
             </section>
         `
-
-        return section
     },
     ErrorModalUploads: function (i) {
         let src
+
         if (Utility.currentPath.includes("dfds_seaways")) {
             src = "/projects/dfds_seaways/dist/img/icons/multiply_white.svg"
         } else {
             src = "/dist/img/icons/multiply_white.svg"
         }
-        let errorModal = `
+
+        return `
             <section id="uploads-modal-${i}" class="uploads-modal">
                 <header>
-                    <h4>Uploadfout - Formaat</h4>
+                    <h4>
+                        Uploadfout - Formaat
+                    </h4>
                     <img src=${src} class="remove-uploads-modal">
                 </header>
                 <p>
@@ -607,20 +676,22 @@ const CreateArticle = {
                 </p>
             </section>
         `
-
-        return errorModal
     },
     errorModalLogin: function (i) {
         let src
+
         if (Utility.currentPath.includes("dfds_seaways")) {
             src = "/projects/dfds_seaways/dist/img/icons/multiply_white.svg"
         } else {
             src = "/dist/img/icons/multiply_white.svg"
         }
-        let errorModal = `
+
+        return `
             <section id="login-modal-${i}" class="login-modal">
                 <header>
-                    <h4>Inloggen Vereist!</h4>
+                    <h4>
+                        Inloggen Vereist!
+                    </h4>
                     <img src=${src} class="remove-login-modal">
                 </header>
                 <p>
@@ -633,20 +704,22 @@ const CreateArticle = {
                 </p>
             </section>
         `
-
-        return errorModal
     },
     ErrorModalDownloads: function (i) {
         let src
+
         if (Utility.currentPath.includes("dfds_seaways")) {
             src = "/projects/dfds_seaways/dist/img/icons/multiply_white.svg"
         } else {
             src = "/dist/img/icons/multiply_white.svg"
         }
-        let errorModal = `
+
+        return `
             <section id="download-modal-${i}" class="download-modal">
                 <header>
-                    <h4>Inloggen Vereist!</h4>
+                    <h4>
+                        Inloggen Vereist!
+                    </h4>
                     <img src=${src} id="remove-modal-${i}"/>
                 </header>
                 <p>
@@ -659,8 +732,6 @@ const CreateArticle = {
                 </p>
             </section>
         `
-
-        return errorModal
     }
 }
 
@@ -745,8 +816,6 @@ const UploadPhoto = {
             this.classList.add("js-success")
             this.innerHTML = "Geuploaded"
 
-            // Loading State ontbreekt, maar is hetzelfde als de andere loading states.
-
             paragraphs.forEach((p) => {
                 section.removeChild(p)
             })
@@ -803,7 +872,6 @@ const Downloading = {
     handlePopup: function () {
         const {
             downloadButton,
-            storyNumber,
             modal,
             closeModalButton,
         } = Downloading.getElements.call(this)
@@ -858,8 +926,6 @@ const Downloading = {
             setTimeout(function () {
                 modal.classList.remove("js-active")
             }, 10000)
-
-            // Create a function that handles with the onclick of the text in the modal
         }
 
         function addInitialItems(stringified, storyToAdd) {
@@ -965,7 +1031,7 @@ const Downloading = {
         }
     },
     SmallScreenDownload: function () {
-        let modal = DOMTraverse.downloadInformationModal,
+        const modal = DOMTraverse.downloadInformationModal,
             loader = DOMTraverse.downloadLoader,
             paragraph = modal.querySelector("p")
 
@@ -1006,7 +1072,7 @@ const Navigation = {
         }
     },
     getNodes: function () {
-        let loginNode = DOMTraverse.mainMenu.querySelector("#login-node"),
+        const loginNode = DOMTraverse.mainMenu.querySelector("#login-node"),
             menuList = loginNode.parentElement,
             loginNodeAnchor = loginNode.firstElementChild,
             firstLoginSibling = loginNode.nextElementSibling
@@ -1019,35 +1085,46 @@ const Navigation = {
         }
     },
     changeLoginNode: function (linkText, loggedIn, indexPath, storyPath) {
-        let nodes = this.getNodes()
+        const nodes = this.getNodes()
         nodes.loginNodeAnchor.innerText = linkText
 
         if (loggedIn && indexPath === false && storyPath === false) {
-            // Change the link prefixes to the base of the html folder.
             nodes.firstLoginSibling.insertAdjacentHTML("beforebegin", `
                 <li class="dynamic-js">
-                    <a href="download-list.html" role="menuitem">Downloadlijst</a>
+                    <a href="download-list.html" role="menuitem">
+                        Downloadlijst
+                    </a>
                 </li>
                 <li class= "dynamic-js">
-                    <a href="../index.html#reading-list" role="menuitem">Leeslijst</a>
+                    <a href="../index.html#reading-list" role="menuitem">
+                        Leeslijst
+                    </a>
                 </li>
             `)
         } else if (loggedIn && indexPath && storyPath === false) {
             nodes.firstLoginSibling.insertAdjacentHTML("beforebegin", `
                 <li class="dynamic-js">
-                    <a href="html/download-list.html" role="menuitem">Downloadlijst</a>
+                    <a href="html/download-list.html" role="menuitem">
+                        Downloadlijst
+                    </a>
                 </li>
                 <li class= "dynamic-js">
-                    <a href="#reading-list" role="menuitem">Leeslijst</a>
+                    <a href="#reading-list" role="menuitem">
+                        Leeslijst
+                    </a>
                 </li>
             `)
         } else if (loggedIn && storyPath) {
             nodes.loginNode.insertAdjacentHTML("afterend", `
                 <li class="dynamic-js">
-                    <a href="../download-list.html" role="menuitem">Downloadlijst</a>
+                    <a href="../download-list.html" role="menuitem">
+                        Downloadlijst
+                    </a>
                 </li>
                 <li class= "dynamic-js">
-                    <a href="../../index.html#reading-list" role="menuitem">Leeslijst</a>
+                    <a href="../../index.html#reading-list" role="menuitem">
+                        Leeslijst
+                    </a>
                 </li>
             `)
         } else {
@@ -1055,8 +1132,9 @@ const Navigation = {
         }
     },
     removeAddedMenuItems: function () {
-        let nodes = this.getNodes()
-        let dynamics = [...nodes.menuList.querySelectorAll(".dynamic-js")]
+        const nodes = this.getNodes()
+        const dynamics = [...nodes.menuList.querySelectorAll(".dynamic-js")]
+
         dynamics.forEach((li, i) => {
             dynamics.splice(i, 1)
         })
@@ -1094,32 +1172,36 @@ const IndexPage = {
         })
     },
     removeFromList: function () {
-        let readingList = [...window.localStorage.readingList.split(",")]
+        window.localStorage.readingList.split(",")
     },
     getReadingList: function (storageItem) {
         if (window.localStorage.getItem("login") != null || window.localStorage.getItem("signUp") != null) {
-            let ls = localStorage.getItem("readingList")
+            const ls = localStorage.getItem("readingList")
 
             if (ls === null || ls.length == 0) {
                 LoadStories.hideSortButton()
                 this.readingListNotFound()
             } else {
-                let wrapperClassList = DOMTraverse.articleWrapper.classList
+                const wrapperClassList = DOMTraverse.articleWrapper.classList
+
                 if (wrapperClassList.contains("no-results")) {
                     wrapperClassList.remove("no-results")
                 }
+
                 LoadStories.createRequest(storageItem)
             }
         } else {
-            let span = document.createElement("span")
+            const span = document.createElement("span")
+
             span.innerHTML = "Om je leeslijst te zien, moet je ingelogd zijn. <a href='/html/signup.html'>U kunt zich hier inloggen</a>."
+
             LoadStories.hideSortButton()
             DOMTraverse.articleWrapper.parentElement.classList.add("reading-list-js-no-login")
             DOMTraverse.articleWrapper.appendChild(span)
         }
     },
     readingListNotFound: function () {
-        let articleWrapper = DOMTraverse.articleWrapper,
+        const articleWrapper = DOMTraverse.articleWrapper,
             iTag = document.createElement("i"),
             spanTag = document.createElement("span")
 
@@ -1132,27 +1214,25 @@ const IndexPage = {
     },
     Filtering: {
         getElements: function () {
-            const filterFormFieldsets = DOMTraverse.filterForm.querySelectorAll("fieldset")
             const filterFormInputs = DOMTraverse.filterForm.querySelectorAll("input")
 
             return {
-                filterFormFieldsets: filterFormFieldsets,
                 filterFormInputs: filterFormInputs,
             }
         },
         getActiveInputs: function () {
             const {
-                filterFormFieldsets,
                 filterFormInputs
             } = this.getElements()
 
             let checkedArray = []
 
-            filterFormInputs.forEach((input) => {
+            filterFormInputs.forEach(input => {
                 if (input.checked) {
                     checkedArray.push(input)
                 }
             })
+
             return checkedArray
         },
         handleFilterForm: function () {
@@ -1192,10 +1272,10 @@ const IndexPage = {
 const SignUpPage = {
     Constraint: {
         getDate: function () {
-            let today = new Date()
-            let dd = today.getDate()
-            let mm = (today.getMonth() + 1)
-            let yyyy = today.getFullYear()
+            const today = new Date()
+            const dd = today.getDate()
+            const mm = (today.getMonth() + 1)
+            const yyyy = today.getFullYear()
 
             function addZeroIfLessThanTen(unit) {
                 if (unit < 10) {
@@ -1206,25 +1286,27 @@ const SignUpPage = {
                 }
             }
 
-            today = `${addZeroIfLessThanTen(dd)}/${addZeroIfLessThanTen(mm)}/${yyyy}`
-            return today
+            return `${addZeroIfLessThanTen(dd)}/${addZeroIfLessThanTen(mm)}/${yyyy}`
         },
         setCurrentDate: function () {
-            let cd = this.getDate()
+            const cd = this.getDate()
+
             DOMTraverse.signUpBirthday.setAttribute("max", cd)
         },
         getConstraints: function () {
-            let email = ["[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$", "Een email bestaat uit letters en nummers, een @ en minstens één punt"]
-            let name = ["^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$", "Een volledige naam bestaat uit enkel woorden en spaties."]
-            let password = ["^([a-zA-Z0-9@*#]{8,15})$", "Een goed wachtwoord bestaat uit minimaal 8 tekens, waarvan minstens één hoofd- en kleine letter en een nummer."]
+            const email = ["[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$", "Een email bestaat uit letters en nummers, een @ en minstens één punt"]
+            const name = ["^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$", "Een volledige naam bestaat uit enkel woorden en spaties."]
+            const password = ["^([a-zA-Z0-9@*#]{8,15})$", "Een goed wachtwoord bestaat uit minimaal 8 tekens, waarvan minstens één hoofd- en kleine letter en een nummer."]
+
             return {
-                email: email,
-                name: name,
-                password: password,
+                email,
+                name,
+                password,
             }
         },
         matchConstraintToInputField: function (constraint, input) {
             let constraints = this.getConstraints()
+
             for (const key of Object.keys(constraints)) {
                 if (constraint.includes(key)) {
                     this.createConstraint(constraints, key, input)
@@ -1246,7 +1328,7 @@ const SignUpPage = {
             }
         },
         checkElements: function () {
-            DOMTraverse.tovalidate.forEach((input) => {
+            DOMTraverse.tovalidate.forEach(input => {
                 input.addEventListener("keyup", () => {
                     if (input.classList.contains("password")) {
                         this.matchConstraintToInputField("password", input)
@@ -1263,18 +1345,20 @@ const SignUpPage = {
         userLogin: function () {
             DOMTraverse.loginForm.addEventListener("submit", function (e) {
                 e.preventDefault()
-                let email = this.querySelector("#login-email").value
-                let password = this.querySelector("#login-password").value
+                const email = this.querySelector("#login-email").value
+                const password = this.querySelector("#login-password").value
 
-                let login = {
+                const login = {
                     email: email,
                     password: password
                 }
+
                 setStorage(login)
             })
 
             function setStorage(login) {
                 localStorage.setItem("login", JSON.stringify(login))
+
                 if (Utility.currentPath.includes("dfds_seaways")) {
                     window.location.href = "../index.html"
                 } else {
@@ -1285,7 +1369,8 @@ const SignUpPage = {
         userPasswordReset: function () {
             DOMTraverse.resetForm.addEventListener("submit", function (e) {
                 e.preventDefault()
-                let email = this.querySelector("#reset-password").value
+
+                const email = this.querySelector("#reset-password").value
                 setStorage(email)
             })
 
@@ -1296,19 +1381,21 @@ const SignUpPage = {
         userSignUp: function () {
             DOMTraverse.signUpForm.addEventListener("submit", function (e) {
                 e.preventDefault()
-                let birthday = this.querySelector("#sign-up-birthday").value,
+
+                const birthday = this.querySelector("#sign-up-birthday").value,
                     email = this.querySelector("#sign-up-email").value,
                     name = this.querySelector("#sign-up-name").value,
                     nationality = this.querySelector("#sign-up-nationality").value,
                     password = this.querySelector("#sign-up-password").value
 
-                let signUp = {
-                    birthday: birthday,
-                    email: email,
-                    name: name,
-                    nationality: nationality,
-                    password: password
+                const signUp = {
+                    birthday,
+                    email,
+                    name,
+                    nationality,
+                    password,
                 }
+
                 setStorage(signUp)
             })
 
@@ -1336,15 +1423,10 @@ const ResultPage = {
                 ResultPage.addToReadingList.call(this)
                 ResultPage.showTopMessage.call(this)
             }, 1500)
-        } else {
-
         }
     },
     addToReadingList: function () {
-        // Get current reading list.
-        let title = this.id.slice(this.id.lastIndexOf("-") + 1)
-
-        let readingListArray = window.localStorage.getItem("readingList")
+        const title = this.id.slice(this.id.lastIndexOf("-") + 1)
 
         ResultPage.readingListArray.push(title)
 
@@ -1370,26 +1452,25 @@ const ResultPage = {
 const StoryPage = {
     Kater: {
         getElements: function () {
-            let kater = document.getElementsByClassName("story-1")[0],
+            const kater = document.getElementsByClassName("story-1")[0],
                 article = kater.firstElementChild,
                 allSections = article.querySelectorAll("section"),
                 titleSection = article.querySelector(".title"),
                 paragraph = article.querySelector("p")
 
             return {
-                allSections: allSections,
-                article: article,
-                kater: kater,
-                paragraph: paragraph,
-                titleSection: titleSection,
+                allSections,
+                article,
+                kater,
+                paragraph,
+                titleSection,
             }
         },
         getTranslateValue: (translateString) => {
-            let n = translateString.indexOf("("),
+            const n = translateString.indexOf("("),
                 n1 = translateString.indexOf("%")
 
-            let res = parseInt(translateString.slice(n + 1, n1 - 1))
-            return res
+            return parseInt(translateString.slice(n + 1, n1 - 1))
         },
         handleScroll: function () {
             const {
@@ -1402,12 +1483,10 @@ const StoryPage = {
             let pActive
 
             if (Utility.getCurrentScreenHeight >= 1000) {
-                // Scroll events for higher screens.
                 kater.addEventListener("scroll", () => {
                     scrollEvents(7)
                 })
             } else {
-                // Scroll events for less high screens.
                 kater.addEventListener("scroll", () => {
                     scrollEvents(4)
                 })
@@ -1425,6 +1504,7 @@ const StoryPage = {
                         }
                     } else {
                         paragraph.style.transform = `translateX(${kater.scrollHeight / (centerPage - 1) - kater.scrollTop}%)`
+
                         setTimeout(function () {
                             pActive = true
                         }, 500)
@@ -1445,15 +1525,14 @@ const StoryPage = {
                 paragraph = article.querySelector("p")
 
             return {
-                article: article,
-                followLeft: followLeft,
-                followRight: followRight,
-                paragraph: paragraph,
+                article,
+                followLeft,
+                followRight,
+                paragraph,
             }
         },
         getScrollTop: function () {
             const {
-                article,
                 followLeft,
                 followRight,
                 paragraph,
@@ -1461,12 +1540,13 @@ const StoryPage = {
             let scrollTop
 
             window.addEventListener("load", function () {
-                followRight.forEach((frEl) => {
+                followRight.forEach(frEl => {
                     frEl.classList.add("js-hide")
                 })
             })
             paragraph.addEventListener("scroll", function () {
                 scrollTop = paragraph.scrollTop
+
                 if (scrollTop < 300 || scrollTop > 1800 && scrollTop < 2499 || scrollTop > 3200) {
                     followLeft.forEach((flEl) => {
                         flEl.classList.remove("js-hide")
@@ -1491,8 +1571,8 @@ const StoryPage = {
                 dividerRight = document.querySelector(".divider__right")
 
             return {
-                verticalDrop: verticalDrop,
-                dividerRight: dividerRight,
+                verticalDrop,
+                dividerRight,
             }
         },
         handleScroll: function () {
@@ -1518,6 +1598,7 @@ const StoryPage = {
                 } else {
                     verticalDrop.style.transform = `translateY(${translateValue - (dividerRight.scrollTop / 50)}%) rotateZ(90deg) scale(${Math.random() * (1.2 - .5) + .5}) translateX(${randomPositiveOrNegative}%)`
                 }
+
                 lastScrollTop = st
             }, false)
         },
@@ -1525,8 +1606,8 @@ const StoryPage = {
 }
 
 // Fires immediately, which triggers all the JavaScript in the pages.
-let onLoad = function () {
-    let cp = Utility.getCurrentPath()
+const onLoad = function () {
+    const cp = Utility.getCurrentPath()
 
     DOMTraverse.topSpans.forEach((span) => {
         window.addEventListener("scroll", function () {
@@ -1542,6 +1623,7 @@ let onLoad = function () {
         if (Utility.getCurrentScreenWidth < Utility.MajorBreakPointTwo && Downloading.downloading) {
             Downloading.SmallScreenDownload()
         }
+
         IndexPage.getReadingList("readingList")
         IndexPage.setFormListeners()
         Navigation.getLoginOrSignup("index")
