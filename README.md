@@ -1,5 +1,30 @@
 # Travel story website for DFDS - DFDStories
 
+## Installation
+
+```
+git clone git@github.com:Maikxx/DFDSstories.git
+cd DFDSstories
+```
+
+Install the dependencies:
+
+```
+yarn
+```
+
+or
+
+```
+npm install
+```
+
+Run the development server:
+
+```
+yarn serve
+```
+
 ## Synopsis
 
 This project is a website for a travel company called DFDS. On this page you can search for and read pre-defined stories, as well as adding your own travel pictures to the stories, to create a dynamic reading experience for everyone who is using the website.
