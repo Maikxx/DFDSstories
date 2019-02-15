@@ -9,7 +9,9 @@
   "scripts": {
     "serve": "yarn clean:dist && gulp watch",
     "clean:dist": "gulp cleanDist && yarn build:assets",
-    "build:assets": " gulp buildAssets"
+    "build:assets": "gulp buildAssets",
+    "build:dist": "gulp buildDist",
+    "build": "yarn clean:dist && yarn build:dist"
   },
   "devDependencies": {
     "babel-preset-es2015": "^6.24.1",

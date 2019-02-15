@@ -78,6 +78,6 @@ gulp.task('cleanDist', () => {
         .pipe(clean())
 })
 
-gulp.task('buildDist', ['cleanDist', 'ppCSS', 'ppJS'], () => {
+gulp.task('buildDist', ['ppCSS', 'ppJS'], () => {
     console.log('Done')
 })
