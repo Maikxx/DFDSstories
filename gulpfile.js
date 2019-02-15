@@ -8,8 +8,7 @@ const sass = require('gulp-sass')
 const plumber = require('gulp-plumber'),
     clean = require('gulp-clean'),
     minifyImage = require('gulp-imagemin'),
-    rename = require('gulp-rename'),
-    merge = require('merge-stream')
+    rename = require('gulp-rename')
 
 const autoPrefixer = require('gulp-autoprefixer'),
     minifyCSS = require('gulp-cssnano')
@@ -20,8 +19,8 @@ const babel = require('gulp-babel'),
 let assetsDir = './src'
 let distDir = './dist'
 
-gulp.task('ppCSS', () => {
-    return gulp.src(`${assetsDir}/css/style.scss`)
+gulp.task('ppCSS', () =>
+    gulp.src(`${assetsDir}/css/style.scss`)
         .pipe(plumber())
         .pipe(sass())
         .pipe(autoPrefixer())
@@ -33,10 +32,10 @@ gulp.task('ppCSS', () => {
         .pipe(rename('style.min.css'))
         .pipe(gulp.dest(`${distDir}/css`))
         .pipe(browserSync.stream())
-})
+)
 
-gulp.task('ppJS', () => {
-    return gulp.src(`${assetsDir}/js/main.js`)
+gulp.task('ppJS', () =>
+    gulp.src(`${assetsDir}/js/main.js`)
         .pipe(plumber())
         .pipe(babel({
             presets: ['es2015']
@@ -47,7 +46,7 @@ gulp.task('ppJS', () => {
         .pipe(rename('main.min.js'))
         .pipe(gulp.dest(`${distDir}/js`))
         .pipe(browserSync.stream())
-})
+)
 
 gulp.task('watch', ['ppCSS', 'ppJS'], () => {
     browserSync.init({
