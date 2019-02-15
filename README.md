@@ -1,29 +1,14 @@
 # Travel story website for DFDS - DFDStories
 
+[Demo link](https://dfdsstories.netlify.com)
+
 ## Installation
 
-```
-git clone git@github.com:Maikxx/DFDSstories.git
-cd DFDSstories
-```
-
-Install the dependencies:
-
-```
-yarn
-```
-
-or
-
-```
-npm install
-```
-
-Run the development server:
-
-```
-yarn serve
-```
+* Clone the repository: `git clone git@github.com:Maikxx/DFDSstories.git`
+* Navigate into the folder: `cd DFDSStories`
+* Install the dependencies: `yarn` or `npm install`
+* Run the development server: `yarn serve` or `npm run serve`
+* Alternatively, build the dist folder: `yarn build` or `npm run build`
 
 ## Synopsis
 
